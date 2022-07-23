@@ -10,12 +10,12 @@ show_sidebar: false
 
 | Week | Day | Date  | Topic(s) | Lecture | Assignment | 
 |-----------|-----------|-----------|-----------|:---------:|:---------:|
-| 1    | M   | 08/22 | Review of linear models | | |
-|      | W   | 08/24 | Partial *F* test | | |
+| 1    | M   | 08/22 | Data management in tidyverse | | |
+|      | W   | 08/24 | Review of linear models | | |
 | 2    | M   | 08/29 | Categorical predictors | | | 
 |      | W   | 08/31 | Interaction terms | | |
-| 3    | M   | 09/05 | Model fit, diagnostics, assumptions | | |
-|      | W   | 09/07 | Visualizations with ggplot2 | | |
+| 3    | M   | 09/05 | Generalized linear models, gamma regression | | |
+|      | W   | 09/07 | Practice | | |
 | 4    | M   | 09/12 | Project 1 | | |
 |      | W   | 09/14 | Project 1 | | |
 | 5    | M   | 09/19 | Binary logistic regression | | |
