@@ -36,8 +36,8 @@ show_sidebar: false
 |      | W   | 11/09 | Meet with research team, analysis | | | 
 | 13   | M   | 11/14 | Meet with research team, analysis / draft paper | | |
 |      | W   | 11/16 | Meet with research team, analysis / draft paper | | |
-| 14   | M   | 11/21 | Meet with research team, finalize analysis | | |
-|      | W   | 11/23 | Meet with research team, draft slides | | |
+| 14   | M   | 11/21 | Meet with research team, peer reviews due | | |
+|      | W   | 11/23 | Meet with research team, finalize analyses | | |
 | 15   | M   | 11/28 | Presentations | | |
 |      | W   | 11/30 | Presentations | | |
 | 16   |   |  | Take home final | | |
