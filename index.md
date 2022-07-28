@@ -26,18 +26,18 @@ show_sidebar: false
 |      | W   | 10/05 | Project 2 | | | 10/10 |
 | 8    | M   | 10/10 | Poisson and negative binomial regressions | | | |
 |      | W   | 10/12 | Practice | | | 10/17 |
-| 9    | M   | 10/17 | Zero-inflated models | | |  |
-|      | W   | 10/19 | Practice | | |  10/24 |
-| 10   | M   | 10/24 | Project 3 | | | |
-|      | W   | 10/26 | Project 3 | | | 10/31 |
-| 11   | M   | 10/31 | Meet with research team, select topic | | ||
-|      | W   | 11/02 | Meet with research team, select dataset | | | |
-| 12   | M   | 11/07 | Meet with research team, analysis | | | |
-|      | W   | 11/09 | Meet with research team, analysis | | | |
-| 13   | M   | 11/14 | Meet with research team, analysis / draft paper | | | |
-|      | W   | 11/16 | Meet with research team, analysis / draft paper | | | |
-| 14   | M   | 11/21 | Meet with research team, peer reviews due | | | |
-|      | W   | 11/23 | Meet with research team, finalize analyses | | | |
+| 9    | M   | 10/17 | Project 3 | | |  |
+|      | W   | 10/19 | Project 3 | | |  10/24 |
+| 10   | M   | 10/24 | Individual research | | | |
+|      | W   | 10/26 | Individual research | | | |
+| 11   | M   | 10/31 | Individual research | | | |
+|      | W   | 11/02 | Individual research | | | 11/02 |
+| 12   | M   | 11/07 | Team research | | | |
+|      | W   | 11/09 | Team research | | | |
+| 13   | M   | 11/14 | Team research | | | |
+|      | W   | 11/16 | Team research | | | |
+| 14   | M   | 11/21 | Team research | | | |
+|      | W   | 11/23 | Team research | | | |
 | 15   | M   | 11/28 | Presentations | | | |
 |      | W   | 11/30 | Presentations | | | |
-| 16   |   |  | Take home final | | | |
+| 16   |   |  | Final paper due | | | |
