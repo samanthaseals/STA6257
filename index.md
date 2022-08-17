@@ -11,15 +11,15 @@ show_sidebar: false
 | Week | Day | Date  | Topic(s) | Lecture | Assignment | Due |
 |:-:|:-:|:---:|--------------------|:--:|:-:|:-:
 | 1    | M   | 08/22 | Data management; summarizing data; data visualization | | | |
-|      | W   | 08/24 | Practice (no meeting) | | | 08/29 |
+|      | W   | 08/24 | Practice (short meeting) | | | 08/29 |
 | 2    | M   | 08/29 | Review of linear models | | | |
-|      | W   | 08/31 | Categorical predictors; interaction terms | | | |
+|      | W   | 08/31 | Practice (short meeting) | | | 09/05 |
 | 3    | M   | 09/05 | Labor Day - no class | | | |
 |      | W   | 09/07 | Generalized linear models; gamma regression; practice | | | 09/12 |
 | 4    | M   | 09/12 | Project 1 (no meeting - Dr. Seals traveling) | | | |
 |      | W   | 09/14 | Project 1 (no meeting - Dr. Seals traveling) | | | 09/19 |
 | 5    | M   | 09/19 | Binary, ordinal, and multinomial logistic regressions | | | |
-|      | W   | 09/21 | Practice (no meeting) | | | 09/26 |
+|      | W   | 09/21 | Practice (short meeting) | | | 09/26 |
 | 6    | M   | 09/26 | Project 2 (short meeting) | | | |
 |      | W   | 09/28 | Project 2 (no meeting) | | | 10/03 |
 | 7    | M   | 10/03 | Poisson and negative binomial regressions | | | |
