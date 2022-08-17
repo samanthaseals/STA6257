@@ -33,11 +33,11 @@ show_sidebar: false
 | 11   | M   | 10/31 | Team research (short meeting) | | | |
 |      | W   | 11/02 | Team research (no meeting) | | | 11/06 |
 | 12   | M   | 11/07 | Team research (short meeting) | | | |
-|      | W   | 11/09 | Team research (no meeting) | | | 11/12 |
+|      | W   | 11/09 | Team research (no meeting) | | | 11/13 |
 | 13   | M   | 11/14 | Team research (short meeting) | | | |
 |      | W   | 11/16 | Team research (no meeting) | | | 11/20 |
 | 14   | M   | 11/21 | Team research (short meeting) | | | |
-|      | W   | 11/23 | Team research (no meeting) | | | 11/25 |
+|      | W   | 11/23 | Team research (no meeting) | | | 11/27 |
 | 15   | M   | 11/28 | Presentations | | | |
 |      | W   | 11/30 | Presentations | | | 12/02 |
 | 16   |   |  | Final paper due | | | 12/07 |
