@@ -1,0 +1,486 @@
+---
+title: "Review of R: Data Management, Summarization, and Visualization"
+subtitle: "STA6257: Advanced Statistical Modeling"
+author: "Dr. Seals"
+format: 
+  revealjs:
+    theme: dark2
+    self-contained: false
+    slide-number: false
+    footer: "[STA6257 - Advanced Statistical Modeling](https://samanthaseals.github.io/STA6257)"
+    width: 1600
+    height: 900
+    chalkboard: true
+    df-print: paged
+    html-math-method: katex
+---
+
+## R, RStudio, and Quarto
+
+-   This course will be using [R](https://cran.r-project.org/) and [RStudio](https://www.rstudio.com/) to create documents using [Quarto](https://quarto.org/).
+
+    -   You will create .qmd files that will render into .html files (like this one!).
+    
+    - If you have used [R Markdown](https://rmarkdown.rstudio.com/) before, this will be a smooth transition for you.
+    
+- Your options for computing:
+
+    - Install R and RStudio on your personal computer (recommended).
+    
+    - Use the [RStudio Server](https://rstudio.hmcse.uwf.edu), generously maintained by [UWF HMCSE](https://uwf.edu/hmcse/).
+    
+## R, RStudio, and Quarto
+
+<center>
+<img src="/images/L01fig4.png" width=80%>
+</center>
+
+## R, RStudio, and Quarto
+
+<center>
+<img src="/images/L01fig5.png" width=80%>
+</center>
+    
+## Tidy Data
+
+- We will follow the philosophy of [tidy data](https://tidyr.tidyverse.org/articles/tidy-data.html), as defined by [Hadley Wickham](https://hadley.nz/). 
+
+<center>
+[<img src="/images/L01fig1.png" width=75%>](https://r4ds.had.co.nz/tidy-data.html#tidy-data-1)
+</center>
+
+:::: {.columns}
+::: {.column width="60%"}
+- Briefly, there are **three rules** of tidy data[<sup>1</sup>](https://r4ds.had.co.nz/tidy-data.html#tidy-data-1):
+
+    1. Each variable must have its own column.
+    
+    2. Each observation must have its own row.
+    
+    3. Each value must have its own cell. 
+:::
+
+::: {.column width="40%"}
+- This simplifies to **two rules**[<sup>1</sup>](https://r4ds.had.co.nz/tidy-data.html#tidy-data-1):
+
+    1. Put each dataset in a tibble.
+    
+    2. Put each variable in a column. 
+:::
+
+::::
+
+## Tidy Data
+
+- Sometimes we need long data[<sup>2</sup>](https://r4ds.had.co.nz/tidy-data.html#pivoting):
+    
+<center>
+[<img src="/images/L01fig2.png" width="45%">](https://r4ds.had.co.nz/tidy-data.html#pivoting)
+</center>
+    
+- Sometimes we need wide data[<sup>2</sup>](https://r4ds.had.co.nz/tidy-data.html#pivoting):
+    
+<center>
+[<img src="/images/L01fig3.png" width="45%">](https://r4ds.had.co.nz/tidy-data.html#pivoting)
+</center>
+
+## The [`tidyverse`](https://www.tidyverse.org)
+
+- We will use the [`tidyverse`](https://www.tidyverse.org) as much as possible.
+
+    - The [`tidyverse`](https://www.tidyverse.org) package is a [collection of packages](https://www.tidyverse.org/packages/).
+
+    - The [tidyverse blog](https://www.tidyverse.org/blog/) regularly posts about new packages and functionality.
+    
+- There is an official [tidyverse style guide](https://style.tidyverse.org/index.html).
+
+    - This will teach you good coding practices.
+    
+- Do students have to use [`tidyverse`](https://www.tidyverse.org)?
+
+    - Yes, when requested for an assignment.
+    
+## Installing and Calling Packages
+
+- Before calling a package into R, we must first install it.
+
+```{r, eval = FALSE, echo = TRUE}
+install.packages("tidyverse")
+```
+
+- Note that you only install a package *once* and then you remove the `install.packages()` call.
+
+- Once a package is installed, we will call it in so that we can use the functions from that package.
+
+```{r, echo = TRUE, warning = FALSE}
+library(tidyverse)
+```
+
+- We will call all packages needed for a script or document at the *top* of the document.
+
+- There is a point-and-click interface in RStudio for packages... 
+
+## Importing Data
+
+- Data is stored in a variety of file formats and can be imported into R.
+
+    - .csv $\to$ [`read_csv()`](https://readr.tidyverse.org/reference/read_delim.html) 
+    - .xlsx (Excel) $\to$ [`read_excel()`](https://readxl.tidyverse.org/reference/read_excel.html)
+    - .sas7bdat (SAS) $\to$ [`read_sas()`](https://haven.tidyverse.org/reference/read_sas.html)
+    - .sav (SPSS) $\to$ [`read_sav()`](https://haven.tidyverse.org/reference/read_spss.html)
+    - .dta (Stata) $\to$ [`read_dta()`](https://haven.tidyverse.org/reference/read_dta.html)
+    - Google Sheet $\to$ [`read_sheet()`](https://googlesheets4.tidyverse.org/articles/read-sheets.html)
+    
+## Importing Data
+
+<center>
+<img src="/images/L01fig6.png" width=80%>
+</center>
+
+## Importing Data
+
+<center>
+<img src="/images/L01fig7.png" width=80%>
+</center>
+
+## Warning! 
+
+- It is tempting to use point-and-click to do things.
+
+- Remember that we want *reproducible* research and documents.
+
+- While we may use the Import Data wizard to import our data, it is *imperative* that we copy the code into our R script (or Quarto document).
+
+    - It is unlikely that you will complete your work in one session. This makes it easier to "pick up" where you left off!
+    
+    - In the future, you may have to tweak and rerun an analysis -- it's so much easier if you can just run the code to call in the data. :)
+
+## Importing Data
+
+- Let's import data from the [Jackson Heart Study](https://www.jacksonheartstudy.org/), a [NIH-funded study](https://www.nhlbi.nih.gov/science/jackson-heart-study-jhs).
+
+    - The data has been given to us in a .sas7bdat file, so we will use the [`read_sas()`](https://haven.tidyverse.org/reference/read_sas.html) function.
+    
+```{r, echo = TRUE}
+library(haven)
+data <- read_sas("/Volumes/GoogleDrive/My Drive/STA6257/datasets/analysis1.sas7bdat")
+head(data, n=4)
+```
+
+## Importing Data
+
+<center>
+<img src="/images/L01fig8.png" width=80%>
+</center>
+
+## Importing Data
+
+<center>
+<img src="/images/L01fig9.png" width=80%>
+</center>
+
+## Importing Data
+
+<center>
+<img src="/images/L01fig10.png" width=80%>
+</center>
+
+## Importing Data
+
+- Some things I've learned in my time as a [Card Carrying Statistician](https://www.amstat.org/):
+
+    - Data can be given to us in an awful format.
+    
+    - Even if data is in a "nice" format (i.e., it looks "fine" when I open the .csv file), it may not import properly.
+    
+    - It is *very important* to literally *look* at the dataset once we've imported it -- we want to make sure it imported correctly.
+    
+    - Sometimes I have to do some "preliminary cleaning" prior to importing... but I try to keep this at a minimum, for reproducibility purposes.
+    
+- We aren't in Happy Textbook World anymore.
+
+## Pipe Operator
+
+- A huge advantage of doing data management with [`tidyverse`](https://www.tidyverse.org) is the [pipe operator](https://style.tidyverse.org/pipes.html), `%>%`.
+
+- This "feeds" our dataset into the next function. 
+
+- For example,
+
+```{r, echo = TRUE}
+data %>% 
+  count(HTN)
+```
+
+## Pipe Operator
+
+- We can use the pipe more than once, depending on what needs to be done. 
+
+- For example,
+
+```{r, echo = TRUE}
+data %>% 
+  group_by(everSmoker) %>%
+  count(HTN)
+```
+
+## Keeping Specific Columns
+
+- We can limit our dataset by specifying the columns we want to keep using [`select()`](https://dplyr.tidyverse.org/reference/select.html).
+
+- For example,
+
+```{r, echo = TRUE}
+data2 <- data %>%
+  select(subjid, HTN, everSmoker, diab3cat)
+head(data2, n=4)
+```
+
+## Removing Specific Columns
+
+- We can also use [`select()`](https://dplyr.tidyverse.org/reference/select.html) to remove specific columns.
+
+- For example,
+
+```{r, echo = TRUE}
+data3 <- data2 %>%
+  select(-diab3cat)
+head(data3, n=4)
+```
+
+## Filtering the Data
+
+- We can use [`filter()`](https://dplyr.tidyverse.org/reference/filter.html) to filter the dataset. 
+
+- For example,
+```{r, echo = TRUE}
+data %>%
+  filter(HTN == 1) %>%
+  count(diab3cat)
+```
+
+## Filtering the Data
+
+- We can use multiple logical statements in [`filter()`](https://dplyr.tidyverse.org/reference/filter.html) 
+
+- For example,
+```{r, echo = TRUE}
+data %>%
+  filter(HTN == 1 & everSmoker == 1) %>%
+  count(diab3cat)
+```
+
+## Creating New Variables 
+
+- We will use [`mutate()`](https://dplyr.tidyverse.org/reference/mutate.html) to create new variables.
+
+    - We can overwrite variables, but I **strongly advise against this**.
+    
+- For example,
+```{r, echo = TRUE}
+data2 <- data %>%
+  select(subjid, brthyr) %>%
+  mutate(age_today = 2022 - brthyr)
+head(data2, n=4)
+```
+
+## Merging Datasets
+
+- Sometimes we need to merge datasets together.
+
+    - Data is often contained in different places.
+    
+- As an example, the JHS data was originally collected by individual form. 
+
+    - The Coordinating Center Data Core created the analysis datasets after merging together the individual form datasets.
+    
+- To merge, we use one of the [join functions](https://dplyr.tidyverse.org/reference/mutate-joins.html):
+
+    - `left_join(A, B, by = "variable")`
+    
+    - `right_join(A, B, by = "variable")`
+    
+    - `inner_join(A, B, by = "variable")`
+    
+    - `full_join(A, B, by = "variable")`
+    
+## Merging Datasets
+
+- Suppose we want to merge the JHS data from visits 1 and 2.
+
+```{r, echo = TRUE}
+data_v1 <- read_sas("/Volumes/GoogleDrive/My Drive/STA6257/datasets/analysis1.sas7bdat") %>% select(subjid, HTN)
+data_v2 <- read_sas("/Volumes/GoogleDrive/My Drive/STA6257/datasets/analysis2.sas7bdat") %>% select(subjid, HTN)
+merged <- full_join(data_v1, data_v2, by = "subjid")
+head(merged, n=4)
+```
+
+- Oh no! Both datasets have the same variable names. 
+
+    - R takes care of this for us with the .x and .y... but we are going to do things properly.
+    
+## Merging Datasets
+
+- Let's use the [`rename()`](https://dplyr.tidyverse.org/reference/rename.html) function.
+
+```{r, echo = TRUE}
+data_v1 <- data_v1 %>% rename(HTN_v1 = HTN)
+data_v2 <- data_v2 %>% rename(HTN_v2 = HTN)
+merged <- full_join(data_v1, data_v2, by = "subjid")
+head(merged, n=4)
+```
+
+- Now our variables have meaningful names :)
+
+## Data Visualization
+
+- [`ggplot2`](https://ggplot2.tidyverse.org/) is an incredibly powerful graphing package.
+
+    - Constructing graphs with  [`ggplot2`](https://ggplot2.tidyverse.org/)  is what got me hooked on R 
+    
+    - Every element of the graph is customizable.
+
+- When constructing graphs, we should ask ourselves who the consumer is.
+
+    - If making a graph "for me" I do not worry too much about appearances.
+    
+    - If making a graph for a collaborator, I create a "rough draft" for discussion purposes.
+    
+    - If making a graph for a presentation or manuscript, I am *very* particular about its appearance.
+    
+- Graphs to be viewed in a professional setting should be clean and easy to interpret.
+
+## Data Visualization
+
+- Let's create a histogram using [`geom_histogram()`](https://ggplot2.tidyverse.org/reference/geom_histogram.html),
+
+```{r, echo = TRUE, eval = FALSE}
+data %>% 
+  ggplot(aes(y = sbp)) +
+  geom_histogram()
+```
+
+## Data Visualization
+
+```{r, echo = FALSE, eval = TRUE}
+data %>% 
+  ggplot(aes(x = sbp)) +
+  geom_histogram()
+```
+
+## Data Visualization
+
+- Let's customize our graph,
+
+```{r, echo = TRUE, eval = FALSE}
+data %>% 
+  ggplot(aes(x = sbp)) +
+  geom_histogram(fill="#8DC8E8") + 
+  labs(x="Systolic Blood Pressure",
+       y="Count",
+       title="Systolic Blood Pressure",
+       subtitle="JHS Clinic Visit 1") +
+  theme_bw()
+```
+
+## Data Visualization
+
+```{r, echo = FALSE, eval = TRUE}
+data %>% 
+  ggplot(aes(x = sbp)) +
+  geom_histogram(fill="#8DC8E8") + 
+  labs(x="Systolic Blood Pressure",
+       y="Count",
+       title="Systolic Blood Pressure",
+       subtitle="JHS Clinic Visit 1") +
+  theme_bw()
+```
+
+## Data Visualization
+
+- All of the `geom_x()` are "layers" on the graph.
+
+```{r, echo = TRUE, eval = FALSE}
+data %>% 
+  ggplot(aes(x = HbA1c, y = sbp)) +
+  geom_smooth() +
+  geom_point() + 
+  labs(y="Systolic Blood Pressure",
+       x="A1c") +
+  theme_bw()
+```
+
+```{r, echo = TRUE, eval = FALSE}
+data %>% 
+  ggplot(aes(x = HbA1c, y = sbp)) +
+  geom_point() + 
+  geom_smooth() +
+  labs(y="Systolic Blood Pressure",
+       x="A1c") +
+  theme_bw()
+```
+
+## Data Visualization
+
+- All of the `geom_x()` are "layers" on the graph.
+
+```{r, echo = FALSE, eval = TRUE}
+data %>% 
+  ggplot(aes(x = HbA1c, y = sbp)) +
+  geom_smooth(size=5) +
+  geom_point() + 
+  labs(y="Systolic Blood Pressure",
+       x="A1c") +
+  xlim(4,8) +
+  theme_bw()
+```
+
+## Data Visualization
+
+- All of the `geom_x()` are "layers" on the graph.
+
+```{r, echo = FALSE, eval = TRUE}
+data %>% 
+  ggplot(aes(x = HbA1c, y = sbp)) +
+  geom_point() + 
+  geom_smooth(size=5) +
+  labs(y="Systolic Blood Pressure",
+       x="A1c") +
+  xlim(4,8) +
+  theme_bw()
+```
+
+
+## Reminders / Disclaimers
+
+- I am not an expert in R / programming in general!
+
+    - I have been using R as my primary analysis software since 2020 or so.
+    
+    - I am a statistician first, programmer second.
+
+- There may be better ways to code things -- please let me know if you have more efficient code!
+
+    - The code I present to you is perhaps not the most elegant, but it works. :) 
+
+    - We are all learning together -- remember that your professors are lifelong learners.
+    
+- Do not be afraid to [research a code solution](https://duckduckgo.com/) to your problem.
+
+    - I very often search for what I'm looking for and add "tidyverse" or "tidy data" to see if there's a solution in the `tidyverse`.
+
+## Reminders / Disclaimers
+
+- It is impossible for me to teach you all programming that you will need over your career.
+
+- Please become comfortable with [researching a solution](https://duckduckgo.com/) to your problem.
+
+    - While I have a PhD, I do not know everything there is to know about either statistics or statistical programming.
+    
+    - Despite having used SAS for a decade, I still had to research the procedure syntax when I was fresh out of graduate school.
+    
+    - My training has prepared me to independently research a solution, sift through results to find reliable and appropriate solutions, and figure out how to apply the solution to the problem at hand.
+
+- Be confident in your knowledge.
+
+

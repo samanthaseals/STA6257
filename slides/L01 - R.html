@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="L01 - R_files/libs/clipboard/clipboard.min.js"></script>
+<script src="L01 - R_files/libs/quarto-html/tabby.min.js"></script>
+<script src="L01 - R_files/libs/quarto-html/popper.min.js"></script>
+<script src="L01 - R_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="L01 - R_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="L01 - R_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet">
+<link href="L01 - R_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-0.9.647">
+
+  <meta name="author" content="Dr.&nbsp;Seals">
+  <title>Review of R: Data Management, Summarization, and Visualization</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="L01 - R_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="L01 - R_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #f8f8f2;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #f8f8f2; } /* Normal */
+    code span.al { color: #f07178; background-color: #2a0f15; font-weight: bold; } /* Alert */
+    code span.an { color: #d4d0ab; } /* Annotation */
+    code span.at { color: #00e0e0; } /* Attribute */
+    code span.bn { color: #d4d0ab; } /* BaseN */
+    code span.bu { color: #abe338; } /* BuiltIn */
+    code span.cf { color: #ffa07a; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #abe338; } /* Char */
+    code span.cn { color: #ffd700; } /* Constant */
+    code span.co { color: #f8f8f2; font-style: italic; } /* Comment */
+    code span.cv { color: #ffd700; } /* CommentVar */
+    code span.do { color: #f8f8f2; } /* Documentation */
+    code span.dt { color: #ffa07a; } /* DataType */
+    code span.dv { color: #d4d0ab; } /* DecVal */
+    code span.er { color: #f07178; text-decoration: underline; } /* Error */
+    code span.ex { color: #00e0e0; font-weight: bold; } /* Extension */
+    code span.fl { color: #d4d0ab; } /* Float */
+    code span.fu { color: #ffa07a; } /* Function */
+    code span.im { color: #abe338; } /* Import */
+    code span.in { color: #d4d0ab; } /* Information */
+    code span.kw { color: #ffa07a; font-weight: bold; } /* Keyword */
+    code span.op { color: #ffa07a; } /* Operator */
+    code span.ot { color: #00e0e0; } /* Other */
+    code span.pp { color: #dcc6e0; } /* Preprocessor */
+    code span.re { color: #00e0e0; background-color: #f8f8f2; } /* RegionMarker */
+    code span.sc { color: #abe338; } /* SpecialChar */
+    code span.ss { color: #abe338; } /* SpecialString */
+    code span.st { color: #abe338; } /* String */
+    code span.va { color: #00e0e0; } /* Variable */
+    code span.vs { color: #abe338; } /* VerbatimString */
+    code span.wa { color: #dcc6e0; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="L01 - R_files/libs/revealjs/dist/theme/quarto.css" id="theme">
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
+  <link href="L01 - R_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="L01 - R_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="L01 - R_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="L01 - R_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="L01 - R_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="L01 - R_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+
+  .callout {
+    margin-top: 1em;
+    margin-bottom: 1em;  
+    border-radius: .25rem;
+  }
+
+  .callout.callout-style-simple { 
+    padding: 0em 0.5em;
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+    display: flex;
+  }
+
+  .callout.callout-style-default {
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+  }
+
+  .callout .callout-body-container {
+    flex-grow: 1;
+  }
+
+  .callout.callout-style-simple .callout-body {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-style-default .callout-body {
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-captioned.callout-style-simple .callout-body {
+    margin-top: 0.2em;
+  }
+
+  .callout:not(.callout-captioned) .callout-body {
+      display: flex;
+  }
+
+  .callout:not(.no-icon).callout-captioned.callout-style-simple .callout-content {
+    padding-left: 1.6em;
+  }
+
+  .callout.callout-captioned .callout-header {
+    padding-top: 0.2em;
+    margin-bottom: -0.2em;
+  }
+
+  .callout.callout-captioned .callout-caption  p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+    
+  .callout.callout-captioned.callout-style-simple .callout-content  p {
+    margin-top: 0;
+  }
+
+  .callout.callout-captioned.callout-style-default .callout-content  p {
+    margin-top: 0.7em;
+  }
+
+  .callout.callout-style-simple div.callout-caption {
+    border-bottom: none;
+    font-size: .9rem;
+    font-weight: 600;
+    opacity: 75%;
+  }
+
+  .callout.callout-style-default  div.callout-caption {
+    border-bottom: none;
+    font-weight: 600;
+    opacity: 85%;
+    font-size: 0.9rem;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-default div.callout-content {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-simple .callout-icon::before {
+    height: 1rem;
+    width: 1rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 1rem 1rem;
+  }
+
+  .callout.callout-style-default .callout-icon::before {
+    height: 0.9rem;
+    width: 0.9rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 0.9rem 0.9rem;
+  }
+
+  .callout-caption {
+    display: flex
+  }
+    
+  .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  .callout.no-icon::before {
+    display: none !important;
+  }
+
+  .callout.callout-captioned .callout-body > .callout-content > :last-child {
+    margin-bottom: 0.5rem;
+  }
+
+  .callout.callout-captioned .callout-icon::before {
+    margin-top: .5rem;
+    padding-right: .5rem;
+  }
+
+  .callout:not(.callout-captioned) .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  /* Callout Types */
+
+  div.callout-note {
+    border-left-color: #4582ec !important;
+  }
+
+  div.callout-note .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEU0lEQVRYCcVXTWhcVRQ+586kSUMMxkyaElstCto2SIhitS5Ek8xUKV2poatCcVHtUlFQk8mbaaziwpWgglJwVaquitBOfhQXFlqlzSJpFSpIYyXNjBNiTCck7x2/8/LeNDOZxDuEkgOXe++553zfefee+/OYLOXFk3+1LLrRdiO81yNqZ6K9cG0P3MeFaMIQjXssE8Z1JzLO9ls20MBZX7oG8w9GxB0goaPrW5aNMp1yOZIa7Wv6o2ykpLtmAPs/vrG14Z+6d4jpbSKuhdcSyq9wGMPXjonwmESXrriLzFGOdDBLB8Y6MNYBu0dRokSygMA/mrun8MGFN3behm6VVAwg4WR3i6FvYK1T7MHo9BK7ydH+1uurECoouk5MPRyVSBrBHMYwVobG2aOXM07sWrn5qgB60rc6mcwIDJtQrnrEr44kmy+UO9r0u9O5/YbkS9juQckLed3DyW2XV/qWBBB3ptvI8EUY3I9p/67OW+g967TNr3Sotn3IuVlfMLVnsBwH4fsnebJvyGm5GeIUA3jljERmrv49SizPYuq+z7c2H/jlGC+Ghhupn/hcapqmcudB9jwJ/3jvnvu6vu5lVzF1fXyZuZZ7U8nRmVzytvT+H3kilYvH09mLWrQdwFSsFEsxFVs5fK7A0g8gMZjbif4ACpKbjv7gNGaD8bUrlk8x+KRflttr22JEMRUbTUwwDQScyzPgedQHZT0xnx7ujw2jfVfExwYHwOsDTjLdJ2ebmeQIlJ7neo41s/DrsL3kl+W2lWvAga0tR3zueGr6GL78M3ifH0rGXrBC2aAR8uYcIA5gwV8zIE8onoh8u0Fca/ciF7j1uOzEnqcIm59sEXoGc0+z6+H45V1CvAvHcD7THztu669cnp+L0okAeIc6zjbM/24LgGM1gZk7jnRu1aQWoU9sfUOuhrmtaPIO3YY1KLLWZaEO5TKUbMY5zx8W9UJ6elpLwKXbsaZ4EFl7B4bMtDv0iRipKoDQT2sNQI9b1utXFdYisi+wzZ/ri/1m7QfDgEuvgUUEIJPq3DhX/5DWNqIXDOweC2wvIR90Oq3lDpdMIgD2r0dXvGdsEW5H6x6HLRJYU7C69VefO1x8Gde1ZFSJLfWS1jbCnhtOPxmpfv2LXOA2Xk2tvnwKKPFuZ/oRmwBwqRQDcKNeVQkYcOjtWVBuM/JuYw5b6isojIkYxyYAFn5K7ZBF10fea52y8QltAg6jnMqNHFBmGkQ1j+U43HMi2xMar1Nv0zGsf1s8nUsmUtPOOrbFIR8bHFDMB5zL13Gmr/kGlCkUzedTzzmzsaJXhYawnA3UmARpiYj5ooJZiUoxFRtK3X6pgNPv+IZVPcnwbOl6f+aBaO1CNvPW9n9LmCp01nuSaTRF2YxHqZ8DYQT6WsXT+RD6eUztwYLZ8rM+rcPxamv1VQzFUkzFXvkiVrySGQgJNvXHJAxiU3/NwiC03rSf05VBaPtu/Z7/B8Yn/w7eguloAAAAAElFTkSuQmCC');
+  }
+
+  div.callout-note.callout-style-default .callout-caption {
+    background-color: #dae6fb
+  }
+
+  div.callout-important {
+    border-left-color: #d9534f !important;
+  }
+
+  div.callout-important .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEKklEQVRYCcVXTWhcVRS+575MJym48A+hSRFr00ySRQhURRfd2HYjk2SSTokuBCkU2o0LoSKKraKIBTcuFCoidGFD08nkBzdREbpQ1EDNIv8qSGMFUboImMSZd4/f9zJv8ibJMC8xJQfO3HPPPef7zrvvvnvviIkpC9nsw0UttFunbUhpFzFtarSd6WJkStVMw5xyVqYTvkwfzuf/5FgtkVoB0729j1rjXwThS7Vio+Mo6DNnvLfahoZ+i/o32lULuJ3NNiz7q6+pyAUkJaFF6JwaM2lUJlV0MlnQn5aTRbEu0SEqHUa0A4AdiGuB1kFXRfVyg5d87+Dg4DL6m2TLAub60ilj7A1Ec4odSAc8X95sHh7+ZRPCFo6Fnp7HfU/fBng/hi10CjCnWnJjsxvDNxWw0NfV6Rv5GgP3I3jGWXumdTD/3cbEOP2ZbOZp69yniG3FQ9z1jD7bnBu9Fc2tKGC2q+uAJOQHBDRiZX1x36o7fWBs7J9ownbtO+n0/qWkvW7UPIfc37WgT6ZGR++EOJyeQDSb9UB+DZ1G6DdLDzyS+b/kBCYGsYgJbSQHuThGKRcw5xdeQf8YdNHsc6ePXrlSYMBuSIAFTGAtQo+VuALo4BX83N190NWZWbynBjhOHsmNfFWLeL6v+ynsA58zDvvAC8j5PkbOcXCMg2PZFk3q8MjI7WAG/Dp9AwP7jdGBOOQkAvlFUB+irtm16I1Zw9YBcpGTGXYmk3kQIC/Cds55l+iMI3jqhjAuaoe+am2Jw5GT3Nbz3CkE12NavmzN5+erJW7046n/CH1RO/RVa8lBLozXk9uqykkGAyRXLWlLv5jyp4RFsG5vGVzpDLnIjTWgnRy2Rr+tDKvRc7Y8AyZq10jj8DqXdnIRNtFZb+t/ZRtXcDiVnzpqx8mPcDWxgARUqx0W1QB9MeUZiNrV4qP+Ehc+BpNgATsTX8ozYKL2NtFYAHc84fG7ndxUPr+AR/iQSns7uSUufAymwDOb2+NjK27lEFocm/EE2WpyIy/Hi66MWuMKJn8RvxIcj87IM5Vh9663ziW36kR0HNenXuxmfaD8JC7tfKbrhFr7LiZCrMjrzTeGx+PmkosrkNzW94ObzwocJ7A1HokLolY+AvkTiD/q1H0cN48c5EL8Crkttsa/AXQVDmutfyku0E7jShx49XqV3MFK8IryDhYVbj7Sj2P2eBxwcXoe8T8idsKKPRcnZw1b+slFTubwUwhktrfnAt7J++jwQtLZcm3sr9LQrjRzz6cfMv9aLvgmnAGvpoaGLxM4mAEaLV7iAzQ3oU0IvD5x9ix3yF2RAAuYAOO2f7PEFWCXZ4C9Pb2UsgDeVnFSpbFK7/IWu7TPTvBqzbGdCHOJQSxiEjt6IyZmxQyEJHv6xyQsYk//moVFsN2zP6fRImjfq7/n/wFDguUQFNEwugAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-important.callout-style-default .callout-caption {
+    background-color: #f7dddc
+  }
+
+  div.callout-warning {
+    border-left-color: #f0ad4e !important;
+  }
+
+  div.callout-warning .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAETklEQVRYCeVWW2gcVRg+58yaTUnizqbipZeX4uWhBEniBaoUX1Ioze52t7sRq6APio9V9MEaoWlVsFasRq0gltaAPuxms8lu0gcviE/FFOstVbSIxgcv6SU7EZqmdc7v9+9mJtNks51NTUH84ed889/PP+cmxP+d5FIbMJmNbpREu4WUkiTtCicKny0l1pIKmBzovF2S+hIJHX8iEu3hZJ5lNZGqyRrGSIQpq15AzF28jgpeY6yk6GVdrfFqdrD6Iw+QlB8g0YS2g7dyQmXM/IDhBhT0UCiRf59lfqmmDvzRt6kByV/m4JjtzuaujMUM2c5Z2d6JdKrRb3K2q6mA+oYVz8JnDdKPmmNthzkAk/lN63sYPgevrguc72aZX/L9C6x09GYyxBgCX4NlvyGUHOKELlm5rXeR1kchuChJt4SSwyddZRXgvwMGvYo4QSlk3/zkHD8UHxwVJA6zjZZqP8v8kK8OWLnIZtLyCAJagYC4rTGW/9Pqj92N/c+LUaAj27movwbi19tk/whRCIE7Q9vyI6yvRpftAKVTdUjOW40X3h5OXsKCdmFcx0xlLJoSuQngnrJe7Kcjm4OMq9FlC7CMmScQANuNvjfP3PjGXDBaUQmbp296S5L4DrpbrHN1T87ZVEZVCzg1FF0Ft+dKrlLukI+/c9ENo+TvlTDbYFvuKPtQ9+l052rXrgKoWkDAFnvh0wTOmYn8R5f4k/jN/fZiCM1tQx9jQQ4ANhqG4hiL0qIFTGViG9DKB7GYzgubnpofgYRwO+DFjh0Zin2m4b/97EDkXkc+f6xYAPX0KK2I/7fUQuwzuwo/L3AkcjugPNixC8cHf0FyPjWlItmLxWw4Ou9YsQCr5fijMGoD/zpdRy95HRysyXA74MWOnscpO4j2y3HAVisw85hX5+AFBRSHt4ShfLFkIMXTqyKFc46xdzQM6XbAi702a7sy04J0+feReMFKp5q9esYLCqAZYw/k14E/xcLLsFElaornTuJB0svMuJINy8xkIYuL+xPAlWRceH6+HX7THJ0djLUom46zREu7tTkxwmf/FdOZ/sh6Q8qvEAiHpm4PJ4a/doJe0gH1t+aHRgCzOvBvJedEK5OFE5jpm4AGP2a8Dxe3gGJ/pAutug9Gp6he92CsSsWBaEcxGx0FHytmIpuqGkOpldqNYQK8cSoXvd+xLxXADw0kf6UkJNFtdo5MOgaLjiQOQHcn+A6h5NuL2s0qsC2LOM75PcF3yr5STuBSAcGG+meA14K/CI21HcS4LBT6tv0QAh8Dr5l93AhZzG5ZJ4VxAqdZUEl9z7WJ4aN+svMvwHHL21UKTd1mqvChH7/Za5xzXBBKrUcB0TQ+Ulgkfbi/H/YT5EptrGzsEK7tR1B7ln9BBwckYfMiuSqklSznIuoIIOM42MQO+QnduCoFCI0bpkzjCjddHPN/F+2Yu+sd9bKNpVwHhbS3LluK/0zgfwD0xYI5dXuzlQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-warning.callout-style-default .callout-caption {
+    background-color: #fcefdc
+  }
+
+  div.callout-tip {
+    border-left-color: #02b875 !important;
+  }
+
+  div.callout-tip .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAADr0lEQVRYCe1XTWgTQRj9ZjZV8a9SPIkKgj8I1bMHsUWrqYLVg4Ue6v9BwZOxSYsIerFao7UiUryIqJcqgtpimhbBXoSCVxUFe9CTiogUrUp2Pt+3aUI2u5vdNh4dmMzOzHvvezuz8xNFM0mjnbXaNu1MvFWRXkXEyE6aYOYJpdW4IXuA4r0fo8qqSMDBU0v1HJUgVieAXxzCsdE/YJTdFcVIZQNMyhruOMJKXYFoLfIfIvVIMWdsrd+Rpd86ZmyzzjJmLStqRn0v8lzkb4rVIXvnpScOJuAn2ACC65FkPzEdEy4TPWRLJ2h7z4cArXzzaOdKlbOvKKX25Wl00jSnrwVxAg3o4dRxhO13RBSdNvH0xSARv3adTXbBdTf64IWO2vH0LT+cv4GR1DJt+DUItaQogeBX/chhbTBxEiZ6gftlDNXTrvT7co4ub5A6gp9HIcHvzTa46OS5fBeP87Qm0fQkr4FsYgVQ7Qg+ZayaDg9jhg1GkWj8RG6lkeSacrrHgDaxdoBiZPg+NXV/KifMuB6//JmYH4CntVEHy/keA6x4h4CU5oFy8GzrBS18cLJMXcljAKB6INjWsRcuZBWVaS3GDrqB7rdapVIeA+isQ57Eev9eCqzqOa81CY05VLd6SamW2wA2H3SiTbnbSxmzfp7WtKZkqy4mdyAlGx7ennghYf8voqp9cLSgKdqNfa6RdRsAAkPwRuJZNbpByn+RrJi1RXTwdi8RQF6ymDwGMAtZ6TVE+4uoKh+MYkcLsT0Hk8eAienbiGdjJHZTpmNjlbFJNKDVAp2fJlYju6IreQxQ08UJDNYdoLSl6AadO+fFuCQqVMB1NJwPm69T04Wv5WhfcWyfXQB+wXRs1pt+nCknRa0LVzSA/2B+a9+zQJadb7IyyV24YAxKp2Jqs3emZTuNnKxsah+uabKbMk7CbTgJx/zIgQYErIeTKRQ9yD9wxVof5YolPHqaWo7TD6tJlh7jQnK5z2n3+fGdggIOx2kaa2YI9QWarc5Ce1ipNWMKeSG4DysFF52KBmTNMmn5HqCFkwy34rDg05gDwgH3bBi+sgFhN/e8QvRn8kbamCOhgrZ9GJhFDgfcMHzFb6BAtjKpFhzTjwv1KCVuxHvCbsSiEz4CANnj84cwHdFXAbAOJ4LTSAawGWFn5tDhLMYz6nWeU2wJfIhmIJBefcd/A5FWQWGgrWzyORZ3Q6HuV+Jf0Bj+BTX69fm1zWgK7By1YTXchFDORywnfQ7GpzOo6S+qECrsx2ifVQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-tip.callout-style-default .callout-caption {
+    background-color: #ccf1e3
+  }
+
+  div.callout-caution {
+    border-left-color: #fd7e14 !important;
+  }
+
+  div.callout-caution .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACV0lEQVRYCdVWzWoUQRCuqp2ICBLJXgITZL1EfQDBW/bkzUMUD7klD+ATSHBEfAIfQO+iXsWDxJsHL96EHAwhgzlkg8nBg25XWb0zIb0zs9muYYWkoKeru+vn664fBqElyZNuyh167NXJ8Ut8McjbmEraKHkd7uAnAFku+VWdb3reSmRV8PKSLfZ0Gjn3a6Xlcq9YGb6tADjn+lUfTXtVmaZ1KwBIvFI11rRXlWlatwIAAv2asaa9mlB9wwygiDX26qaw1yYPzFXg2N1GgG0FMF8Oj+VIx7E/03lHx8UhvYyNZLN7BwSPgekXXLribw7w5/c8EF+DBK5idvDVYtEEwMeYefjjLAdEyQ3M9nfOkgnPTEkYU+sxMq0BxNR6jExrAI31H1rzvLEfRIdgcv1XEdj6QTQAS2wtstEALLG1yEZ3QhH6oDX7ExBSFEkFINXH98NTrme5IOaaA7kIfiu2L8A3qhH9zRbukdCqdsA98TdElyeMe5BI8Rs2xHRIsoTSSVFfCFCWGPn9XHb4cdobRIWABNf0add9jakDjQJpJ1bTXOJXnnRXHRf+dNL1ZV1MBRCXhMbaHqGI1JkKIL7+i8uffuP6wVQAzO7+qVEbF6NbS0LJureYcWXUUhH66nLR5rYmva+2tjRFtojkM2aD76HEGAD3tPtKM309FJg5j/K682ywcWJ3PASCcycH/22u+Bh7Aa0ehM2Fu4z0SAE81HF9RkB21c5bEn4Dzw+/qNOyXr3DCTQDMBOdhi4nAgiFDGCinIa2owCEChUwD8qzd03PG+qdW/4fDzjUMcE1ZpIAAAAASUVORK5CYII=');
+  }
+
+  div.callout-caution.callout-style-default .callout-caption {
+    background-color: #ffe5d0
+  }
+
+  </style>
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  
+  <link href="L01 - R_files/libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+  <script src="L01 - R_files/libs/pagedtable-1.1/js/pagedtable.js"></script>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="center">
+  <h1 class="title">Review of R: Data Management, Summarization, and Visualization</h1>
+  <p class="subtitle">STA6257: Advanced Statistical Modeling</p>
+  <p class="author">Dr.&nbsp;Seals</p>
+</section>
+
+<section id="r-rstudio-and-quarto" class="slide level2">
+<h2>R, RStudio, and Quarto</h2>
+<ul>
+<li><p>This course will be using <a href="https://cran.r-project.org/">R</a> and <a href="https://www.rstudio.com/">RStudio</a> to create documents using <a href="https://quarto.org/">Quarto</a>.</p>
+<ul>
+<li><p>You will create .qmd files that will render into .html files (like this one!).</p></li>
+<li><p>If you have used <a href="https://rmarkdown.rstudio.com/">R Markdown</a> before, this will be a smooth transition for you.</p></li>
+</ul></li>
+<li><p>Your options for computing:</p>
+<ul>
+<li><p>Install R and RStudio on your personal computer (recommended).</p></li>
+<li><p>Use the <a href="https://rstudio.hmcse.uwf.edu">RStudio Server</a>, generously maintained by <a href="https://uwf.edu/hmcse/">UWF HMCSE</a>.</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="r-rstudio-and-quarto-1" class="slide level2">
+<h2>R, RStudio, and Quarto</h2>
+<center>
+<img src="/images/L01fig4.png" width="80%">
+</center>
+</section>
+<section id="r-rstudio-and-quarto-2" class="slide level2">
+<h2>R, RStudio, and Quarto</h2>
+<center>
+<img src="/images/L01fig5.png" width="80%">
+</center>
+</section>
+<section id="tidy-data" class="slide level2">
+<h2>Tidy Data</h2>
+<ul>
+<li>We will follow the philosophy of <a href="https://tidyr.tidyverse.org/articles/tidy-data.html">tidy data</a>, as defined by <a href="https://hadley.nz/">Hadley Wickham</a>.</li>
+</ul>
+<center>
+<a href="https://r4ds.had.co.nz/tidy-data.html#tidy-data-1"><img src="/images/L01fig1.png" width="75%"></a>
+</center>
+<div class="columns">
+<div class="column" style="width:60%;">
+<ul>
+<li><p>Briefly, there are <strong>three rules</strong> of tidy data<a href="https://r4ds.had.co.nz/tidy-data.html#tidy-data-1"><sup>1</sup></a>:</p>
+<ol type="1">
+<li><p>Each variable must have its own column.</p></li>
+<li><p>Each observation must have its own row.</p></li>
+<li><p>Each value must have its own cell.</p></li>
+</ol></li>
+</ul>
+</div><div class="column" style="width:40%;">
+<ul>
+<li><p>This simplifies to <strong>two rules</strong><a href="https://r4ds.had.co.nz/tidy-data.html#tidy-data-1"><sup>1</sup></a>:</p>
+<ol type="1">
+<li><p>Put each dataset in a tibble.</p></li>
+<li><p>Put each variable in a column.</p></li>
+</ol></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="tidy-data-1" class="slide level2">
+<h2>Tidy Data</h2>
+<ul>
+<li>Sometimes we need long data<a href="https://r4ds.had.co.nz/tidy-data.html#pivoting"><sup>2</sup></a>:</li>
+</ul>
+<center>
+<a href="https://r4ds.had.co.nz/tidy-data.html#pivoting"><img src="/images/L01fig2.png" width="45%"></a>
+</center>
+<ul>
+<li>Sometimes we need wide data<a href="https://r4ds.had.co.nz/tidy-data.html#pivoting"><sup>2</sup></a>:</li>
+</ul>
+<center>
+<a href="https://r4ds.had.co.nz/tidy-data.html#pivoting"><img src="/images/L01fig3.png" width="45%"></a>
+</center>
+</section>
+<section id="the-tidyverse" class="slide level2">
+<h2>The <a href="https://www.tidyverse.org"><code>tidyverse</code></a></h2>
+<ul>
+<li><p>We will use the <a href="https://www.tidyverse.org"><code>tidyverse</code></a> as much as possible.</p>
+<ul>
+<li><p>The <a href="https://www.tidyverse.org"><code>tidyverse</code></a> package is a <a href="https://www.tidyverse.org/packages/">collection of packages</a>.</p></li>
+<li><p>The <a href="https://www.tidyverse.org/blog/">tidyverse blog</a> regularly posts about new packages and functionality.</p></li>
+</ul></li>
+<li><p>There is an official <a href="https://style.tidyverse.org/index.html">tidyverse style guide</a>.</p>
+<ul>
+<li>This will teach you good coding practices.</li>
+</ul></li>
+<li><p>Do students have to use <a href="https://www.tidyverse.org"><code>tidyverse</code></a>?</p>
+<ul>
+<li>Yes, when requested for an assignment.</li>
+</ul></li>
+</ul>
+</section>
+<section id="installing-and-calling-packages" class="slide level2">
+<h2>Installing and Calling Packages</h2>
+<ul>
+<li>Before calling a package into R, we must first install it.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">install.packages</span>(<span class="st">"tidyverse"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li><p>Note that you only install a package <em>once</em> and then you remove the <code>install.packages()</code> call.</p></li>
+<li><p>Once a package is installed, we will call it in so that we can use the functions from that package.</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li><p>We will call all packages needed for a script or document at the <em>top</em> of the document.</p></li>
+<li><p>There is a point-and-click interface in RStudio for packages…</p></li>
+</ul>
+</section>
+<section id="importing-data" class="slide level2">
+<h2>Importing Data</h2>
+<ul>
+<li><p>Data is stored in a variety of file formats and can be imported into R.</p>
+<ul>
+<li>.csv <span class="math inline">\to</span> <a href="https://readr.tidyverse.org/reference/read_delim.html"><code>read_csv()</code></a></li>
+<li>.xlsx (Excel) <span class="math inline">\to</span> <a href="https://readxl.tidyverse.org/reference/read_excel.html"><code>read_excel()</code></a></li>
+<li>.sas7bdat (SAS) <span class="math inline">\to</span> <a href="https://haven.tidyverse.org/reference/read_sas.html"><code>read_sas()</code></a></li>
+<li>.sav (SPSS) <span class="math inline">\to</span> <a href="https://haven.tidyverse.org/reference/read_spss.html"><code>read_sav()</code></a></li>
+<li>.dta (Stata) <span class="math inline">\to</span> <a href="https://haven.tidyverse.org/reference/read_dta.html"><code>read_dta()</code></a></li>
+<li>Google Sheet <span class="math inline">\to</span> <a href="https://googlesheets4.tidyverse.org/articles/read-sheets.html"><code>read_sheet()</code></a></li>
+</ul></li>
+</ul>
+</section>
+<section id="importing-data-1" class="slide level2">
+<h2>Importing Data</h2>
+<center>
+<img src="/images/L01fig6.png" width="80%">
+</center>
+</section>
+<section id="importing-data-2" class="slide level2">
+<h2>Importing Data</h2>
+<center>
+<img src="/images/L01fig7.png" width="80%">
+</center>
+</section>
+<section id="warning" class="slide level2">
+<h2>Warning!</h2>
+<ul>
+<li><p>It is tempting to use point-and-click to do things.</p></li>
+<li><p>Remember that we want <em>reproducible</em> research and documents.</p></li>
+<li><p>While we may use the Import Data wizard to import our data, it is <em>imperative</em> that we copy the code into our R script (or Quarto document).</p>
+<ul>
+<li><p>It is unlikely that you will complete your work in one session. This makes it easier to “pick up” where you left off!</p></li>
+<li><p>In the future, you may have to tweak and rerun an analysis – it’s so much easier if you can just run the code to call in the data. :)</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="importing-data-3" class="slide level2">
+<h2>Importing Data</h2>
+<ul>
+<li><p>Let’s import data from the <a href="https://www.jacksonheartstudy.org/">Jackson Heart Study</a>, a <a href="https://www.nhlbi.nih.gov/science/jackson-heart-study-jhs">NIH-funded study</a>.</p>
+<ul>
+<li>The data has been given to us in a .sas7bdat file, so we will use the <a href="https://haven.tidyverse.org/reference/read_sas.html"><code>read_sas()</code></a> function.</li>
+</ul></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">library</span>(haven)</span>
+<span id="cb3-2"><a href="#cb3-2"></a>data <span class="ot">&lt;-</span> <span class="fu">read_sas</span>(<span class="st">"/Volumes/GoogleDrive/My Drive/STA6257/datasets/analysis1.sas7bdat"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="fu">head</span>(data, <span class="at">n=</span><span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["subjid"],"name":[1],"type":["chr"],"align":["left"]},{"label":["visit"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["VisitDate"],"name":[3],"type":["date"],"align":["right"]},{"label":["DaysFromV1"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["YearsFromV1"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["ARIC"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["recruit"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["ageIneligible"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["FastHours"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["age"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["brthyr"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["brthmo"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[13],"type":["chr"],"align":["left"]},{"label":["male"],"name":[14],"type":["dbl"],"align":["right"]},{"label":["menopause"],"name":[15],"type":["dbl"],"align":["right"]},{"label":["alc"],"name":[16],"type":["dbl"],"align":["right"]},{"label":["alcw"],"name":[17],"type":["dbl"],"align":["right"]},{"label":["currentSmoker"],"name":[18],"type":["dbl"],"align":["right"]},{"label":["everSmoker"],"name":[19],"type":["dbl"],"align":["right"]},{"label":["weight"],"name":[20],"type":["dbl"],"align":["right"]},{"label":["height"],"name":[21],"type":["dbl"],"align":["right"]},{"label":["waist"],"name":[22],"type":["dbl"],"align":["right"]},{"label":["neck"],"name":[23],"type":["dbl"],"align":["right"]},{"label":["BMI"],"name":[24],"type":["dbl"],"align":["right"]},{"label":["hip"],"name":[25],"type":["dbl"],"align":["right"]},{"label":["bsa"],"name":[26],"type":["dbl"],"align":["right"]},{"label":["BPmeds"],"name":[27],"type":["dbl"],"align":["right"]},{"label":["DMmedsOral"],"name":[28],"type":["dbl"],"align":["right"]},{"label":["DMmedsIns"],"name":[29],"type":["dbl"],"align":["right"]},{"label":["DMmeds"],"name":[30],"type":["dbl"],"align":["right"]},{"label":["statinMeds"],"name":[31],"type":["dbl"],"align":["right"]},{"label":["hrtMeds"],"name":[32],"type":["dbl"],"align":["right"]},{"label":["betaBlkMeds"],"name":[33],"type":["dbl"],"align":["right"]},{"label":["calBlkMeds"],"name":[34],"type":["dbl"],"align":["right"]},{"label":["diureticMeds"],"name":[35],"type":["dbl"],"align":["right"]},{"label":["antiArythMeds"],"name":[36],"type":["dbl"],"align":["right"]},{"label":["medAcct"],"name":[37],"type":["dbl"],"align":["right"]},{"label":["BPmedsSelf"],"name":[38],"type":["dbl"],"align":["right"]},{"label":["DMMedType"],"name":[39],"type":["dbl"],"align":["right"]},{"label":["dmMedsSelf"],"name":[40],"type":["dbl"],"align":["right"]},{"label":["statinMedsSelf"],"name":[41],"type":["dbl"],"align":["right"]},{"label":["hrtMedsSelfEver"],"name":[42],"type":["dbl"],"align":["right"]},{"label":["hrtMedsSelf"],"name":[43],"type":["dbl"],"align":["right"]},{"label":["antiArythMedsSelf"],"name":[44],"type":["dbl"],"align":["right"]},{"label":["sbp"],"name":[45],"type":["dbl"],"align":["right"]},{"label":["dbp"],"name":[46],"type":["dbl"],"align":["right"]},{"label":["BPjnc7"],"name":[47],"type":["dbl"],"align":["right"]},{"label":["HTN"],"name":[48],"type":["dbl"],"align":["right"]},{"label":["abi"],"name":[49],"type":["dbl"],"align":["right"]},{"label":["HbA1c"],"name":[50],"type":["dbl"],"align":["right"]},{"label":["FPG"],"name":[51],"type":["dbl"],"align":["right"]},{"label":["FPG3cat"],"name":[52],"type":["dbl"],"align":["right"]},{"label":["HbA1c3cat"],"name":[53],"type":["dbl"],"align":["right"]},{"label":["HbA1cIFCC"],"name":[54],"type":["dbl"],"align":["right"]},{"label":["HbA1cIFCC3cat"],"name":[55],"type":["dbl"],"align":["right"]},{"label":["fastingInsulin"],"name":[56],"type":["dbl"],"align":["right"]},{"label":["Diabetes"],"name":[57],"type":["dbl"],"align":["right"]},{"label":["diab3cat"],"name":[58],"type":["dbl"],"align":["right"]},{"label":["HOMA_B"],"name":[59],"type":["dbl"],"align":["right"]},{"label":["HOMA_IR"],"name":[60],"type":["dbl"],"align":["right"]},{"label":["ldl"],"name":[61],"type":["dbl"],"align":["right"]},{"label":["hdl"],"name":[62],"type":["dbl"],"align":["right"]},{"label":["trigs"],"name":[63],"type":["dbl"],"align":["right"]},{"label":["totchol"],"name":[64],"type":["dbl"],"align":["right"]},{"label":["ldl5cat"],"name":[65],"type":["dbl"],"align":["right"]},{"label":["hdl3cat"],"name":[66],"type":["dbl"],"align":["right"]},{"label":["trigs4cat"],"name":[67],"type":["dbl"],"align":["right"]},{"label":["LEPTIN"],"name":[68],"type":["dbl"],"align":["right"]},{"label":["HSCRP"],"name":[69],"type":["dbl"],"align":["right"]},{"label":["ENDOTHELIN"],"name":[70],"type":["dbl"],"align":["right"]},{"label":["ALDOSTERONE"],"name":[71],"type":["dbl"],"align":["right"]},{"label":["eSelectin"],"name":[72],"type":["dbl"],"align":["right"]},{"label":["pSelectin"],"name":[73],"type":["dbl"],"align":["right"]},{"label":["sCort"],"name":[74],"type":["dbl"],"align":["right"]},{"label":["reninRIA"],"name":[75],"type":["dbl"],"align":["right"]},{"label":["reninIRMA"],"name":[76],"type":["dbl"],"align":["right"]},{"label":["adiponectin"],"name":[77],"type":["dbl"],"align":["right"]},{"label":["CreatinineU24hr"],"name":[78],"type":["dbl"],"align":["right"]},{"label":["AlbuminU24hr"],"name":[79],"type":["dbl"],"align":["right"]},{"label":["CreatinineUSpot"],"name":[80],"type":["dbl"],"align":["right"]},{"label":["AlbuminUSpot"],"name":[81],"type":["dbl"],"align":["right"]},{"label":["SCrCC"],"name":[82],"type":["dbl"],"align":["right"]},{"label":["SCrIDMS"],"name":[83],"type":["dbl"],"align":["right"]},{"label":["eGFRmdrd"],"name":[84],"type":["dbl"],"align":["right"]},{"label":["eGFRckdepi"],"name":[85],"type":["dbl"],"align":["right"]},{"label":["DialysisEver"],"name":[86],"type":["dbl"],"align":["right"]},{"label":["DialysisDuration"],"name":[87],"type":["dbl"],"align":["right"]},{"label":["CKDHx"],"name":[88],"type":["dbl"],"align":["right"]},{"label":["maneuvers"],"name":[89],"type":["dbl"],"align":["right"]},{"label":["asthma"],"name":[90],"type":["dbl"],"align":["right"]},{"label":["FVC"],"name":[91],"type":["dbl"],"align":["right"]},{"label":["FEV1"],"name":[92],"type":["dbl"],"align":["right"]},{"label":["FEV6"],"name":[93],"type":["dbl"],"align":["right"]},{"label":["FEV1PP"],"name":[94],"type":["dbl"],"align":["right"]},{"label":["FVCPP"],"name":[95],"type":["dbl"],"align":["right"]},{"label":["EF"],"name":[96],"type":["dbl"],"align":["right"]},{"label":["DiastLVdia"],"name":[97],"type":["dbl"],"align":["right"]},{"label":["SystLVdia"],"name":[98],"type":["dbl"],"align":["right"]},{"label":["LVMecho"],"name":[99],"type":["dbl"],"align":["right"]},{"label":["LVMindex"],"name":[100],"type":["dbl"],"align":["right"]},{"label":["LVH"],"name":[101],"type":["dbl"],"align":["right"]},{"label":["EF3cat"],"name":[102],"type":["dbl"],"align":["right"]},{"label":["FS"],"name":[103],"type":["dbl"],"align":["right"]},{"label":["RWT"],"name":[104],"type":["dbl"],"align":["right"]},{"label":["ecgHR"],"name":[105],"type":["dbl"],"align":["right"]},{"label":["QRS"],"name":[106],"type":["dbl"],"align":["right"]},{"label":["QT"],"name":[107],"type":["dbl"],"align":["right"]},{"label":["ConductionDefect"],"name":[108],"type":["dbl"],"align":["right"]},{"label":["MajorScarAnt"],"name":[109],"type":["dbl"],"align":["right"]},{"label":["MinorScarAnt"],"name":[110],"type":["dbl"],"align":["right"]},{"label":["RepolarAnt"],"name":[111],"type":["dbl"],"align":["right"]},{"label":["MIant"],"name":[112],"type":["dbl"],"align":["right"]},{"label":["MajorScarPost"],"name":[113],"type":["dbl"],"align":["right"]},{"label":["MinorScarPost"],"name":[114],"type":["dbl"],"align":["right"]},{"label":["RepolarPost"],"name":[115],"type":["dbl"],"align":["right"]},{"label":["MIpost"],"name":[116],"type":["dbl"],"align":["right"]},{"label":["MajorScarAntLat"],"name":[117],"type":["dbl"],"align":["right"]},{"label":["MinorScarAntLat"],"name":[118],"type":["dbl"],"align":["right"]},{"label":["RepolarAntLat"],"name":[119],"type":["dbl"],"align":["right"]},{"label":["MIAntLat"],"name":[120],"type":["dbl"],"align":["right"]},{"label":["MIecg"],"name":[121],"type":["dbl"],"align":["right"]},{"label":["Afib"],"name":[122],"type":["dbl"],"align":["right"]},{"label":["Aflutter"],"name":[123],"type":["dbl"],"align":["right"]},{"label":["QTcFram"],"name":[124],"type":["dbl"],"align":["right"]},{"label":["QTcBaz"],"name":[125],"type":["dbl"],"align":["right"]},{"label":["QTcHod"],"name":[126],"type":["dbl"],"align":["right"]},{"label":["QTcFrid"],"name":[127],"type":["dbl"],"align":["right"]},{"label":["CV"],"name":[128],"type":["dbl"],"align":["right"]},{"label":["LVHcv"],"name":[129],"type":["dbl"],"align":["right"]},{"label":["speechLossEver"],"name":[130],"type":["dbl"],"align":["right"]},{"label":["visionLossEver"],"name":[131],"type":["dbl"],"align":["right"]},{"label":["doubleVisionEver"],"name":[132],"type":["dbl"],"align":["right"]},{"label":["numbnessEver"],"name":[133],"type":["dbl"],"align":["right"]},{"label":["paralysisEver"],"name":[134],"type":["dbl"],"align":["right"]},{"label":["dizzynessEver"],"name":[135],"type":["dbl"],"align":["right"]},{"label":["strokeHx"],"name":[136],"type":["dbl"],"align":["right"]},{"label":["MIHx"],"name":[137],"type":["dbl"],"align":["right"]},{"label":["CardiacProcHx"],"name":[138],"type":["dbl"],"align":["right"]},{"label":["CHDHx"],"name":[139],"type":["dbl"],"align":["right"]},{"label":["CarotidAngioHx"],"name":[140],"type":["dbl"],"align":["right"]},{"label":["CVDHx"],"name":[141],"type":["dbl"],"align":["right"]},{"label":["PrivateIns"],"name":[142],"type":["dbl"],"align":["right"]},{"label":["MedicaidIns"],"name":[143],"type":["dbl"],"align":["right"]},{"label":["MedicareIns"],"name":[144],"type":["dbl"],"align":["right"]},{"label":["VAIns"],"name":[145],"type":["dbl"],"align":["right"]},{"label":["InsuranceType"],"name":[146],"type":["dbl"],"align":["right"]},{"label":["Insured"],"name":[147],"type":["dbl"],"align":["right"]},{"label":["PublicIns"],"name":[148],"type":["dbl"],"align":["right"]},{"label":["PublicInsType"],"name":[149],"type":["dbl"],"align":["right"]},{"label":["PrivatePublicIns"],"name":[150],"type":["dbl"],"align":["right"]},{"label":["dailyDiscr"],"name":[151],"type":["dbl"],"align":["right"]},{"label":["lifetimeDiscrm"],"name":[152],"type":["dbl"],"align":["right"]},{"label":["discrmBurden"],"name":[153],"type":["dbl"],"align":["right"]},{"label":["depression"],"name":[154],"type":["dbl"],"align":["right"]},{"label":["perceivedStress"],"name":[155],"type":["dbl"],"align":["right"]},{"label":["weeklyStress"],"name":[156],"type":["dbl"],"align":["right"]},{"label":["fmlyinc"],"name":[157],"type":["chr"],"align":["left"]},{"label":["Income"],"name":[158],"type":["dbl"],"align":["right"]},{"label":["occupation"],"name":[159],"type":["dbl"],"align":["right"]},{"label":["edu3cat"],"name":[160],"type":["dbl"],"align":["right"]},{"label":["HSgrad"],"name":[161],"type":["dbl"],"align":["right"]},{"label":["PA3cat"],"name":[162],"type":["dbl"],"align":["right"]},{"label":["nutrition3cat"],"name":[163],"type":["dbl"],"align":["right"]},{"label":["SMK3cat"],"name":[164],"type":["dbl"],"align":["right"]},{"label":["idealHealthSMK"],"name":[165],"type":["dbl"],"align":["right"]},{"label":["BMI3cat"],"name":[166],"type":["dbl"],"align":["right"]},{"label":["idealHealthBMI"],"name":[167],"type":["dbl"],"align":["right"]},{"label":["idealHealthPA"],"name":[168],"type":["dbl"],"align":["right"]},{"label":["idealHealthNutrition"],"name":[169],"type":["dbl"],"align":["right"]},{"label":["totChol3cat"],"name":[170],"type":["dbl"],"align":["right"]},{"label":["idealHealthChol"],"name":[171],"type":["dbl"],"align":["right"]},{"label":["BP3cat"],"name":[172],"type":["dbl"],"align":["right"]},{"label":["idealHealthBP"],"name":[173],"type":["dbl"],"align":["right"]},{"label":["glucose3cat"],"name":[174],"type":["dbl"],"align":["right"]},{"label":["idealHealthDM"],"name":[175],"type":["dbl"],"align":["right"]},{"label":["vitaminD2"],"name":[176],"type":["dbl"],"align":["right"]},{"label":["vitaminD3"],"name":[177],"type":["dbl"],"align":["right"]},{"label":["vitaminD3epimer"],"name":[178],"type":["dbl"],"align":["right"]},{"label":["darkgrnVeg"],"name":[179],"type":["dbl"],"align":["right"]},{"label":["eggs"],"name":[180],"type":["dbl"],"align":["right"]},{"label":["fish"],"name":[181],"type":["dbl"],"align":["right"]},{"label":["FakeCensusTractID"],"name":[182],"type":["dbl"],"align":["right"]},{"label":["nbmedHHincome"],"name":[183],"type":["dbl"],"align":["right"]},{"label":["nbpctpoverty"],"name":[184],"type":["dbl"],"align":["right"]},{"label":["nbpctBlackNH"],"name":[185],"type":["dbl"],"align":["right"]},{"label":["nbpctWhiteNH"],"name":[186],"type":["dbl"],"align":["right"]},{"label":["nbSESpc2score"],"name":[187],"type":["dbl"],"align":["right"]},{"label":["nbSESanascore"],"name":[188],"type":["dbl"],"align":["right"]},{"label":["nbProblems"],"name":[189],"type":["dbl"],"align":["right"]},{"label":["nbCohesion"],"name":[190],"type":["dbl"],"align":["right"]},{"label":["nbViolence"],"name":[191],"type":["dbl"],"align":["right"]},{"label":["nbK3FavorFoodstore"],"name":[192],"type":["dbl"],"align":["right"]},{"label":["nbK3paFacilities"],"name":[193],"type":["dbl"],"align":["right"]},{"label":["nbpctResiden1mi"],"name":[194],"type":["dbl"],"align":["right"]},{"label":["nbPopDensity1mi"],"name":[195],"type":["dbl"],"align":["right"]},{"label":["sportIndex"],"name":[196],"type":["dbl"],"align":["right"]},{"label":["hyIndex"],"name":[197],"type":["dbl"],"align":["right"]},{"label":["activeIndex"],"name":[198],"type":["dbl"],"align":["right"]}],"data":[{"1":"2054","2":"1","3":"2003-06-30","4":"0","5":"0","6":"0","7":"3","8":"0","9":"16.46667","10":"63.44422","11":"1940","12":"1","13":"Male","14":"1","15":"NA","16":"1","17":"NA","18":"0","19":"1","20":"73.4","21":"168","22":"101","23":"38","24":"26.00624","25":"NA","26":"1.830781","27":"0","28":"0","29":"0","30":"0","31":"0","32":"0","33":"0","34":"0","35":"0","36":"0","37":"2","38":"0","39":"0","40":"0","41":"0","42":"NA","43":"NA","44":"0","45":"93.5722","46":"52.6350","47":"0","48":"0","49":"NA","50":"5.7","51":"94","52":"0","53":"1","54":"38.801","55":"1","56":"16","57":"0","58":"1","59":"188.9723","60":"3.693063","61":"131","62":"41","63":"94","64":"191","65":"2","66":"1","67":"0","68":"12.1","69":"0.168","70":"2.3","71":"3.1","72":"NA","73":"NA","74":"6.7","75":"NA","76":"4.9","77":"1623.407","78":"NA","79":"NA","80":"253","81":"3.51","82":"0.9440175","83":"0.8465237","84":"103.92090","85":"107.32083","86":"0","87":"NA","88":"0","89":"6","90":"1","91":"2.83","92":"2.11","93":"2.75","94":"81.15236","95":"83.47341","96":"55","97":"49.3","98":"32.4","99":"148.308","100":"36.54513","101":"0","102":"1","103":"0","104":"0.3549696","105":"62","106":"106","107":"402","108":"0","109":"0","110":"0","111":"0","112":"0","113":"0","114":"0","115":"0","116":"0","117":"0","118":"0","119":"0","120":"0","121":"0","122":"0","123":"0","124":"406.9677","125":"408.6451","126":"405.50","127":"406.4179","128":"1801","129":"0","130":"0","131":"0","132":"0","133":"0","134":"0","135":"0","136":"0","137":"1","138":"0","139":"1","140":"0","141":"1","142":"0","143":"0","144":"1","145":"0","146":"3","147":"1","148":"1","149":"2","150":"2","151":"5.333333","152":"4","153":"2.000000","154":"NA","155":"12","156":"NA","157":"B","158":"1","159":"6","160":"NA","161":"0","162":"0","163":"0","164":"2","165":"1","166":"1","167":"0","168":"0","169":"0","170":"2","171":"1","172":"2","173":"1","174":"1","175":"0","176":"NA","177":"19.7","178":"0.9","179":"0.1597321","180":"0.01889415","181":"0.25916203","182":"53","183":"17321","184":"0.3846154","185":"0.9752964","186":"0.007905138","187":"1.2337183","188":"-8.914322","189":"1.71555","190":"2.73244","191":"1.32070","192":"0.6007883","193":"1.4359424","194":"0.2676078","195":"3586.248","196":"1.0","197":"2.714286","198":"1.75"},{"1":"2013","2":"1","3":"2003-09-30","4":"0","5":"0","6":"0","7":"3","8":"0","9":"15.33333","10":"56.03012","11":"1947","12":"9","13":"Female","14":"0","15":"0","16":"0","17":"0.0","18":"0","19":"0","20":"115.1","21":"181","22":"108","23":"40","24":"35.13324","25":"NA","26":"2.339593","27":"1","28":"1","29":"0","30":"1","31":"0","32":"0","33":"0","34":"0","35":"1","36":"0","37":"2","38":"1","39":"1","40":"1","41":"0","42":"0","43":"NA","44":"0","45":"132.9989","46":"79.1982","47":"1","48":"1","49":"1.397059","50":"9.7","51":"173","52":"2","53":"2","54":"82.521","55":"2","56":"16","57":"1","58":"2","59":"NA","60":"NA","61":"155","62":"45","63":"78","64":"216","65":"2","66":"0","67":"0","68":"33.4","69":"0.020","70":"1.9","71":"6.3","72":"NA","73":"NA","74":"12.5","75":"NA","76":"21.0","77":"14917.680","78":"NA","79":"NA","80":"33","81":"0.33","82":"1.0374412","83":"0.9433350","84":"70.91987","85":"78.24719","86":"NA","87":"NA","88":"0","89":"3","90":"0","91":"3.51","92":"2.83","93":"3.40","94":"98.49740","95":"96.90915","96":"55","97":"NA","98":"NA","99":"NA","100":"NA","101":"NA","102":"1","103":"NA","104":"NA","105":"58","106":"102","107":"444","108":"0","109":"0","110":"0","111":"0","112":"0","113":"0","114":"0","115":"0","116":"0","117":"0","118":"0","119":"0","120":"0","121":"0","122":"0","123":"0","124":"438.6897","125":"436.5373","126":"440.50","127":"439.0108","128":"2262","129":"1","130":"0","131":"1","132":"0","133":"1","134":"1","135":"0","136":"0","137":"0","138":"NA","139":"0","140":"0","141":"0","142":"1","143":"0","144":"0","145":"0","146":"1","147":"1","148":"0","149":"NA","150":"1","151":"1.555556","152":"4","153":"1.000000","154":"10","155":"7","156":"29","157":"H","158":"3","159":"6","160":"1","161":"1","162":"1","163":"1","164":"2","165":"1","166":"0","167":"0","168":"0","169":"0","170":"1","171":"0","172":"1","173":"0","174":"0","175":"0","176":"NA","177":"21.6","178":"NA","179":"0.7458789","180":"0.55038936","181":"1.12303545","182":"135","183":"25480","184":"0.2678658","185":"0.9863979","186":"0.003643430","187":"0.7501572","188":"-4.312213","189":"1.56397","190":"3.12444","191":"1.27846","192":"0.5939836","193":"0.8064577","194":"0.3708478","195":"3390.927","196":"3.5","197":"1.857143","198":"2.00"},{"1":"455","2":"1","3":"2004-01-03","4":"0","5":"0","6":"0","7":"5","8":"0","9":"15.16667","10":"56.48734","11":"1947","12":"7","13":"Female","14":"0","15":"0","16":"1","17":"0.5","18":"0","19":"0","20":"84.0","21":"168","22":"96","23":"36","24":"29.76190","25":"NA","26":"1.938806","27":"1","28":"0","29":"0","30":"0","31":"0","32":"0","33":"0","34":"0","35":"1","36":"0","37":"2","38":"1","39":"0","40":"0","41":"0","42":"0","43":"NA","44":"0","45":"120.1623","46":"70.8972","47":"1","48":"1","49":"1.220339","50":"5.6","51":"86","52":"0","53":"0","54":"37.708","55":"0","56":"18","57":"0","58":"0","59":"287.6821","60":"3.801105","61":"110","62":"63","63":"80","64":"189","65":"1","66":"2","67":"0","68":"28.9","69":"0.074","70":"0.9","71":"4.3","72":"NA","73":"NA","74":"8.7","75":"NA","76":"5.8","77":"4710.017","78":"1.5","79":"13.1","80":"105","81":"1.52","82":"0.8505938","83":"0.7497124","84":"89.03768","85":"102.96683","86":"0","87":"NA","88":"0","89":"7","90":"0","91":"2.52","92":"2.16","93":"2.52","94":"91.13028","95":"84.18345","96":"65","97":"47.3","98":"28.3","99":"134.174","100":"33.06232","101":"0","102":"0","103":"0","104":"0.3615222","105":"71","106":"106","107":"426","108":"0","109":"0","110":"0","111":"0","112":"0","113":"0","114":"0","115":"0","116":"0","117":"0","118":"0","119":"0","120":"0","121":"0","122":"0","123":"0","124":"449.8592","125":"463.4076","126":"445.25","127":"450.5870","128":"978","129":"0","130":"0","131":"0","132":"0","133":"0","134":"0","135":"0","136":"0","137":"0","138":"0","139":"0","140":"0","141":"0","142":"1","143":"0","144":"0","145":"0","146":"1","147":"1","148":"0","149":"NA","150":"1","151":"1.333333","152":"4","153":"1.500000","154":"3","155":"0","156":"16","157":"I","158":"4","159":"1","160":"2","161":"1","162":"2","163":"0","164":"2","165":"1","166":"1","167":"0","168":"1","169":"0","170":"2","171":"1","172":"1","173":"0","174":"2","175":"1","176":"0.1","177":"22.7","178":"0.4","179":"0.3641381","180":"1.08799625","181":"0.08638734","182":"135","183":"25480","184":"0.2678658","185":"0.9863979","186":"0.003643430","187":"0.7501572","188":"-4.312213","189":"1.56397","190":"3.12444","191":"1.27846","192":"0.2355056","193":"0.2473995","194":"0.2243891","195":"2131.126","196":"4.5","197":"2.142857","198":"2.75"},{"1":"5","2":"1","3":"2003-10-27","4":"0","5":"0","6":"0","7":"3","8":"0","9":"12.15000","10":"39.97536","11":"1963","12":"11","13":"Female","14":"0","15":"1","16":"1","17":"0.5","18":"1","19":"1","20":"49.1","21":"157","22":"73","23":"32","24":"18.66201","25":"NA","26":"1.492839","27":"0","28":"0","29":"0","30":"0","31":"0","32":"1","33":"0","34":"0","35":"0","36":"0","37":"2","38":"0","39":"0","40":"0","41":"0","42":"1","43":"1","44":"0","45":"103.6581","46":"66.7467","47":"0","48":"0","49":"1.031250","50":"6.1","51":"89","52":"0","53":"1","54":"43.173","55":"1","56":"13","57":"0","58":"1","59":"183.4698","60":"2.841007","61":"147","62":"48","63":"68","64":"209","65":"2","66":"0","67":"0","68":"15.5","69":"0.095","70":"1.0","71":"5.3","72":"NA","73":"NA","74":"6.8","75":"NA","76":"15.9","77":"4543.994","78":"NA","79":"NA","80":"144","81":"0.68","82":"0.6637465","83":"0.5560898","84":"127.16423","85":"135.51270","86":"0","87":"NA","88":"0","89":"5","90":"0","91":"2.39","92":"2.10","93":"2.39","94":"89.40592","95":"84.13617","96":"50","97":"42.3","98":"26.5","99":"85.502","100":"25.29573","101":"0","102":"1","103":"0","104":"0.3309693","105":"79","106":"78","107":"384","108":"0","109":"0","110":"0","111":"0","112":"0","113":"0","114":"0","115":"0","116":"0","117":"0","118":"0","119":"0","120":"0","121":"0","122":"0","123":"0","124":"421.0380","125":"440.6250","126":"417.25","127":"420.8783","128":"927","129":"0","130":"0","131":"0","132":"0","133":"0","134":"0","135":"0","136":"0","137":"0","138":"0","139":"0","140":"0","141":"0","142":"0","143":"0","144":"0","145":"0","146":"0","147":"0","148":"0","149":"NA","150":"0","151":"2.333333","152":"2","153":"2.166667","154":"12","155":"9","156":"69","157":"F","158":"2","159":"1","160":"2","161":"1","162":"1","163":"1","164":"0","165":"0","166":"2","167":"1","168":"0","169":"0","170":"1","171":"0","172":"2","173":"1","174":"1","175":"0","176":"0.3","177":"26.4","178":"NA","179":"2.1356902","180":"0.63202486","181":"1.12303545","182":"190","183":"25229","184":"0.3765987","185":"0.9705426","186":"0.019121447","187":"0.2420909","188":"-2.819715","189":"1.71844","190":"2.92924","191":"1.31382","192":"0.5260298","193":"0.7687803","194":"0.4298446","195":"4336.947","196":"3.0","197":"2.285714","198":"2.75"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</section>
+<section id="importing-data-4" class="slide level2">
+<h2>Importing Data</h2>
+<center>
+<img src="/images/L01fig8.png" width="80%">
+</center>
+</section>
+<section id="importing-data-5" class="slide level2">
+<h2>Importing Data</h2>
+<center>
+<img src="/images/L01fig9.png" width="80%">
+</center>
+</section>
+<section id="importing-data-6" class="slide level2">
+<h2>Importing Data</h2>
+<center>
+<img src="/images/L01fig10.png" width="80%">
+</center>
+</section>
+<section id="importing-data-7" class="slide level2">
+<h2>Importing Data</h2>
+<ul>
+<li><p>Some things I’ve learned in my time as a <a href="https://www.amstat.org/">Card Carrying Statistician</a>:</p>
+<ul>
+<li><p>Data can be given to us in an awful format.</p></li>
+<li><p>Even if data is in a “nice” format (i.e., it looks “fine” when I open the .csv file), it may not import properly.</p></li>
+<li><p>It is <em>very important</em> to literally <em>look</em> at the dataset once we’ve imported it – we want to make sure it imported correctly.</p></li>
+<li><p>Sometimes I have to do some “preliminary cleaning” prior to importing… but I try to keep this at a minimum, for reproducibility purposes.</p></li>
+</ul></li>
+<li><p>We aren’t in Happy Textbook World anymore.</p></li>
+</ul>
+</section>
+<section id="pipe-operator" class="slide level2">
+<h2>Pipe Operator</h2>
+<ul>
+<li><p>A huge advantage of doing data management with <a href="https://www.tidyverse.org"><code>tidyverse</code></a> is the <a href="https://style.tidyverse.org/pipes.html">pipe operator</a>, <code>%&gt;%</code>.</p></li>
+<li><p>This “feeds” our dataset into the next function.</p></li>
+<li><p>For example,</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>data <span class="sc">%&gt;%</span> </span>
+<span id="cb4-2"><a href="#cb4-2"></a>  <span class="fu">count</span>(HTN)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["HTN"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"0","2":"1237"},{"1":"1","2":"1416"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</section>
+<section id="pipe-operator-1" class="slide level2">
+<h2>Pipe Operator</h2>
+<ul>
+<li><p>We can use the pipe more than once, depending on what needs to be done.</p></li>
+<li><p>For example,</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>data <span class="sc">%&gt;%</span> </span>
+<span id="cb5-2"><a href="#cb5-2"></a>  <span class="fu">group_by</span>(everSmoker) <span class="sc">%&gt;%</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a>  <span class="fu">count</span>(HTN)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["everSmoker"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["HTN"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["n"],"name":[3],"type":["int"],"align":["right"]}],"data":[{"1":"0","2":"0","3":"886"},{"1":"0","2":"1","3":"953"},{"1":"1","2":"0","3":"350"},{"1":"1","2":"1","3":"460"},{"1":"NA","2":"0","3":"1"},{"1":"NA","2":"1","3":"3"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</section>
+<section id="keeping-specific-columns" class="slide level2">
+<h2>Keeping Specific Columns</h2>
+<ul>
+<li><p>We can limit our dataset by specifying the columns we want to keep using <a href="https://dplyr.tidyverse.org/reference/select.html"><code>select()</code></a>.</p></li>
+<li><p>For example,</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>data2 <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>  <span class="fu">select</span>(subjid, HTN, everSmoker, diab3cat)</span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="fu">head</span>(data2, <span class="at">n=</span><span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["subjid"],"name":[1],"type":["chr"],"align":["left"]},{"label":["HTN"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["everSmoker"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["diab3cat"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2054","2":"0","3":"1","4":"1"},{"1":"2013","2":"1","3":"0","4":"2"},{"1":"455","2":"1","3":"0","4":"0"},{"1":"5","2":"0","3":"1","4":"1"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</section>
+<section id="removing-specific-columns" class="slide level2">
+<h2>Removing Specific Columns</h2>
+<ul>
+<li><p>We can also use <a href="https://dplyr.tidyverse.org/reference/select.html"><code>select()</code></a> to remove specific columns.</p></li>
+<li><p>For example,</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>data3 <span class="ot">&lt;-</span> data2 <span class="sc">%&gt;%</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>  <span class="fu">select</span>(<span class="sc">-</span>diab3cat)</span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="fu">head</span>(data3, <span class="at">n=</span><span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["subjid"],"name":[1],"type":["chr"],"align":["left"]},{"label":["HTN"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["everSmoker"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"2054","2":"0","3":"1"},{"1":"2013","2":"1","3":"0"},{"1":"455","2":"1","3":"0"},{"1":"5","2":"0","3":"1"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</section>
+<section id="filtering-the-data" class="slide level2">
+<h2>Filtering the Data</h2>
+<ul>
+<li><p>We can use <a href="https://dplyr.tidyverse.org/reference/filter.html"><code>filter()</code></a> to filter the dataset.</p></li>
+<li><p>For example,</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>data <span class="sc">%&gt;%</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a>  <span class="fu">filter</span>(HTN <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a>  <span class="fu">count</span>(diab3cat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["diab3cat"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"0","2":"479"},{"1":"1","2":"523"},{"1":"2","2":"402"},{"1":"NA","2":"12"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</section>
+<section id="filtering-the-data-1" class="slide level2">
+<h2>Filtering the Data</h2>
+<ul>
+<li><p>We can use multiple logical statements in <a href="https://dplyr.tidyverse.org/reference/filter.html"><code>filter()</code></a></p></li>
+<li><p>For example,</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>data <span class="sc">%&gt;%</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>  <span class="fu">filter</span>(HTN <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;</span> everSmoker <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a>  <span class="fu">count</span>(diab3cat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["diab3cat"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"0","2":"146"},{"1":"1","2":"181"},{"1":"2","2":"131"},{"1":"NA","2":"2"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</section>
+<section id="creating-new-variables" class="slide level2">
+<h2>Creating New Variables</h2>
+<ul>
+<li><p>We will use <a href="https://dplyr.tidyverse.org/reference/mutate.html"><code>mutate()</code></a> to create new variables.</p>
+<ul>
+<li>We can overwrite variables, but I <strong>strongly advise against this</strong>.</li>
+</ul></li>
+<li><p>For example,</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>data2 <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a>  <span class="fu">select</span>(subjid, brthyr) <span class="sc">%&gt;%</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a>  <span class="fu">mutate</span>(<span class="at">age_today =</span> <span class="dv">2022</span> <span class="sc">-</span> brthyr)</span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="fu">head</span>(data2, <span class="at">n=</span><span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["subjid"],"name":[1],"type":["chr"],"align":["left"]},{"label":["brthyr"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["age_today"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"2054","2":"1940","3":"82"},{"1":"2013","2":"1947","3":"75"},{"1":"455","2":"1947","3":"75"},{"1":"5","2":"1963","3":"59"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</section>
+<section id="merging-datasets" class="slide level2">
+<h2>Merging Datasets</h2>
+<ul>
+<li><p>Sometimes we need to merge datasets together.</p>
+<ul>
+<li>Data is often contained in different places.</li>
+</ul></li>
+<li><p>As an example, the JHS data was originally collected by individual form.</p>
+<ul>
+<li>The Coordinating Center Data Core created the analysis datasets after merging together the individual form datasets.</li>
+</ul></li>
+<li><p>To merge, we use one of the <a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">join functions</a>:</p>
+<ul>
+<li><p><code>left_join(A, B, by = "variable")</code></p></li>
+<li><p><code>right_join(A, B, by = "variable")</code></p></li>
+<li><p><code>inner_join(A, B, by = "variable")</code></p></li>
+<li><p><code>full_join(A, B, by = "variable")</code></p></li>
+</ul></li>
+</ul>
+</section>
+<section id="merging-datasets-1" class="slide level2">
+<h2>Merging Datasets</h2>
+<ul>
+<li>Suppose we want to merge the JHS data from visits 1 and 2.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>data_v1 <span class="ot">&lt;-</span> <span class="fu">read_sas</span>(<span class="st">"/Volumes/GoogleDrive/My Drive/STA6257/datasets/analysis1.sas7bdat"</span>) <span class="sc">%&gt;%</span> <span class="fu">select</span>(subjid, HTN)</span>
+<span id="cb11-2"><a href="#cb11-2"></a>data_v2 <span class="ot">&lt;-</span> <span class="fu">read_sas</span>(<span class="st">"/Volumes/GoogleDrive/My Drive/STA6257/datasets/analysis2.sas7bdat"</span>) <span class="sc">%&gt;%</span> <span class="fu">select</span>(subjid, HTN)</span>
+<span id="cb11-3"><a href="#cb11-3"></a>merged <span class="ot">&lt;-</span> <span class="fu">full_join</span>(data_v1, data_v2, <span class="at">by =</span> <span class="st">"subjid"</span>)</span>
+<span id="cb11-4"><a href="#cb11-4"></a><span class="fu">head</span>(merged, <span class="at">n=</span><span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["subjid"],"name":[1],"type":["chr"],"align":["left"]},{"label":["HTN.x"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["HTN.y"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"2054","2":"0","3":"1"},{"1":"2013","2":"1","3":"1"},{"1":"455","2":"1","3":"1"},{"1":"5","2":"0","3":"0"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<ul>
+<li><p>Oh no! Both datasets have the same variable names.</p>
+<ul>
+<li>R takes care of this for us with the .x and .y… but we are going to do things properly.</li>
+</ul></li>
+</ul>
+</section>
+<section id="merging-datasets-2" class="slide level2">
+<h2>Merging Datasets</h2>
+<ul>
+<li>Let’s use the <a href="https://dplyr.tidyverse.org/reference/rename.html"><code>rename()</code></a> function.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>data_v1 <span class="ot">&lt;-</span> data_v1 <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">HTN_v1 =</span> HTN)</span>
+<span id="cb12-2"><a href="#cb12-2"></a>data_v2 <span class="ot">&lt;-</span> data_v2 <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">HTN_v2 =</span> HTN)</span>
+<span id="cb12-3"><a href="#cb12-3"></a>merged <span class="ot">&lt;-</span> <span class="fu">full_join</span>(data_v1, data_v2, <span class="at">by =</span> <span class="st">"subjid"</span>)</span>
+<span id="cb12-4"><a href="#cb12-4"></a><span class="fu">head</span>(merged, <span class="at">n=</span><span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["subjid"],"name":[1],"type":["chr"],"align":["left"]},{"label":["HTN_v1"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["HTN_v2"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"2054","2":"0","3":"1"},{"1":"2013","2":"1","3":"1"},{"1":"455","2":"1","3":"1"},{"1":"5","2":"0","3":"0"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<ul>
+<li>Now our variables have meaningful names :)</li>
+</ul>
+</section>
+<section id="data-visualization" class="slide level2">
+<h2>Data Visualization</h2>
+<ul>
+<li><p><a href="https://ggplot2.tidyverse.org/"><code>ggplot2</code></a> is an incredibly powerful graphing package.</p>
+<ul>
+<li><p>Constructing graphs with <a href="https://ggplot2.tidyverse.org/"><code>ggplot2</code></a> is what got me hooked on R</p></li>
+<li><p>Every element of the graph is customizable.</p></li>
+</ul></li>
+<li><p>When constructing graphs, we should ask ourselves who the consumer is.</p>
+<ul>
+<li><p>If making a graph “for me” I do not worry too much about appearances.</p></li>
+<li><p>If making a graph for a collaborator, I create a “rough draft” for discussion purposes.</p></li>
+<li><p>If making a graph for a presentation or manuscript, I am <em>very</em> particular about its appearance.</p></li>
+</ul></li>
+<li><p>Graphs to be viewed in a professional setting should be clean and easy to interpret.</p></li>
+</ul>
+</section>
+<section id="data-visualization-1" class="slide level2">
+<h2>Data Visualization</h2>
+<ul>
+<li>Let’s create a histogram using <a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html"><code>geom_histogram()</code></a>,</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>data <span class="sc">%&gt;%</span> </span>
+<span id="cb13-2"><a href="#cb13-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> sbp)) <span class="sc">+</span></span>
+<span id="cb13-3"><a href="#cb13-3"></a>  <span class="fu">geom_histogram</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="data-visualization-2" class="slide level2">
+<h2>Data Visualization</h2>
+
+<img data-src="L01---R_files/figure-revealjs/unnamed-chunk-14-1.png" width="960" class="r-stretch"></section>
+<section id="data-visualization-3" class="slide level2">
+<h2>Data Visualization</h2>
+<ul>
+<li>Let’s customize our graph,</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>data <span class="sc">%&gt;%</span> </span>
+<span id="cb14-2"><a href="#cb14-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> sbp)) <span class="sc">+</span></span>
+<span id="cb14-3"><a href="#cb14-3"></a>  <span class="fu">geom_histogram</span>(<span class="at">fill=</span><span class="st">"#8DC8E8"</span>) <span class="sc">+</span> </span>
+<span id="cb14-4"><a href="#cb14-4"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Systolic Blood Pressure"</span>,</span>
+<span id="cb14-5"><a href="#cb14-5"></a>       <span class="at">y=</span><span class="st">"Count"</span>,</span>
+<span id="cb14-6"><a href="#cb14-6"></a>       <span class="at">title=</span><span class="st">"Systolic Blood Pressure"</span>,</span>
+<span id="cb14-7"><a href="#cb14-7"></a>       <span class="at">subtitle=</span><span class="st">"JHS Clinic Visit 1"</span>) <span class="sc">+</span></span>
+<span id="cb14-8"><a href="#cb14-8"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="data-visualization-4" class="slide level2">
+<h2>Data Visualization</h2>
+
+<img data-src="L01---R_files/figure-revealjs/unnamed-chunk-16-1.png" width="960" class="r-stretch"></section>
+<section id="data-visualization-5" class="slide level2">
+<h2>Data Visualization</h2>
+<ul>
+<li>All of the <code>geom_x()</code> are “layers” on the graph.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>data <span class="sc">%&gt;%</span> </span>
+<span id="cb15-2"><a href="#cb15-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> HbA1c, <span class="at">y =</span> sbp)) <span class="sc">+</span></span>
+<span id="cb15-3"><a href="#cb15-3"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span></span>
+<span id="cb15-4"><a href="#cb15-4"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb15-5"><a href="#cb15-5"></a>  <span class="fu">labs</span>(<span class="at">y=</span><span class="st">"Systolic Blood Pressure"</span>,</span>
+<span id="cb15-6"><a href="#cb15-6"></a>       <span class="at">x=</span><span class="st">"A1c"</span>) <span class="sc">+</span></span>
+<span id="cb15-7"><a href="#cb15-7"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>data <span class="sc">%&gt;%</span> </span>
+<span id="cb16-2"><a href="#cb16-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> HbA1c, <span class="at">y =</span> sbp)) <span class="sc">+</span></span>
+<span id="cb16-3"><a href="#cb16-3"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb16-4"><a href="#cb16-4"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span></span>
+<span id="cb16-5"><a href="#cb16-5"></a>  <span class="fu">labs</span>(<span class="at">y=</span><span class="st">"Systolic Blood Pressure"</span>,</span>
+<span id="cb16-6"><a href="#cb16-6"></a>       <span class="at">x=</span><span class="st">"A1c"</span>) <span class="sc">+</span></span>
+<span id="cb16-7"><a href="#cb16-7"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="data-visualization-6" class="slide level2">
+<h2>Data Visualization</h2>
+<ul>
+<li>All of the <code>geom_x()</code> are “layers” on the graph.</li>
+</ul>
+
+<img data-src="L01---R_files/figure-revealjs/unnamed-chunk-19-1.png" width="960" class="r-stretch"></section>
+<section id="data-visualization-7" class="slide level2">
+<h2>Data Visualization</h2>
+<ul>
+<li>All of the <code>geom_x()</code> are “layers” on the graph.</li>
+</ul>
+
+<img data-src="L01---R_files/figure-revealjs/unnamed-chunk-20-1.png" width="960" class="r-stretch"></section>
+<section id="reminders-disclaimers" class="slide level2">
+<h2>Reminders / Disclaimers</h2>
+<ul>
+<li><p>I am not an expert in R / programming in general!</p>
+<ul>
+<li><p>I have been using R as my primary analysis software since 2020 or so.</p></li>
+<li><p>I am a statistician first, programmer second.</p></li>
+</ul></li>
+<li><p>There may be better ways to code things – please let me know if you have more efficient code!</p>
+<ul>
+<li><p>The code I present to you is perhaps not the most elegant, but it works. :)</p></li>
+<li><p>We are all learning together – remember that your professors are lifelong learners.</p></li>
+</ul></li>
+<li><p>Do not be afraid to <a href="https://duckduckgo.com/">research a code solution</a> to your problem.</p>
+<ul>
+<li>I very often search for what I’m looking for and add “tidyverse” or “tidy data” to see if there’s a solution in the <code>tidyverse</code>.</li>
+</ul></li>
+</ul>
+</section>
+<section id="reminders-disclaimers-1" class="slide level2">
+<h2>Reminders / Disclaimers</h2>
+<ul>
+<li><p>It is impossible for me to teach you all programming that you will need over your career.</p></li>
+<li><p>Please become comfortable with <a href="https://duckduckgo.com/">researching a solution</a> to your problem.</p>
+<ul>
+<li><p>While I have a PhD, I do not know everything there is to know about either statistics or statistical programming.</p></li>
+<li><p>Despite having used SAS for a decade, I still had to research the procedure syntax when I was fresh out of graduate school.</p></li>
+<li><p>My training has prepared me to independently research a solution, sift through results to find reliable and appropriate solutions, and figure out how to apply the solution to the problem at hand.</p></li>
+</ul></li>
+<li><p>Be confident in your knowledge.</p></li>
+</ul>
+<div class="footer footer-default">
+<p><a href="https://samanthaseals.github.io/STA6257">STA6257 - Advanced Statistical Modeling</a></p>
+</div>
+</section>
+    </div>
+  </div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="L01 - R_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="L01 - R_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="L01 - R_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="L01 - R_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="L01 - R_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="L01 - R_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="L01 - R_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="L01 - R_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="L01 - R_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="L01 - R_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'smaller': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: false,
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1600,
+
+        height: 900,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        function fireSlideChanged(previousSlide, currentSlide) {
+
+          // dispatch for htmlwidgets
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for reveal
+        if (window.Reveal) {
+          window.Reveal.addEventListener("slidechanged", function(event) {
+            fireSlideChanged(event.previousSlide, event.currentSlide);
+          });
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+    window.document.addEventListener("DOMContentLoaded", function (event) {
+      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+      tabsets.forEach(function(tabset) {
+        const tabby = new Tabby('#' + tabset.id);
+      });
+      const clipboard = new window.ClipboardJS('.code-copy-button', {
+        target: function(trigger) {
+          return trigger.previousElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        // button target
+        const button = e.trigger;
+        // don't keep focus
+        button.blur();
+        // flash "checked"
+        button.classList.add('code-copy-button-checked');
+        var currentTitle = button.getAttribute("title");
+        button.setAttribute("title", "Copied!");
+        setTimeout(function() {
+          button.setAttribute("title", currentTitle);
+          button.classList.remove('code-copy-button-checked');
+        }, 1000);
+        // clear code selection
+        e.clearSelection();
+      });
+      function tippyHover(el, contentFn) {
+        const config = {
+          allowHTML: true,
+          content: contentFn,
+          maxWidth: 500,
+          delay: 100,
+          arrow: false,
+          appendTo: function(el) {
+              return el.closest('section.slide') || el.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'quarto-reveal',
+          placement: 'bottom-start'
+        };
+          config['offset'] = [0,0];
+          config['maxWidth'] = 700;
+        window.tippy(el, config); 
+      }
+      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+      for (var i=0; i<noterefs.length; i++) {
+        const ref = noterefs[i];
+        tippyHover(ref, function() {
+          let href = ref.getAttribute('href');
+          try { href = new URL(href).hash; } catch {}
+          const id = href.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          return note.innerHTML;
+        });
+      }
+      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+      for (var i=0; i<bibliorefs.length; i++) {
+        const ref = bibliorefs[i];
+        const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+        tippyHover(ref, function() {
+          var popup = window.document.createElement('div');
+          cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    });
+    </script>
+    
+
+</body></html>
