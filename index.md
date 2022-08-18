@@ -12,7 +12,7 @@ show_sidebar: false
 |:-:|:-:|:---:|--------------------|:--:|:-:|:-:
 | 1    | M    | 08/22 | Data management; summarizing data; data visualization | [html](https://samanthaseals.github.io/STA6257/slides/L01.html), [qmd](https://github.com/samanthaseals/STA6257/blob/main/slides/L01.qmd) | | |
 |      | W   | 08/24 | Practice (short meeting) | | [html](https://samanthaseals.github.io/STA6257/practice/P01.html), [qmd](https://github.com/samanthaseals/STA6257/blob/main/practice/P01.qmd) | 08/29 |
-| 2    | M   | 08/29 | Review of linear models | | | |
+| 2    | M   | 08/29 | Review of linear models | [html](https://samanthaseals.github.io/STA6257/slides/L02.html), [qmd](https://github.com/samanthaseals/STA6257/blob/main/slides/L02.qmd) | | |
 |      | W   | 08/31 | Practice (short meeting) | | | 09/05 |
 | 3    | M   | 09/05 | Labor Day - no class | | | |
 |      | W   | 09/07 | Generalized linear models; gamma regression; practice | | | 09/12 |
