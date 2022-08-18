@@ -32,13 +32,13 @@ format:
 ## R, RStudio, and Quarto
 
 <center>
-<img src="/images/L01fig4.png" width=80%>
+<img src="/images/L01fig04.png" width=80%>
 </center>
 
 ## R, RStudio, and Quarto
 
 <center>
-<img src="/images/L01fig5.png" width=80%>
+<img src="/images/L01fig05.png" width=80%>
 </center>
     
 ## Tidy Data
@@ -46,7 +46,7 @@ format:
 - We will follow the philosophy of [tidy data](https://tidyr.tidyverse.org/articles/tidy-data.html), as defined by [Hadley Wickham](https://hadley.nz/). 
 
 <center>
-[<img src="/images/L01fig1.png" width=75%>](https://r4ds.had.co.nz/tidy-data.html#tidy-data-1)
+[<img src="/images/L01fig01.png" width=75%>](https://r4ds.had.co.nz/tidy-data.html#tidy-data-1)
 </center>
 
 :::: {.columns}
@@ -75,13 +75,13 @@ format:
 - Sometimes we need long data[<sup>2</sup>](https://r4ds.had.co.nz/tidy-data.html#pivoting):
     
 <center>
-[<img src="/images/L01fig2.png" width="45%">](https://r4ds.had.co.nz/tidy-data.html#pivoting)
+[<img src="/images/L01fig02.png" width="45%">](https://r4ds.had.co.nz/tidy-data.html#pivoting)
 </center>
     
 - Sometimes we need wide data[<sup>2</sup>](https://r4ds.had.co.nz/tidy-data.html#pivoting):
     
 <center>
-[<img src="/images/L01fig3.png" width="45%">](https://r4ds.had.co.nz/tidy-data.html#pivoting)
+[<img src="/images/L01fig03.png" width="45%">](https://r4ds.had.co.nz/tidy-data.html#pivoting)
 </center>
 
 ## The [`tidyverse`](https://www.tidyverse.org)
@@ -134,13 +134,13 @@ library(tidyverse)
 ## Importing Data
 
 <center>
-<img src="/images/L01fig6.png" width=80%>
+<img src="/images/L01fig06.png" width=80%>
 </center>
 
 ## Importing Data
 
 <center>
-<img src="/images/L01fig7.png" width=80%>
+<img src="/images/L01fig07.png" width=80%>
 </center>
 
 ## Warning! 
@@ -170,13 +170,13 @@ head(data, n=4)
 ## Importing Data
 
 <center>
-<img src="/images/L01fig8.png" width=80%>
+<img src="/images/L01fig08.png" width=80%>
 </center>
 
 ## Importing Data
 
 <center>
-<img src="/images/L01fig9.png" width=80%>
+<img src="/images/L01fig09.png" width=80%>
 </center>
 
 ## Importing Data
@@ -477,10 +477,10 @@ data %>%
 
     - While I have a PhD, I do not know everything there is to know about either statistics or statistical programming.
     
-    - Despite having used SAS for a decade, I still had to research the procedure syntax when I was fresh out of graduate school.
+    - Despite having used SAS for a decade, I still had to research the procedure syntax when I was fresh out of graduate school. (**Do not be afraid to research!**)
     
-    - My training has prepared me to independently research a solution, sift through results to find reliable and appropriate solutions, and figure out how to apply the solution to the problem at hand.
+    - Our training has prepared us to independently research a solution, sift through results to find reliable and appropriate solutions, and figure out how to apply the solution to the problem at hand.
 
-- Be confident in your knowledge.
+- Be **confident** in your knowledge.
 
 
