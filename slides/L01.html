@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-<script src="L01 - R_files/libs/clipboard/clipboard.min.js"></script>
-<script src="L01 - R_files/libs/quarto-html/tabby.min.js"></script>
-<script src="L01 - R_files/libs/quarto-html/popper.min.js"></script>
-<script src="L01 - R_files/libs/quarto-html/tippy.umd.min.js"></script>
-<link href="L01 - R_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="L01 - R_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet">
-<link href="L01 - R_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-0.9.647">
+<script src="L01_files/libs/clipboard/clipboard.min.js"></script>
+<script src="L01_files/libs/quarto-html/tabby.min.js"></script>
+<script src="L01_files/libs/quarto-html/popper.min.js"></script>
+<script src="L01_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="L01_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="L01_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="L01_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.0.38">
 
   <meta name="author" content="Dr.&nbsp;Seals">
   <title>Review of R: Data Management, Summarization, and Visualization</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="L01 - R_files/libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="L01 - R_files/libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="L01_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="L01_files/libs/revealjs/dist/reveal.css">
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -88,7 +88,7 @@
     code span.vs { color: #abe338; } /* VerbatimString */
     code span.wa { color: #dcc6e0; } /* Warning */
   </style>
-  <link rel="stylesheet" href="L01 - R_files/libs/revealjs/dist/theme/quarto.css" id="theme">
+  <link rel="stylesheet" href="L01_files/libs/revealjs/dist/theme/quarto.css" id="theme">
   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
  var mathElements = document.getElementsByClassName("math");
@@ -105,12 +105,12 @@
 }}});
   </script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
-  <link href="L01 - R_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="L01 - R_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="L01 - R_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="L01 - R_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-  <link href="L01 - R_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
-  <link href="L01 - R_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link href="L01_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="L01_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="L01_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="L01_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="L01_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="L01_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
 
   .callout {
@@ -396,10 +396,10 @@
     }
   </style>
   
-  <link href="L01 - R_files/libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
-  <script src="L01 - R_files/libs/pagedtable-1.1/js/pagedtable.js"></script>
+  <link href="L01_files/libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+  <script src="L01_files/libs/pagedtable-1.1/js/pagedtable.js"></script>
 </head>
-<body>
+<body class="quarto-dark">
   <div class="reveal">
     <div class="slides">
 
@@ -427,13 +427,13 @@
 <section id="r-rstudio-and-quarto-1" class="slide level2">
 <h2>R, RStudio, and Quarto</h2>
 <center>
-<img src="/images/L01fig4.png" width="80%">
+<img src="/images/L01fig04.png" width="80%">
 </center>
 </section>
 <section id="r-rstudio-and-quarto-2" class="slide level2">
 <h2>R, RStudio, and Quarto</h2>
 <center>
-<img src="/images/L01fig5.png" width="80%">
+<img src="/images/L01fig05.png" width="80%">
 </center>
 </section>
 <section id="tidy-data" class="slide level2">
@@ -442,7 +442,7 @@
 <li>We will follow the philosophy of <a href="https://tidyr.tidyverse.org/articles/tidy-data.html">tidy data</a>, as defined by <a href="https://hadley.nz/">Hadley Wickham</a>.</li>
 </ul>
 <center>
-<a href="https://r4ds.had.co.nz/tidy-data.html#tidy-data-1"><img src="/images/L01fig1.png" width="75%"></a>
+<a href="https://r4ds.had.co.nz/tidy-data.html#tidy-data-1"><img src="/images/L01fig01.png" width="75%"></a>
 </center>
 <div class="columns">
 <div class="column" style="width:60%;">
@@ -471,13 +471,13 @@
 <li>Sometimes we need long data<a href="https://r4ds.had.co.nz/tidy-data.html#pivoting"><sup>2</sup></a>:</li>
 </ul>
 <center>
-<a href="https://r4ds.had.co.nz/tidy-data.html#pivoting"><img src="/images/L01fig2.png" width="45%"></a>
+<a href="https://r4ds.had.co.nz/tidy-data.html#pivoting"><img src="/images/L01fig02.png" width="45%"></a>
 </center>
 <ul>
 <li>Sometimes we need wide data<a href="https://r4ds.had.co.nz/tidy-data.html#pivoting"><sup>2</sup></a>:</li>
 </ul>
 <center>
-<a href="https://r4ds.had.co.nz/tidy-data.html#pivoting"><img src="/images/L01fig3.png" width="45%"></a>
+<a href="https://r4ds.had.co.nz/tidy-data.html#pivoting"><img src="/images/L01fig03.png" width="45%"></a>
 </center>
 </section>
 <section id="the-tidyverse" class="slide level2">
@@ -535,13 +535,13 @@
 <section id="importing-data-1" class="slide level2">
 <h2>Importing Data</h2>
 <center>
-<img src="/images/L01fig6.png" width="80%">
+<img src="/images/L01fig06.png" width="80%">
 </center>
 </section>
 <section id="importing-data-2" class="slide level2">
 <h2>Importing Data</h2>
 <center>
-<img src="/images/L01fig7.png" width="80%">
+<img src="/images/L01fig07.png" width="80%">
 </center>
 </section>
 <section id="warning" class="slide level2">
@@ -581,13 +581,13 @@
 <section id="importing-data-4" class="slide level2">
 <h2>Importing Data</h2>
 <center>
-<img src="/images/L01fig8.png" width="80%">
+<img src="/images/L01fig08.png" width="80%">
 </center>
 </section>
 <section id="importing-data-5" class="slide level2">
 <h2>Importing Data</h2>
 <center>
-<img src="/images/L01fig9.png" width="80%">
+<img src="/images/L01fig09.png" width="80%">
 </center>
 </section>
 <section id="importing-data-6" class="slide level2">
@@ -853,7 +853,7 @@
 <section id="data-visualization-2" class="slide level2">
 <h2>Data Visualization</h2>
 
-<img data-src="L01---R_files/figure-revealjs/unnamed-chunk-14-1.png" width="960" class="r-stretch"></section>
+<img data-src="L01_files/figure-revealjs/unnamed-chunk-14-1.png" width="960" class="r-stretch"></section>
 <section id="data-visualization-3" class="slide level2">
 <h2>Data Visualization</h2>
 <ul>
@@ -873,7 +873,7 @@
 <section id="data-visualization-4" class="slide level2">
 <h2>Data Visualization</h2>
 
-<img data-src="L01---R_files/figure-revealjs/unnamed-chunk-16-1.png" width="960" class="r-stretch"></section>
+<img data-src="L01_files/figure-revealjs/unnamed-chunk-16-1.png" width="960" class="r-stretch"></section>
 <section id="data-visualization-5" class="slide level2">
 <h2>Data Visualization</h2>
 <ul>
@@ -904,14 +904,14 @@
 <li>All of the <code>geom_x()</code> are “layers” on the graph.</li>
 </ul>
 
-<img data-src="L01---R_files/figure-revealjs/unnamed-chunk-19-1.png" width="960" class="r-stretch"></section>
+<img data-src="L01_files/figure-revealjs/unnamed-chunk-19-1.png" width="960" class="r-stretch"></section>
 <section id="data-visualization-7" class="slide level2">
 <h2>Data Visualization</h2>
 <ul>
 <li>All of the <code>geom_x()</code> are “layers” on the graph.</li>
 </ul>
 
-<img data-src="L01---R_files/figure-revealjs/unnamed-chunk-20-1.png" width="960" class="r-stretch"></section>
+<img data-src="L01_files/figure-revealjs/unnamed-chunk-20-1.png" width="960" class="r-stretch"></section>
 <section id="reminders-disclaimers" class="slide level2">
 <h2>Reminders / Disclaimers</h2>
 <ul>
@@ -938,10 +938,10 @@
 <li><p>Please become comfortable with <a href="https://duckduckgo.com/">researching a solution</a> to your problem.</p>
 <ul>
 <li><p>While I have a PhD, I do not know everything there is to know about either statistics or statistical programming.</p></li>
-<li><p>Despite having used SAS for a decade, I still had to research the procedure syntax when I was fresh out of graduate school.</p></li>
-<li><p>My training has prepared me to independently research a solution, sift through results to find reliable and appropriate solutions, and figure out how to apply the solution to the problem at hand.</p></li>
+<li><p>Despite having used SAS for a decade, I still had to research the procedure syntax when I was fresh out of graduate school. (<strong>Do not be afraid to research!</strong>)</p></li>
+<li><p>Our training has prepared us to independently research a solution, sift through results to find reliable and appropriate solutions, and figure out how to apply the solution to the problem at hand.</p></li>
 </ul></li>
-<li><p>Be confident in your knowledge.</p></li>
+<li><p>Be <strong>confident</strong> in your knowledge.</p></li>
 </ul>
 <div class="footer footer-default">
 <p><a href="https://samanthaseals.github.io/STA6257">STA6257 - Advanced Statistical Modeling</a></p>
@@ -951,19 +951,19 @@
   </div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="L01 - R_files/libs/revealjs/dist/reveal.js"></script>
+  <script src="L01_files/libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="L01 - R_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="L01 - R_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="L01 - R_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="L01 - R_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="L01 - R_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
-  <script src="L01 - R_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="L01_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="L01_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="L01_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="L01_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="L01_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="L01_files/libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="L01 - R_files/libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="L01 - R_files/libs/revealjs/plugin/search/search.js"></script>
-  <script src="L01 - R_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="L01_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="L01_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="L01_files/libs/revealjs/plugin/zoom/zoom.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
@@ -1185,6 +1185,24 @@
 
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
+      const toggleBodyColorMode = (bsSheetEl) => {
+        const mode = bsSheetEl.getAttribute("data-mode");
+        const bodyEl = window.document.querySelector("body");
+        if (mode === "dark") {
+          bodyEl.classList.add("quarto-dark");
+          bodyEl.classList.remove("quarto-light");
+        } else {
+          bodyEl.classList.add("quarto-light");
+          bodyEl.classList.remove("quarto-dark");
+        }
+      }
+      const toggleBodyColorPrimary = () => {
+        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+        if (bsSheetEl) {
+          toggleBodyColorMode(bsSheetEl);
+        }
+      }
+      toggleBodyColorPrimary();  
       const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
       tabsets.forEach(function(tabset) {
         const tabby = new Tabby('#' + tabset.id);
