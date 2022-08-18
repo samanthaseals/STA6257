@@ -1,0 +1,675 @@
+---
+title: "Review of General Linear Models"
+subtitle: "STA6257: Advanced Statistical Modeling"
+author: "Dr. Seals"
+format: 
+  revealjs:
+    theme: dark2
+    self-contained: false
+    slide-number: false
+    footer: "[STA6257 - Advanced Statistical Modeling](https://samanthaseals.github.io/STA6257)"
+    width: 1600
+    height: 900
+    chalkboard: true
+    df-print: paged
+    html-math-method: katex
+---
+
+## Introduction
+
+- Recall the general linear model,
+$$ y = \beta_0 + \beta_1 x_1 + ... + \beta_k x_k $$
+
+- This is a multiple regression model because it has multiple predictors ($x_i$).
+
+    - A special case is simple linear regression, when there is a single predictor.
+
+- $\beta_0$ is the $y$-intercept, or the average outcome ($y$) when all $x_i = 0$.
+
+- $\beta_i$ is the slope for predictor $i$ and describes the relationship between the predictor and the outcome, after adjusting (or accounting) for the other predictors in the model.
+
+## Data from the Jackson Heart Study
+
+- Recall the data from the [Jackson Heart Study](https://www.jacksonheartstudy.org/). Let us consider the baseline visit (V1). 
+
+```{r, echo = TRUE}
+library(tidyverse)
+library(haven)
+data <- read_sas("/Volumes/GoogleDrive/My Drive/STA6257/datasets/analysis1.sas7bdat")
+head(data, n=4)
+```
+  
+## Constructing the Model in R
+
+- We will use the `lm()` function to construct the linear model,
+
+```{r, eval = FALSE, echo = TRUE}
+m <- lm([outcome] ~ [pred1] + [pred2] + [pred3] + ..., 
+        data = [dataset])
+```
+
+- Then we run the model results through the `summary()` function to obtain information about the model,
+
+```{r, eval = FALSE, echo = TRUE}
+summary(m)
+```
+
+## Constructing the Model in R
+
+- Let's model total cholesterol (mg/dL) as a function of hemoglobin A1c (HbA1c, mmol/mol), age, and systolic blood pressure (sbp).
+
+```{r, echo = TRUE}
+m1 <- lm(totchol ~ HbA1c + sbp + age,
+         data = data)
+summary(m1)
+```
+
+- This gives the model
+$$ \hat{\text{tot. chol.}} = 150.90 + 1.27 \text{ HbA1c} + 0.16 \text{ sbp} + 0.38 \text{ age}$$
+
+## Interpretation of Slope
+
+- We want to put the slope into perspective for whoever we are collaborating with.
+
+- Basic interpretation: for every 1 [units of $x_i$] increase in [$x_i$], [$y$] [increases or decreases] by $\left[ \left| \hat{\beta}_i \right| \right]$ [units of $y$].
+
+    - We say that $y$ is decreasing if $\hat{\beta}_0 < 0$ and $y$ is increasing if $\hat{\beta}_0 > 0$.
+
+- We can also scale our interpretations. e.g.,
+
+    - For every 7 [units of $x_i$] increase in [$x_i$], [$y$] [increases or decreases] by $\left[ 7 \times \left| \hat{\beta}_i \right| \right]$ [units of $y$].
+
+## Interpretation of Slope
+
+- Let's interpret the JHS total cholesterol model.
+
+```{r, echo = TRUE}
+coefficients(m1)
+```
+
+- For a 1 mmol/mol increase in hemoglobin A1c, we expect total cholesterol to increase by 1.27 mg/dL.
+
+- For a 1 mmHg increase in systolic blood pressure, we expect total cholesterol to increase by 0.16 mg/dL.
+
+    - For a 10 mmHg increase in systolic blood pressure, we expect total cholesterol to increase by 1.6 mg/dL.
+
+- For a 1 year increase in age, we expect total cholesterol to increase by 0.38 mg/dL.
+
+- Note that all of these interpretations are for the *adjusted* slopes -- we have controlled for the variability due to the other predictors in the model.
+
+## Interpretation of Intercept
+
+- The intercept is the average of the outcome when all predictors in the model are equal to 0. 
+
+- In our example,
+
+```{r, echo = TRUE}
+coefficients(m1)
+```
+
+- The average total cholesterol for a JHS participant with HbA1c = 0, SBP = 0, and age = 0 is 150.90 mg/dL.
+
+- Is this reasonable?
+
+## Confidence Intervals for $\beta_i$
+
+- Recall confidence intervals -- they allow us to determine how ``good'' our estimation is.
+
+- In general CIs will take the form
+<center> point estimate $\pm$ margin of error </center>
+
+- The margin of error is a critical value (e.g., $t_{1-\alpha/2}$) multiplied by the standard error of the point estimate.
+
+    - Recall that the standard error accounts for the sample size.
+
+- In R, we will run the model results through the `confint()` function. 
+
+```{r, eval = FALSE, echo = TRUE}
+confint(m)
+```
+
+## Confidence Intervals for $\beta_i$
+
+- In our example, 
+
+```{r}
+confint(m1)
+```
+- We have the following CIs:
+  
+    - 95\% CI for $\beta_{\text{HbA1c}}$ is (-0.23, 2.78)
+    - 95\% CI for $\beta_{\text{SBP}}$ is (0.06, 0.26)
+    - 95\% CI for $\beta_{\text{age}}$ is (0.24, 0.52)
+
+## Confidence Intervals for $\beta_i$
+
+- We can change the confidence level by specifying the `level`.
+
+```{r, echo = TRUE}
+confint(m1, level=0.99)
+```
+
+<br>
+
+```{r, echo = TRUE}
+confint(m1, level=0.8914)
+```
+
+## Significant Regression Line -- Definition
+
+**Hypotheses**
+
+- $H_0: \ \beta_1 = ... = \beta_k = 0$ 
+- $H_1:$ at least one $\beta_i \ne 0$ 
+
+**Test Statistic and *p*-Value**
+
+- $F_0$ and $p$ from `summary()`
+
+**Rejection Region**
+
+- Reject $H_0$ if $p < \alpha$
+
+## Significant Regression Line -- Example
+
+- Let's determine if the model for total cholesterol is significant.
+
+```{r, echo = TRUE}
+summary(m1)
+```
+
+## Significant Regression Line -- Example
+
+**Hypotheses**
+
+- $H_0: \ \beta_{\text{HbA1c}} = \beta_{\text{SBP}} = \beta_{\text{age}} = 0$ 
+- $H_1:$ at least one $\beta_i \ne 0$ 
+
+**Test Statistic and *p*-Value**
+
+- $F_0 = 21.73$, $p<0.001$
+
+**Rejection Region**
+
+- Reject $H_0$ if $p < 0.05$
+
+**Conclusion and Interpretation**
+
+- Reject $H_0$. There is sufficient evidence to suggest that at least one slope is non-zero.
+
+## Significant Predictors of $y$ -- Definition
+
+**Hypotheses**
+
+- $H_0: \ \beta_i  = 0$ 
+- $H_1: \ \beta_i \ne 0$ 
+
+**Test Statistic and *p*-Value**
+
+- $t_0$ and $p$ from `summary()`
+
+**Rejection Region**
+
+- Reject $H_0$ if $p < \alpha$
+
+## Significant Predictors of $y$ -- Example
+
+- Let's now determine which, if any, are significant predictors of total cholesterol.
+
+```{r}
+summary(m1)
+```
+
+## Significant Predictors of $y$ -- Example
+
+**Hypotheses**
+
+- $H_0: \ \beta_{\text{HbA1c}}  = 0$ 
+- $H_1: \ \beta_{\text{HbA1c}} \ne 0$ 
+
+**Test Statistic and *p*-Value**
+
+- $t_0=1.656$, $p=0.098$
+
+**Rejection Region**
+
+- Reject $H_0$ if $p < 0.05$
+
+**Conclusion and Interpretation**
+
+- Fail to reject $H_0$. There is not sufficient evidence to suggest that HbA1c is a significant predictor of total cholesterol.
+
+## Significant Predictors of $y$ -- Example
+
+**Hypotheses**
+
+- $H_0: \ \beta_{\text{SBP}}  = 0$ 
+- $H_1: \ \beta_{\text{SBP}} \ne 0$ 
+
+**Test Statistic and *p*-Value**
+
+- $t_0=3.025$, $p=0.003$
+
+**Rejection Region**
+
+- Reject $H_0$ if $p < 0.05$
+
+**Conclusion and Interpretation**
+
+- Reject $H_0$. There is sufficient evidence to suggest that systolic blood pressure is a significant predictor of total cholesterol.
+
+## Significant Predictors of $y$ -- Example
+
+**Hypotheses**
+
+- $H_0: \ \beta_{\text{age}}  = 0$ 
+- $H_1: \ \beta_{\text{age}} \ne 0$ 
+
+**Test Statistic and *p*-Value**
+
+- $t_0=5.388$, $p<0.001$
+
+**Rejection Region**
+
+- Reject $H_0$ if $p < 0.05$
+
+**Conclusion and Interpretation**
+
+- Reject $H_0$. There is sufficient evidence to suggest that age is a significant predictor of total cholesterol.
+
+## Categorical Predictors -- Introduction
+
+- Let us discuss including categorical, or qualitative, predictors.
+
+- This means that we will include predictors that categorize the observations.
+
+    - We can assign numbers to the categories, however, the numbers are nominal.
+
+- If a categorical predictor has *c* categories, we will include *c*-1 predictors (dummy variables) in the model. 
+
+    - Consider undergraduate classification (freshman, sophomore, junior, or senior) would have three variables in the model. We could define
+    
+        - *x*<sub>F</sub>=1 if freshman, 0 otherwise
+        - *x*<sub>So</sub>=1 if sophomore, 0 otherwise
+        - *x*<sub>J</sub>=1 if junior, 0 otherwise
+        - *x*<sub>Se</sub>=1 if senior, 0 otherwise
+
+## Categorical Predictors -- Creation
+
+- We can use the [`fastDummies` package](https://www.rdocumentation.org/packages/fastDummies/versions/1.6.3) to quickly create dummy variables for us.
+
+- Let's consider the income variable (1=poor, 2=lower-middle, 3=upper-middle, 4=affluent),
+```{r, echo = TRUE}
+data %>% count(Income)
+```
+
+## Categorical Predictors -- Creation
+
+- Let's now create dummy variables for income level. 
+```{r, echo = TRUE}
+library(fastDummies)
+data <- dummy_cols(data, select_columns = "Income")
+head(data %>% select(Income, Income_1, Income_2, Income_3, Income_4, Income_NA))
+```
+
+## Categorical Predictors -- Intrpretations
+
+- Again, we represent a categorical variable with *c* classes with *c*-1 dummy variables in the model. 
+
+- The last (*c*<sup>th</sup>) dummy variable not included is called the reference group. 
+
+- How do we choose a reference group?
+    - It depends on the story being told / what is of interest.
+    - It does not affect the usefulness of the model, only the interpretations.
+    
+- The $\hat{\beta}_i$ value is the average difference between group *i* and the reference group.
+
+    - For example, if we were modeling cumulative GPA as a function of undergraduate classification and selected freshmen to be the reference group, then $\hat{\beta}_{\text{J}}$ would be the average difference in cumulative GPA between juniors and freshmen.
+    
+        - If $\hat{\beta}_{\text{J}}>0$, juniors have higher GPAs than freshmen.
+        - If $\hat{\beta}_{\text{J}}<0$, juniors have lower GPAs than freshmen.
+
+## Categorical Predictors -- Interpretations
+
+- Let's consider the JHS data again and now include income as a predictor. 
+
+    - There are 4 categories; let's select "poor" (Income=1) to be the reference.
+        
+    - This means we will include Income_2, Income_3, and Income_4 in our model.
+    
+```{r, echo = TRUE}
+m2 <- lm(totchol ~ HbA1c + sbp + age + Income_2 + Income_3 + Income_4,
+         data = data)
+summary(m2)
+```
+
+## Categorical Predictors -- Interpretations
+
+- Let's interpret the coefficients for Income.
+
+```{r, echo = TRUE}
+coefficients(m2)
+```
+
+- As compared to those classified as "poor," those classified as "lower-middle" have an increased total cholesterol by 5.32 mg/dL.
+
+- As compared to those classified as "poor," those classified as "upper-middle" have an increased total cholesterol by 3.48 mg/dL.
+
+- As compared to those classified as "poor," those classified as "affluent" have an increased total cholesterol by 4.77 mg/dL.
+
+## Categorical Predictors -- Significance
+
+- Recall that we can test the significance of a predictor using the *t* test that is output by the `summary()` function.
+
+- Before we can talk about the individual *t* tests for categorical predictors, we must remember the "global" test for significance.
+
+- We will use ANOVA to determine if there is overall significance of the categorical predictor and after, use the *t* test as a posthoc test.
+
+    - i.e., ANOVA: $\beta_{c_1} = \beta_{c_2} = ... = 0$ and $t$-test: $\beta_{c_i} = \mu_{c_i} - \mu_{c_{\text{ref}}} = 0$.
+    
+## Categorical Predictors -- Global Test
+
+**Hypotheses**
+
+- $H_0: \ \beta_{\text{c}_1} = ... = \beta_{\text{c}_{\text{c}-1}} = 0$ 
+- $H_1:$ at least one $\beta_i \ne 0$ 
+
+**Test Statistic and *p*-Value**
+
+- $F_0$ and $p$ from `anova()`
+
+**Rejection Region**
+
+- Reject $H_0$ if $p < \alpha$
+
+## Categorical Predictors -- Global Test
+
+- To perform the global test for significance, we will construct two models:
+
+    - Full: model including the categorical predictor
+    - Reduced: model without the categorical predictor
+
+- In the JHS model,
+```{r}
+data <- data %>%
+  select(subjid, totchol, HbA1c, sbp, age, Income, Income_1, Income_2, Income_3, Income_4) %>%
+  na.omit()
+```
+```{r, echo = TRUE}
+full <- lm(totchol ~ HbA1c + sbp + age + Income_2 + Income_3 + Income_4, data = data)
+reduced <- lm(totchol ~ HbA1c + sbp + age, data = data)
+```
+
+- Then, we use the `anova()` function to compare the two models.
+```{r, echo = TRUE}
+anova(reduced, full)
+```
+
+## Categorical Predictors -- Global Test
+
+**Hypotheses**
+
+- $H_0: \ \beta_{\text{lower-middle}} = \beta_{\text{upper-middle}} = \beta_{\text{affluent}} = 0$ 
+- $H_1: \ $ at least one $\beta_i \ne 0$ 
+
+**Test Statistic and *p*-Value**
+
+- $F_0=1.10$, $p=0.346$
+
+**Rejection Region**
+
+- Reject $H_0$ if $p < 0.05$
+
+**Conclusion and Interpretation**
+
+- Fail to reject $H_0$. There is not sufficient evidence that income is a predictor of total cholesterol.
+
+## Categorical Predictors -- Pairwise Test
+
+**Hypotheses**
+
+- $H_0: \ \beta_{\text{c}_i} = 0$ or $\mu_{\text{c}_i} = \mu_{\text{ref}}$ 
+- $H_1: \ \beta_{\text{c}_i} \ne 0$ or $\mu_{\text{c}_i} \ne \mu_{\text{ref}}$ 
+
+**Test Statistic and *p*-Value**
+
+- $t_0$ and $p$ from `summary()`
+
+**Rejection Region**
+
+- Reject $H_0$ if $p < \alpha$
+
+## Categorical Predictors -- Pairwise Test
+
+**Hypotheses**
+
+- $H_0: \ \beta_{\text{lower-middle}} = 0$ or $\mu_{\text{lower-middle}} = \mu_{\text{poor}}$ 
+- $H_1: \ \beta_{\text{lower-middle}} \ne 0$ or $\mu_{\text{lower-middle}} \ne \mu_{\text{poor}}$ 
+
+**Test Statistic and *p*-Value**
+
+- $t_0=1.67$, $p=0.095$
+
+**Rejection Region**
+
+- Reject $H_0$ if $p < 0.05$
+
+**Conclusion and Interpretation**
+
+- Fail to reject $H_0$. There is not sufficient evidence to suggest that the total cholesterol is different between those classified as poor and those classified as lower-middle. 
+
+## Categorical Predictors -- Pairwise Test
+
+**Hypotheses**
+
+- $H_0: \ \beta_{\text{upper-middle}} = 0$ or $\mu_{\text{upper-middle}} = \mu_{\text{poor}}$ 
+- $H_1: \ \beta_{\text{upper-middle}} \ne 0$ or $\mu_{\text{upper-middle}} \ne \mu_{\text{poor}}$ 
+
+**Test Statistic and *p*-Value**
+
+- $t_0=1.17$, $p=0.244$
+
+**Rejection Region**
+
+- Reject $H_0$ if $p < 0.05$
+
+**Conclusion and Interpretation**
+
+- Fail to reject $H_0$. There is not sufficient evidence to suggest that the total cholesterol is different between those classified as poor and those classified as upper-middle. 
+
+## Categorical Predictors -- Pairwise Test
+
+**Hypotheses**
+
+- $H_0: \ \beta_{\text{affluent}} = 0$ or $\mu_{\text{affluent}} = \mu_{\text{poor}}$ 
+- $H_1: \ \beta_{\text{affluent}} \ne 0$ or $\mu_{\text{affluent}} \ne \mu_{\text{poor}}$ 
+
+**Test Statistic and *p*-Value**
+
+- $t_0=1.63$, $p=0.104$
+
+**Rejection Region**
+
+- Reject $H_0$ if $p < 0.05$
+
+**Conclusion and Interpretation**
+
+- Fail to reject $H_0$. There is not sufficient evidence to suggest that the total cholesterol is different between those classified as poor and those classified as affluent.
+
+## Categorical Predictors -- Notes
+
+- Note that if we FTR the global test, we should not look at the pairwise tests.
+
+- If interested in other pairwise tests (e.g., how affluent compares to lower-middle), just need to switch the reference group in the model.
+
+    - The global significance does not depend on the reference group!
+
+- What if there are a ton of categories?
+
+    - We need to make sure there are enough observations in each category to warrant inclusion in the model.
+    
+    - If not enough observations, we can combine categories if it makes (scientific) sense to.
+
+## Interaction Terms -- Introduction
+
+- Recall interaction terms,
+
+    - The relationship between [outcome] and [predictor 1] depends on the level of [predictor 2].
+    
+- We represent them in our model by multiplying the predictors together. For example,
+
+$$ y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_1 x_2$$
+
+- While it is "simple" to include them in our model, it complicates interpretations.
+
+    - If I want to interpret $\hat{\beta}_1$, I must consider the level of $x_2$.
+    
+    - If I want to interpret $\hat{\beta}_2$, I must consider the level of $x_1$.
+
+## Interaction Terms -- Introduction
+
+- The easiest interactions to deal with are categorical $\times$ continuous interactions.
+
+    - The continuous predictor automatically is assigned to the *x*-axis when graphing.
+
+- We can also deal with categorical $\times$ categorical interactions.
+
+    - If one categorical variable is ordinal, that should be assigned to the *x*-axis when graphing.
+
+- Finally, we can also have categorical $\times$ categorical interactions.
+
+    - This can be tricky because we do not have easily-defined levels. Either can be assigned to the $x$-axis when graphing.
+
+## Interaction Terms -- Modeling
+
+- We will construct what is called a hierarchical well-formulated (HWF) model. 
+
+    - This means that when a higher-order interaction term is included in the model, all lower-order terms are also included.
+
+- e.g., when a two-way interaction is included, we also include the corresponding main effects.
+$$ y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_1 x_2 $$
+
+- e.g., when a three-way interaction is included, we also include the corresponding main effects and two-way interactions.
+$$ y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \beta_4 x_1 x_2 + \beta_5 x_1 x_3 + \beta_6 x_2 x_3 + \beta_7 x_1 x_2 x_3 $$
+
+## Interaction Terms -- Modeling
+
+- Let's now look at modeling total cholesterol (mg/dL) as a function of age(years), hypertension status (1=yes, 2=no), diabetic status (0=no, 1=pre-diabetic, 2=diabetic), and all two-way interactions with age. 
+
+```{r}
+data <- read_sas("/Volumes/GoogleDrive/My Drive/STA6257/datasets/analysis1.sas7bdat")
+```
+```{r, echo = TRUE}
+data <- dummy_cols(data, select_columns = "diab3cat")
+m3 <- lm(totchol ~ age + HTN + diab3cat_1 + diab3cat_2 + 
+           age:HTN + 
+           age:diab3cat_1 + age:diab3cat_2, 
+         data=data)
+summary(m3)
+```
+
+## Interaction Terms -- Significance Tests
+
+- We now combine what we know about global and individual tests to determine significant predictors.
+
+    - To determine if there is an (overall) interaction between age and diabetic status, we must construct a global test.
+    
+```{r, echo = TRUE}
+full <- lm(totchol ~ age + HTN + diab3cat_1 + diab3cat_2 + 
+           age:HTN + 
+           age:diab3cat_1 + age:diab3cat_2, 
+         data=data)
+reduced <- lm(totchol ~ age + HTN + diab3cat_1 + diab3cat_2 + 
+                age:HTN, 
+         data=data)
+anova(reduced, full)
+```
+
+## Interaction Terms -- Significance Tests
+
+**Hypotheses**
+
+- $H_0: \ \beta_{\text{age } \times \text{ pre-diabetic}} = 0$ 
+- $H_1: \ \beta_{\text{age } \times \text{ pre-diabetic}} \ne 0$
+
+**Test Statistic and *p*-Value**
+
+- $F_0=2.30$, $p=0.100$
+
+**Rejection Region**
+
+- Reject $H_0$ if $p < 0.05$
+
+**Conclusion and Interpretation**
+
+- Fail to reject $H_0$. There is not sufficient evidence to suggest that there is an interaction between age and diabetic status.
+
+## Interaction Terms -- Significance Tests
+
+- We now combine what we know about global and individual tests to determine significant predictors.
+
+    - To determine if there is an interaction between age and hypertension status, we can use the *t* test from `summary()`.
+    
+```{r, echo = TRUE}
+summary(m3)
+```
+
+## Interaction Terms -- Significance Tests
+
+**Hypotheses**
+
+- $H_0: \ \beta_{\text{age } \times \text{ hypertension}} = 0$ 
+- $H_1: \ \beta_{\text{age } \times \text{ hypertension}} \ne 0$
+
+**Test Statistic and *p*-Value**
+
+- $t_0=-3.38$, $p=0.001$
+
+**Rejection Region**
+
+- Reject $H_0$ if $p < 0.05$
+
+**Conclusion and Interpretation**
+
+- Reject $H_0$. There is sufficient evidence to suggest that there is an interaction between age and hypertension status.
+
+## Interaction Terms -- Model Reduction
+
+- I personally prefer to remove interactions when they are not significant. 
+
+    - In write ups, I will specify what interactions were examined, what their *p*-values were, and that they were removed for [parsimony](https://www.statology.org/parsimonious-model/). 
+    
+- Let's reconstruct the JHS model without the interaction between age and diabetic status.
+
+```{r, echo = TRUE}
+m4 <- lm(totchol ~ age + HTN + diab3cat_1 + diab3cat_2 + 
+           age:HTN, 
+         data=data)
+summary(m4)
+```
+
+## Interaction Terms -- Interpretations
+
+- When a categorical variable is included in an interaction, we can separate out into individual models, then discuss in terms of the main effects.
+
+- When we have a continuous $\times$ continuous interaction, we have to give more general interpretations.
+
+- The model from the JHS example is
+$$ \begin{align*} \hat{\text{tot. chol.}} =& 158.80 + 0.77 \text{ age} + 32.38 \text{ htn} + 1.90 \text{ prediab.} \\ &- 0.61 \text{ diab.} - 0.61 \text{ age} \times \text{htn} \end{align*} $$
+
+- We can separate this into models for those with/without hypertension:
+$$ \begin{align*} \hat{\text{tot. chol.}}_{\text{htn=1}} &= 191.18 + 0.16 \text{ age} + 1.90 \text{ prediab.} - 0.61 \text{ diab.} \\
+\hat{\text{tot. chol.}}_{\text{htn=0}} &= 158.80 + 0.77 \text{ age} + 1.90 \text{ prediab.} - 0.61 \text{ diab.} \end{align*} $$
+
+## Interaction Terms -- Notes
+
+- Modeling and visualizing becomes more difficult as we increase the number of predictors, especially with interaction terms.
+
+    - For ease of interpreting, I do my best to stick with only two-way interactions.
+
+- It is easy to go down a rabbit hole with regard to visualization -- always communicate with your team to determine what will be *useful*.
+
+
+
+
+
