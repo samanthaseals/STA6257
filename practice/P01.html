@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Review of R - Week 1</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+<script src="P01_files/libs/clipboard/clipboard.min.js"></script>
+<script src="P01_files/libs/quarto-html/quarto.js"></script>
+<script src="P01_files/libs/quarto-html/popper.min.js"></script>
+<script src="P01_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="P01_files/libs/quarto-html/anchor.min.js"></script>
+<link href="P01_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="P01_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="P01_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="P01_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="P01_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Review of R - Week 1</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<p><strong>Recall the <a href="https://www.jacksonheartstudy.org/">Jackson Heart Study</a> data from lecture. You can find data from clinic visits 1, 2, and 3 on Canvas. We will be performing data management, summarization, and visualization</strong></p>
+<section id="if-you-are-working-on-your-own-machine-and-have-not-yet-installed-tidyverse-do-that-now.-once-it-is-installed-call-in-the-package.-remember-that-we-should-not-have-install.package-calls-when-we-render-our-document." class="level4">
+<h4 class="anchored" data-anchor-id="if-you-are-working-on-your-own-machine-and-have-not-yet-installed-tidyverse-do-that-now.-once-it-is-installed-call-in-the-package.-remember-that-we-should-not-have-install.package-calls-when-we-render-our-document.">1. If you are working on your own machine and have not yet installed <code>tidyverse</code>, do that now. Once it is installed, call in the package. Remember that we should not have <code>install.package()</code> calls when we render our document.</h4>
+<div class="cell" data-warnings="false">
+
+</div>
+</section>
+<section id="import-the-data-from-visits-1-2-and-3." class="level4">
+<h4 class="anchored" data-anchor-id="import-the-data-from-visits-1-2-and-3.">2. Import the data from visits 1, 2, and 3.</h4>
+<div class="cell">
+
+</div>
+</section>
+<section id="keep-only-subjid-their-identifier-in-the-study-visitdate-the-date-of-their-clinic-visit-age-in-years-bpmeds-1yes-0no-for-hypertension-medication-sbp-systolic-blood-pressure-in-mmhg-and-pa3cat-0poor-health-1intermediate-health-2ideal-health-for-physical-activity-as-defined-by-the-american-heart-association-in-each-dataset." class="level4">
+<h4 class="anchored" data-anchor-id="keep-only-subjid-their-identifier-in-the-study-visitdate-the-date-of-their-clinic-visit-age-in-years-bpmeds-1yes-0no-for-hypertension-medication-sbp-systolic-blood-pressure-in-mmhg-and-pa3cat-0poor-health-1intermediate-health-2ideal-health-for-physical-activity-as-defined-by-the-american-heart-association-in-each-dataset.">3. Keep only subjid (their identifier in the study), VisitDate (the date of their clinic visit), age (in years), BPmeds (1=yes, 0=no for hypertension medication), sbp (systolic blood pressure in mmHg), and pa3cat (0=poor health, 1=intermediate health, 2=ideal health, for physical activity as defined by the American Heart Association) in each dataset.</h4>
+<div class="cell">
+
+</div>
+</section>
+<section id="merge-the-three-datasets-together-by-subjid." class="level4">
+<h4 class="anchored" data-anchor-id="merge-the-three-datasets-together-by-subjid.">4. Merge the three datasets together by subjid.</h4>
+<div class="cell">
+
+</div>
+</section>
+<section id="create-two-new-variables-that-calculate-the-time-in-years-since-the-baseline-visit-clinic-visit-1.-you-will-have-one-variable-for-v2-and-another-variable-for-v3." class="level4">
+<h4 class="anchored" data-anchor-id="create-two-new-variables-that-calculate-the-time-in-years-since-the-baseline-visit-clinic-visit-1.-you-will-have-one-variable-for-v2-and-another-variable-for-v3.">5. Create two new variables that calculate the time, in years, since the baseline visit (clinic visit 1). You will have one variable for V2 and another variable for V3.</h4>
+<div class="cell">
+
+</div>
+</section>
+<section id="challenge-create-two-new-variables-to-identify-which-participants-started-hypertension-medication-between-v1-and-v2-and-separately-between-v2-and-v3." class="level4">
+<h4 class="anchored" data-anchor-id="challenge-create-two-new-variables-to-identify-which-participants-started-hypertension-medication-between-v1-and-v2-and-separately-between-v2-and-v3.">6. (Challenge!) Create two new variables to identify which participants <em>started</em> hypertension medication between V1 and V2 and, separately, between V2 and V3.</h4>
+<div class="cell">
+
+</div>
+</section>
+<section id="how-many-participants-started-hypertension-medication-between-v1-and-v2-between-v2-and-v3" class="level4">
+<h4 class="anchored" data-anchor-id="how-many-participants-started-hypertension-medication-between-v1-and-v2-between-v2-and-v3">7. How many participants started hypertension medication between V1 and V2? Between V2 and V3?</h4>
+<div class="cell">
+
+</div>
+</section>
+<section id="create-a-scatterplot-with-systolic-blood-pressure-at-v1-on-the-y-axis-and-age-at-v1-on-the-x-axis.-challenge-color-the-markers-by-the-categorization-of-their-health-based-on-physical-activity." class="level4">
+<h4 class="anchored" data-anchor-id="create-a-scatterplot-with-systolic-blood-pressure-at-v1-on-the-y-axis-and-age-at-v1-on-the-x-axis.-challenge-color-the-markers-by-the-categorization-of-their-health-based-on-physical-activity.">8. Create a scatterplot with systolic blood pressure at V1 on the <em>y</em>-axis and age at V1 on the <em>x</em>-axis. (Challenge!) Color the markers by the categorization of their health based on physical activity.</h4>
+<div class="cell">
+
+</div>
+</section>
+<section id="replicate-the-scatterplot-for-v2." class="level4">
+<h4 class="anchored" data-anchor-id="replicate-the-scatterplot-for-v2.">9. Replicate the scatterplot for V2.</h4>
+<div class="cell">
+
+</div>
+</section>
+<section id="replicate-the-scatterplot-for-v3." class="level4">
+<h4 class="anchored" data-anchor-id="replicate-the-scatterplot-for-v3.">10. Replicate the scatterplot for V3.</h4>
+<div class="cell">
+
+</div>
+</section>
+<section id="challenge-combine-the-three-graphs-into-one-that-stacks-the-scatterplots.-hint-look-up-the-ggpubr-package." class="level4">
+<h4 class="anchored" data-anchor-id="challenge-combine-the-three-graphs-into-one-that-stacks-the-scatterplots.-hint-look-up-the-ggpubr-package.">11. (Challenge!) Combine the three graphs into one that stacks the scatterplots. (Hint: look up the <code>ggpubr</code> package.)</h4>
+<div class="cell">
+
+</div>
+</section>
+<section id="challenge-summarize-the-data-create-a-table-1-see-the-pdf-of-the-linked-paper-on-canvas.-hint-the-table1-package-may-be-helpful.-include-average-age-average-time-since-v1-average-systolic-blood-pressure-counts-and-percentages-for-those-that-are-on-hypertension-medication-counts-and-percentages-for-health-as-defined-by-physical-activity-and-counts-and-percentages-for-those-starting-hypertension-medication-since-the-last-clinic-visit.-split-the-table-by-clinic-visit-and-do-not-include-an-overall-column.-ask-yourself-why-the-overall-column-is-not-appropriate-for-this-dataset." class="level4">
+<h4 class="anchored" data-anchor-id="challenge-summarize-the-data-create-a-table-1-see-the-pdf-of-the-linked-paper-on-canvas.-hint-the-table1-package-may-be-helpful.-include-average-age-average-time-since-v1-average-systolic-blood-pressure-counts-and-percentages-for-those-that-are-on-hypertension-medication-counts-and-percentages-for-health-as-defined-by-physical-activity-and-counts-and-percentages-for-those-starting-hypertension-medication-since-the-last-clinic-visit.-split-the-table-by-clinic-visit-and-do-not-include-an-overall-column.-ask-yourself-why-the-overall-column-is-not-appropriate-for-this-dataset.">12. (Challenge!) Summarize the data – create a <a href="https://www.sciencedirect.com/science/article/pii/S0895435618309867">Table 1</a> (see the PDF of the linked paper on Canvas). (Hint: the <a href="https://www.rdocumentation.org/packages/table1/versions/1.4.2"><code>table1</code> package</a> may be helpful.) Include average age, average time since V1, average systolic blood pressure, counts and percentages for those that are on hypertension medication, counts and percentages for health as defined by physical activity, and counts and percentages for those starting hypertension medication since the last clinic visit. Split the table by clinic visit and do not include an “overall” column. (Ask yourself why the “overall” column is not appropriate for this dataset.)</h4>
+<div class="cell">
+
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

@@ -1,0 +1,91 @@
+---
+title: "Review of R - Week 1"
+format: html
+editor: source
+---
+
+**Recall the [Jackson Heart Study](https://www.jacksonheartstudy.org/) data from lecture. You can find data from clinic visits 1, 2, and 3 on Canvas. We will be performing data management, summarization, and visualization**
+
+#### 1. If you are working on your own machine and have not yet installed `tidyverse`, do that now. Once it is installed, call in the package. Remember that we should not have `install.package()` calls when we render our document. 
+
+```{r setup, echo = TRUE, warnings = FALSE, message = FALSE}
+
+```
+
+#### 2. Import the data from visits 1, 2, and 3.
+
+```{r}
+
+```
+
+#### 3. Keep only subjid (their identifier in the study), VisitDate (the date of their clinic visit), age (in years), BPmeds (1=yes, 0=no for hypertension medication), sbp (systolic blood pressure in mmHg), and pa3cat (0=poor health, 1=intermediate health, 2=ideal health, for physical activity as defined by the American Heart Association) in each dataset.
+
+```{r}
+
+```
+
+#### 4. Merge the three datasets together by subjid.
+
+```{r}
+
+```
+
+#### 5. Create two new variables that calculate the time, in years, since the baseline visit (clinic visit 1). You will have one variable for V2 and another variable for V3.
+
+```{r}
+
+```
+
+#### 6. (Challenge!) Create two new variables to identify which participants *started* hypertension medication between V1 and V2 and, separately, between V2 and V3.
+
+```{r}
+
+```
+
+#### 7. How many participants started hypertension medication between V1 and V2? Between V2 and V3?
+
+```{r}
+
+```
+
+#### 8. Create a scatterplot with systolic blood pressure at V1 on the *y*-axis and age at V1 on the *x*-axis. (Challenge!) Color the markers by the categorization of their health based on physical activity.
+
+```{r}
+
+```
+
+#### 9. Replicate the scatterplot for V2.
+
+```{r}
+
+```
+
+#### 10. Replicate the scatterplot for V3.
+
+```{r}
+
+```
+
+#### 11. (Challenge!) Combine the three graphs into one that stacks the scatterplots. (Hint: look up the `ggpubr` package.)
+
+```{r}
+
+```
+
+#### 12. (Challenge!) Summarize the data -- create a [Table 1](https://www.sciencedirect.com/science/article/pii/S0895435618309867) (see the PDF of the linked paper on Canvas). (Hint: the [`table1` package](https://www.rdocumentation.org/packages/table1/versions/1.4.2) may be helpful.) Include average age, average time since V1, average systolic blood pressure, counts and percentages for those that are on hypertension medication, counts and percentages for health as defined by physical activity, and counts and percentages for those starting hypertension medication since the last clinic visit. Split the table by clinic visit and do not include an "overall" column. (Ask yourself why the "overall" column is not appropriate for this dataset.) 
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
