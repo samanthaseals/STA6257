@@ -10,7 +10,7 @@ show_sidebar: false
 
 | Week | Day | Date  | Topic(s) | Lecture | Assignment | Due |
 |:-:|:-:|:---:|--------------------|:--:|:-:|:-:
-| 1    | M   | 08/22 | Data management; summarizing data; data visualization | | | |
+| 1    | M   | 08/22 | Data management; summarizing data; data visualization | [html](https://samanthaseals.github.io/slides/L01.html), [qmd](https://github.com/samanthaseals/STA6257/blob/main/slides/L01.qmd) | | |
 |      | W   | 08/24 | Practice (short meeting) | | | 08/29 |
 | 2    | M   | 08/29 | Review of linear models | | | |
 |      | W   | 08/31 | Practice (short meeting) | | | 09/05 |
