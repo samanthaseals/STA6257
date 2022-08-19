@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-0.9.647">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Review of General Linear Models - Week 2</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+<script src="P02_files/libs/clipboard/clipboard.min.js"></script>
+<script src="P02_files/libs/quarto-html/quarto.js"></script>
+<script src="P02_files/libs/quarto-html/popper.min.js"></script>
+<script src="P02_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="P02_files/libs/quarto-html/anchor.min.js"></script>
+<link href="P02_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="P02_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="P02_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="P02_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="P02_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Review of General Linear Models - Week 2</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<p><strong>Recall the <a href="https://www.jacksonheartstudy.org/">Jackson Heart Study</a> data from lecture. You can find data from clinic visits 1, 2, and 3 on Canvas.</strong></p>
+<section id="a.-import-the-data-from-visit-1.-keep-only-subjid-sbp-age-hsgrad-diab3cat-and-bmi3cat.-make-sure-that-you-retain-only-the-complete-cases.-hint-research-how-to-exclude-observations-with-any-missing-responses." class="level4">
+<h4 class="anchored" data-anchor-id="a.-import-the-data-from-visit-1.-keep-only-subjid-sbp-age-hsgrad-diab3cat-and-bmi3cat.-make-sure-that-you-retain-only-the-complete-cases.-hint-research-how-to-exclude-observations-with-any-missing-responses.">1a. Import the data from visit 1. Keep only subjid, sbp, age, HSgrad, diab3cat, and BMI3cat. Make sure that you retain only the complete cases. (Hint: research how to exclude observations with any missing responses.)</h4>
+<div class="cell">
+
+</div>
+</section>
+<section id="b.-create-dummy-variables-for-diabetic-status-diab3cat-and-health-status-based-on-body-mass-index-bmi3cat." class="level4">
+<h4 class="anchored" data-anchor-id="b.-create-dummy-variables-for-diabetic-status-diab3cat-and-health-status-based-on-body-mass-index-bmi3cat.">1b. Create dummy variables for diabetic status (diab3cat) and health status based on body mass index (BMI3cat).</h4>
+<div class="cell">
+
+</div>
+</section>
+<section id="model-systolic-blood-pressure-at-v1-sbp-as-a-function-of-age-years-education-hsgrad-1yes-0no-use-0-as-the-reference-group-diabetic-status-diab3cat-0non-diabetic-1pre-diabetic-2diabetic-use-0-as-the-reference-group-health-status-based-on-body-mass-index-bmi3cat-0poor-health-1intermediate-health-2ideal-health-and-all-possible-two-way-interactions." class="level4">
+<h4 class="anchored" data-anchor-id="model-systolic-blood-pressure-at-v1-sbp-as-a-function-of-age-years-education-hsgrad-1yes-0no-use-0-as-the-reference-group-diabetic-status-diab3cat-0non-diabetic-1pre-diabetic-2diabetic-use-0-as-the-reference-group-health-status-based-on-body-mass-index-bmi3cat-0poor-health-1intermediate-health-2ideal-health-and-all-possible-two-way-interactions.">2. Model systolic blood pressure at V1 (sbp) as a function of age (years), education (HSgrad; 1=yes, 0=no; use 0 as the reference group), diabetic status (diab3cat; 0=non-diabetic, 1=pre-diabetic, 2=diabetic; use 0 as the reference group), health status based on body mass index (BMI3cat; 0=poor health, 1=intermediate health, 2=ideal health), and all possible two-way interactions.</h4>
+<div class="cell">
+
+</div>
+</section>
+<section id="use-the-appropriate-single-hypothesis-test-to-show-that-we-cannot-drop-all-of-the-interactions-at-the-same-time." class="level4">
+<h4 class="anchored" data-anchor-id="use-the-appropriate-single-hypothesis-test-to-show-that-we-cannot-drop-all-of-the-interactions-at-the-same-time.">3. Use the appropriate (single!) hypothesis test to show that we cannot drop all of the interactions <strong>at the same time</strong>.</h4>
+<div class="cell">
+
+</div>
+</section>
+<section id="use-the-appropriate-hypothesis-test-to-determine-if-we-can-drop-the-interaction-between-diabetic-status-and-health-status-based-on-body-mass-index." class="level4">
+<h4 class="anchored" data-anchor-id="use-the-appropriate-hypothesis-test-to-determine-if-we-can-drop-the-interaction-between-diabetic-status-and-health-status-based-on-body-mass-index.">4. Use the appropriate hypothesis test to determine if we can drop the interaction between diabetic status and health status based on body mass index.</h4>
+<div class="cell">
+
+</div>
+</section>
+<section id="use-the-appropriate-hypothesis-test-to-determine-if-we-can-drop-the-interaction-between-diabetic-status-and-education." class="level4">
+<h4 class="anchored" data-anchor-id="use-the-appropriate-hypothesis-test-to-determine-if-we-can-drop-the-interaction-between-diabetic-status-and-education.">5. Use the appropriate hypothesis test to determine if we can drop the interaction between diabetic status and education.</h4>
+<div class="cell">
+
+</div>
+</section>
+<section id="use-the-appropriate-hypothesis-test-to-determine-if-we-can-drop-the-interaction-between-health-status-based-on-body-mass-index-and-education." class="level4">
+<h4 class="anchored" data-anchor-id="use-the-appropriate-hypothesis-test-to-determine-if-we-can-drop-the-interaction-between-health-status-based-on-body-mass-index-and-education.">6. Use the appropriate hypothesis test to determine if we can drop the interaction between health status based on body mass index and education.</h4>
+<div class="cell">
+
+</div>
+</section>
+<section id="use-the-appropriate-hypothesis-test-to-determine-if-we-can-drop-the-interaction-between-age-and-health-status-based-on-body-mass-index." class="level4">
+<h4 class="anchored" data-anchor-id="use-the-appropriate-hypothesis-test-to-determine-if-we-can-drop-the-interaction-between-age-and-health-status-based-on-body-mass-index.">7. Use the appropriate hypothesis test to determine if we can drop the interaction between age and health status based on body mass index.</h4>
+<div class="cell">
+
+</div>
+</section>
+<section id="use-the-appropriate-hypothesis-test-to-determine-if-we-can-drop-the-interaction-between-diabetic-status-and-age." class="level4">
+<h4 class="anchored" data-anchor-id="use-the-appropriate-hypothesis-test-to-determine-if-we-can-drop-the-interaction-between-diabetic-status-and-age.">8. Use the appropriate hypothesis test to determine if we can drop the interaction between diabetic status and age.</h4>
+<div class="cell">
+
+</div>
+</section>
+<section id="use-the-appropriate-hypothesis-test-to-determine-if-we-can-drop-the-interaction-between-age-and-education." class="level4">
+<h4 class="anchored" data-anchor-id="use-the-appropriate-hypothesis-test-to-determine-if-we-can-drop-the-interaction-between-age-and-education.">9. Use the appropriate hypothesis test to determine if we can drop the interaction between age and education.</h4>
+<div class="cell">
+
+</div>
+</section>
+<section id="construct-a-final-model-that-does-not-have-the-interactions-you-deemed-insignificant-in-questions-4-through-9." class="level4">
+<h4 class="anchored" data-anchor-id="construct-a-final-model-that-does-not-have-the-interactions-you-deemed-insignificant-in-questions-4-through-9.">10. Construct a “final model” that does not have the interactions you deemed insignificant in questions 4 through 9.</h4>
+<div class="cell">
+
+</div>
+</section>
+<section id="use-the-model-from-question-10-to-find-the-model-for-a-50-year-old-high-school-graduate." class="level4">
+<h4 class="anchored" data-anchor-id="use-the-model-from-question-10-to-find-the-model-for-a-50-year-old-high-school-graduate.">11. Use the model from question 10 to find the model for a 50 year old high school graduate.</h4>
+</section>
+<section id="use-the-model-from-question-11-to-interpret-the-slopes-corresponding-to-diabetic-status-and-health-status-as-defined-by-body-mass-index." class="level4">
+<h4 class="anchored" data-anchor-id="use-the-model-from-question-11-to-interpret-the-slopes-corresponding-to-diabetic-status-and-health-status-as-defined-by-body-mass-index.">12. Use the model from question 11 to interpret the slopes corresponding to diabetic status and health status as defined by body mass index.</h4>
+</section>
+<section id="use-the-model-from-question-10-to-find-the-model-for-a-pre-diabetic-person-that-is-in-poor-health." class="level4">
+<h4 class="anchored" data-anchor-id="use-the-model-from-question-10-to-find-the-model-for-a-pre-diabetic-person-that-is-in-poor-health.">13. Use the model from question 10 to find the model for a pre-diabetic person that is in poor health.</h4>
+</section>
+<section id="use-the-model-from-question-13-to-interpret-the-slope-corresponding-to-age." class="level4">
+<h4 class="anchored" data-anchor-id="use-the-model-from-question-13-to-interpret-the-slope-corresponding-to-age.">14. Use the model from question 13 to interpret the slope corresponding to age.</h4>
+</section>
+<section id="challenge-construct-a-visualization-to-help-with-interpreting-this-model.-systolic-blood-pressure-should-be-on-the-y-axis-age-should-be-on-the-x-axis.-you-choose-what-lines-to-create." class="level4">
+<h4 class="anchored" data-anchor-id="challenge-construct-a-visualization-to-help-with-interpreting-this-model.-systolic-blood-pressure-should-be-on-the-y-axis-age-should-be-on-the-x-axis.-you-choose-what-lines-to-create.">15. (Challenge!) Construct a visualization to help with interpreting this model. Systolic blood pressure should be on the <em>y</em>-axis, age should be on the <em>x</em>-axis. You choose what lines to create.</h4>
+<div class="cell">
+
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
