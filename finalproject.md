@@ -24,7 +24,7 @@ The methodologies to consider:
   - Principal component analysis
   - Generalized additive models
   - Generalized estimating equations
-  - Cox proportional hazards model
+  - ~~Cox proportional hazards model~~ EA, CE, ER
   
 You are free to propose a different methodology if there is something you are interested in, but is not on the list. The methodology must be approved by the instructor to ensure that it meets the expectations of a capstone project.
 
