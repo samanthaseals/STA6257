@@ -536,7 +536,7 @@ $$ y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_1 x_2$$
 
     - If one categorical variable is ordinal, that should be assigned to the *x*-axis when graphing.
 
-- Finally, we can also have categorical $\times$ categorical interactions.
+- Finally, we can also have continuous $\times$ continuous interactions.
 
     - This can be tricky because we do not have easily-defined levels. Either can be assigned to the $x$-axis when graphing.
 
