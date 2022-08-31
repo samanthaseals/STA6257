@@ -15,7 +15,7 @@ show_sidebar: false
 | 2    | M   | 08/29 | Review of linear models | [html](https://samanthaseals.github.io/STA6257/slides/L02.html), [qmd](https://github.com/samanthaseals/STA6257/blob/main/slides/L02.qmd) | | |
 |      | W   | 08/31 | Practice (short meeting) | | [html](https://samanthaseals.github.io/STA6257/practice/P02.html), [qmd](https://github.com/samanthaseals/STA6257/blob/main/practice/P02.qmd) | 09/05 |
 | 3    | M   | 09/05 | Labor Day - no class | | | |
-|      | W   | 09/07 | Generalized linear models; gamma regression; practice | | | 09/12 |
+|      | W   | 09/07 | Generalized linear models; gamma regression; practice | [html](https://samanthaseals.github.io/STA6257/slides/L03.html), [qmd](https://github.com/samanthaseals/STA6257/blob/main/slides/L03.qmd) | | 09/12 |
 | 4    | M   | 09/12 | Project 1 (no meeting - Dr. Seals traveling) | | | |
 |      | W   | 09/14 | Project 1 (no meeting - Dr. Seals traveling) | | | 09/19 |
 | 5    | M   | 09/19 | Binary, ordinal, and multinomial logistic regressions | | | |
