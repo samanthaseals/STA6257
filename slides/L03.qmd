@@ -1,0 +1,398 @@
+---
+title: "Generalized Linear Models"
+subtitle: "STA6257: Advanced Statistical Modeling"
+author: "Dr. Seals"
+format: 
+  revealjs:
+    theme: dark2
+    self-contained: false
+    slide-number: false
+    footer: "[STA6257 - Advanced Statistical Modeling](https://samanthaseals.github.io/STA6257)"
+    width: 1600
+    height: 900
+    chalkboard: true
+    df-print: paged
+    html-math-method: katex
+---
+
+## Introduction
+
+- Recall the general linear model (GLM),
+$$ y = \beta_0 + \beta_1 x_1 + ... + \beta_k x_k $$
+
+- We will now extend to [generalized linear models](https://en.wikipedia.org/wiki/Generalized_linear_model) (GzLM).
+
+    - These models allow us to model non-normal responses.
+    
+- GzLMs have three components:
+
+    - Random component: $y$, the response.
+    
+    - Linear predictor: $X\beta$, where $\beta$ is the parameter vector and $X$ is the $n \times p$ design matrix that contains $p-1$ explanatory variables for the $n$ observations.
+    
+    - Link function: $g\left(\text{E}[y]\right) = X\beta$
+    
+## Random Component
+
+- The random component consists of the response, $y$
+
+    - $y$ has *independent* observations
+    
+    - $y$'s probability density or mass function is in the exponential family
+    
+- A random variable, $y$, has a distribution in the [exponential family](https://en.wikipedia.org/wiki/Exponential_family) if it can be written in the following form:
+$$ f(y | \theta, \phi) = \exp \left\{ \frac{y\theta-b(\theta)}{a(\phi)} + c(y|\phi) \right\}, $$
+- for specified functions $a(\cdot)$, $b(\cdot)$, and $c(\cdot)$.
+
+    - $\theta$ is the parameter of interest (canonical or natural)
+    
+    - $\phi$ is usually a nuissance parameter (scale or dispersion)
+    
+## Random Component
+
+- Let's show that the normal distribution is in the exponential family.
+
+- Assume $y \sim N(\mu, \sigma^2)$; we will treat $\sigma^2$ as a nuisance parameter.
+
+$$
+\begin{align*}
+f(y | \theta, \phi) &= \left(\frac{1}{2\pi \sigma^2} \right)^{1/2} \exp\left\{ \frac{-1}{2\sigma^2} (y-\mu)^2 \right\} \\
+&= \exp\left\{ \frac{-y^2}{2\sigma^2} + \frac{y\mu}{\sigma^2} - \frac{\mu^2}{2\sigma^2} - \frac{1}{2} \ln\left(2\pi\sigma^2\right) \right\} \\
+&= \exp\left\{\frac{y\mu-\mu^2/2}{\sigma^2} - \frac{y^2}{2\sigma^2} - \frac{1}{2} \ln\left(2\pi\sigma^2\right) \right\} \\
+&= \exp \left\{ \frac{y\theta-b(\theta)}{a(\phi)} + c(y|\phi) \right\}
+\end{align*}
+$$
+## Random Component
+
+$$
+\begin{align*}
+f(y | \theta, \phi) &= \exp\left\{\frac{y\mu-\mu^2/2}{\sigma^2} - \frac{y^2}{2\sigma^2} - \frac{1}{2} \ln\left(2\pi\sigma^2\right) \right\} \\
+&= \exp \left\{ \frac{y\theta-b(\theta)}{a(\phi)} + c(y|\phi) \right\}
+\end{align*}
+$$
+- $\theta = \mu$
+
+- $\phi = \sigma^2$
+
+- $a(\phi) = \phi$
+
+- $b(\theta) = \mu^2/2 = \theta^2/2$
+
+- $c(y|\phi) = -(1/2 \ln(2\pi\sigma^2) + y^2/(2\sigma^2))$
+
+## Random Component
+
+- Why are we restricted to the exponential family?
+
+    - There are general expressions for model likelihood equations.
+    
+    - There are asymptotic distributions of estimators for model parameters (i.e., $\hat{\beta}$).
+    
+        - This allows us to "know" things!
+    
+    - We have an algorithm for fitting models.
+    
+## Linear Predictors
+
+- Let us first discuss notation.
+
+    - $x_{ij}$ is the $j$<sup>th</sup> explanatory variable for observation $i$
+    
+        - $i=1, ... , n$ 
+        
+        - $j=1, ..., p-1$
+    
+    - Each observation (or subject) has a vector, $x_i = \left[1, x_{i,1}, ..., x_{i, p-1}\right]$
+    
+        - The leading 1 is for the intercept, $\beta_0$.
+    
+        - These are put together into $X$, the design matrix.
+        
+## Linear Predictors
+        
+- The linear predictor relates parameters ($\eta_i$) pertaining to E[$y_i$] to the explanatory variables using a linear combination,
+$$ \eta_i = \sum_{j=1}^p \beta_j x_{ij} $$
+- In matrix form,
+$$ \eta = X \beta $$
+
+- This is a linear predictor because it is linear in the *parameters*, $\beta$.
+
+    - The *predictors* can be nonlinear.
+    
+        - e.g., time<sup>2</sup> (quadratic term), $x_1 x_2$ (interaction)
+        
+## Linear Predictors
+
+- We call $X$ the design matrix.
+
+    - There are $n$ rows (one for each observation).
+    
+    - There are $p$ columns ($p-1$ predictors, the $p$<sup>th</sup> column is for the intercept).
+    
+- In most studies, we have $p < n$.
+    
+    - Goal: summarize data using a smaller number of parameters.
+    
+- Some studies have $p >>> n$, e.g., genetics.
+
+    - These studies need special methodology that is not covered in this course.
+    
+- GzLMs treat $y_i$ as random, $x_i$ as fixed.
+
+    - These are called fixed-effects models.
+    
+    - There are also random effects $\to$ fixed effects + random effects = mixed models.
+    
+## Link Function
+
+- The link function, $g(\cdot)$, connects the random component with the linear predictor.
+
+    - $g(\cdot)$ is a monotonic and differentiable function.
+
+- Let $\mu_i = \text{E}[y_i]$:
+
+    - The GzLM links $\eta_i$ to $\mu_i$ by $\eta_i = g(\mu_i)$
+    
+- In the exponential family representation, a certain parameter serves as its natural parameter.
+
+    - Normal distribution: the mean
+    - Binomial: ln(odds)
+    - Poisson: ln(mean)
+    
+- The link function that transforms $\mu_i$ to the natural parameter, $\theta$, is called the *canonical link*.
+
+    - In the normal, $\theta=\mu$, so the canonical link is the identity.
+    - In the binomial and Poisson, the canonical link is the log.
+    
+## Gamma Regression
+
+- Consider the gamma distribution,
+$$
+f(y|\mu, \gamma) = \frac{1}{\Gamma(\gamma) \left( \frac{\mu}{\gamma} \right)^\gamma} y^{\gamma-1} \exp\left\{ \frac{-y \gamma}{\mu} \right\}
+$$
+- where: $y > 0$, $\mu > 0$, $\gamma > 0$, and $\Gamma(\cdot)$ is the [Gamma function](https://en.wikipedia.org/wiki/Gamma_function)
+
+- This is appropriate for continuous, positive data that has a right skew.
+
+    - I have primarily used it for complete time-to-event data
+    
+        - e.g., length of stay
+        
+## Gamma Regression        
+
+- Assume $y \sim \text{Gamma}(\mu, \gamma)$; we will treat $\gamma$ as a nuisance parameter.
+
+$$
+\begin{align*}
+f(y|\mu, \gamma) &= \frac{1}{\Gamma(\gamma) \left( \frac{\mu}{\gamma} \right)^\gamma} y^{\gamma-1} \exp\left\{ \frac{-y \gamma}{\mu} \right\} \\
+&= \exp\left\{ \ln \left[ \frac{1}{\Gamma(\gamma) \left( \frac{\mu}{\gamma} \right)^\gamma} y^{\gamma-1} \exp\left\{ \frac{-y\gamma}{\mu} \right\} \right] \right\} \\
+&= \exp\left\{ \frac{-y\mu^{-1} - \ln (\mu)}{\gamma^{-1}} - \ln \left( \frac{(\gamma y)^\gamma}{y \Gamma(\gamma)} \right) \right\} \\
+&= \exp \left\{ \frac{y\theta-b(\theta)}{a(\phi)} + c(y|\phi) \right\}
+\end{align*}
+$$
+        
+## Gamma Regression
+
+$$
+\begin{align*}
+f(y|\mu, \gamma) &= \exp\left\{ \frac{-y\mu^{-1} - \ln (\mu)}{\gamma^{-1}} - \ln \left( \frac{(\gamma y)^\gamma}{y \Gamma(\gamma)} \right) \right\} \\
+&= \exp \left\{ \frac{y\theta-b(\theta)}{a(\phi)} + c(y|\phi) \right\}
+\end{align*}
+$$
+
+- $\theta = -\mu^{-1} \to \mu = - \theta^{-1}$
+
+- $\phi = \gamma$
+
+- $a(\phi) = \gamma^{-1}$
+
+- $b(\theta) = \ln(-\theta^{-1})$
+
+- $c(y, \phi) = \ln \left( \frac{(\gamma y)^{\gamma}}{y \Gamma(\gamma)} \right)$
+        
+## Gamma Regression
+
+$$
+\begin{align*}
+f(y|\mu, \gamma) &= \exp\left\{ \frac{-y\mu^{-1} - \ln (\mu)}{\gamma^{-1}} - \ln \left( \frac{(\gamma y)^\gamma}{y \Gamma(\gamma)} \right) \right\} \\
+&= \exp \left\{ \frac{y\theta-b(\theta)}{a(\phi)} + c(y|\phi) \right\}
+\end{align*}
+$$
+
+- $\theta = -\mu^{-1} \to \mu = - \theta^{-1}$
+
+    - This means that the canonical link is the negative inverse...
+    
+    - but the common link to use is the log.
+        
+```{r, echo = TRUE, eval = FALSE}
+m <- glm([outcome] ~ [pred_1] + [pred_2] + ... + [pred_k], 
+         data = [dataset], 
+         family = Gamma(link = "log"))
+```
+
+## Data from the Jackson Heart Study
+
+- Recall the data from the [Jackson Heart Study](https://www.jacksonheartstudy.org/). Let us consider the baseline visit (V1). 
+
+```{r, echo = TRUE}
+library(tidyverse)
+library(haven)
+data <- read_sas("/Volumes/GoogleDrive/My Drive/STA6257/datasets/analysis1.sas7bdat") %>%
+  select(subjid, HbA1c, age, BMI3cat) %>%
+  na.omit()
+head(data, n=4)
+```
+
+## Example: HbA1c in the Jackson Heart Study
+
+```{r, echo = TRUE}
+data %>% ggplot(aes(x = HbA1c)) +
+  geom_histogram(binwidth = 0.5, color="black", fill="pink") +
+  labs(y = "Count",
+       x = "Hemoglobin A1c") +
+  theme_bw()
+```
+  
+## Example: HbA1c in the Jackson Heart Study
+
+- Let's take a basic example,
+
+```{r, echo = TRUE}
+m1 <- glm(HbA1c ~ age + as.factor(BMI3cat), 
+          data = data, 
+          family = Gamma(link = "log"))
+summary(m1)
+```
+
+$$\ln(y) = 1.625 + 0.003 \text{ age} - 0.064 \text{ BMI}_1 - 0.110 \text{ BMI}_2$$
+
+## Gamma Regression -- Interpretations
+
+- Uh oh. We are now modeling ln(*y*) and not *y* directly...
+
+    - We need to "undo" the ln() so that we can discuss the results in the original units of *y*
+
+- We will transform the coefficients: 
+
+\begin{align*}
+\ln(y) &= \hat{\beta}_0 + \hat{\beta}_1 x_1 + \hat{\beta}_2 x_2 + ... \hat{\beta}_k x_k \\
+y &= \exp\left\{\hat{\beta}_0 + \hat{\beta}_1 x_1 + \hat{\beta}_2 x_2 + ... \hat{\beta}_kx_k \right\} \\
+y &= e^{\hat{\beta}_0} e^{\hat{\beta}_1x_1} e^{\hat{\beta}_2 x_2} \cdot \cdot \cdot e^{\hat{\beta}_k x_k}
+\end{align*}
+
+- These are *multiplicative* effects, as compared to the *additive* effects we saw under the normal distribution.
+
+## Gamma Regression -- Interpretations
+
+- In the JHS model,
+
+\begin{align*}
+\ln(y) &= 1.625 + 0.003 \text{ age} - 0.064 \text{ BMI}_1 - 0.110 \text{ BMI}_2 \\
+y &= \exp\left\{ 1.625 + 0.003 \text{ age} - 0.064 \text{ BMI}_1 - 0.110 \text{ BMI}_2 \right\} \\
+y &= e^{1.625} e^{0.003 \text{ age}} e^{-0.064 \text{ BMI}_1} e^{-0.110 \text{ BMI}_2}
+\end{align*}
+
+- For a 1 year increase in age, the expected HbA1c is multiplied by $e^{0.003}=1.003$. This is a 0.3% increase.
+
+- For a 10 year increase in age, the expected HbA1c is multiplied by $e^{0.003 \times 10}=1.030$. This is a 3% increase.
+
+## Gamma Regression -- Interpretations
+
+- In the JHS model,
+
+\begin{align*}
+\ln(y) &= 1.625 + 0.003 \text{ age} - 0.064 \text{ BMI}_1 - 0.110 \text{ BMI}_2 \\
+y &= \exp\left\{ 1.625 + 0.003 \text{ age} - 0.064 \text{ BMI}_1 - 0.110 \text{ BMI}_2 \right\} \\
+y &= e^{1.625} e^{0.003 \text{ age}} e^{-0.064 \text{ BMI}_1} e^{-0.110 \text{ BMI}_2}
+\end{align*}
+
+- The expected HbA1c for those intermediate health is $e^{-0.064}=0.938$ times that of those in poor health. This is a ~6% decrease.
+
+- The expected HbA1c for those ideal health is $e^{-0.110}=0.896$ times that of those in poor health. This is a ~10% decrease.
+
+## Gamma Regression -- Significance of Predictors
+
+- What we've learned so far re: significance of predictors holds true with GzLM
+
+    - Significance of individual (continuous or binary) predictors $\to$ *t*-test
+    
+    - Significance of categorical (>2 categories) predictors $\to$ ANOVA with full/reduced models
+    
+        - We need to add `test = "Chisq"` to the `anova()` function.
+        
+```{r, echo = TRUE, eval = FALSE}
+anova(reduced, full, test = "Chisq")
+```
+
+## Gamma Regression -- Significance of Predictors
+
+- Let's consider a different model with the JHS data,
+
+```{r, echo = TRUE}
+m2 <- glm(HbA1c ~ age + as.factor(BMI3cat) + age:as.factor(BMI3cat), 
+          data = data, 
+          family = Gamma(link = "log"))
+summary(m2)
+```
+
+## Gamma Regression -- Significance of Predictors
+
+- Let's see if the interaction between age and health status is significant,
+
+```{r, echo = TRUE}
+full <- glm(HbA1c ~ age + as.factor(BMI3cat) + age:as.factor(BMI3cat), data = data, family = Gamma(link = "log"))
+reduced <- glm(HbA1c ~ age + as.factor(BMI3cat), data = data, family = Gamma(link = "log"))
+anova(reduced, full, test = "Chisq")
+```
+
+- The interaction is not significant (*p* = 0.677), so it should be removed from the model.
+
+## Gamma Regression -- Significance of Predictors
+
+- Removing the interaction term,
+
+```{r, echo = TRUE}
+m3 <- glm(HbA1c ~ age + as.factor(BMI3cat), 
+          data = data, 
+          family = Gamma(link = "log"))
+summary(m3)
+```
+
+- Age is a significant predictor of HbA1c (*p* < 0.001). 
+
+- We need a partial *F* to determine if health status as defined by BMI is a significant predictor of HbA1c.
+
+## Gamma Regression -- Significance of Predictors
+
+```{r, echo = TRUE}
+full <- glm(HbA1c ~ age + as.factor(BMI3cat), data = data, family = Gamma(link = "log"))
+reduced <- glm(HbA1c ~ age, data = data, family = Gamma(link = "log"))
+anova(reduced, full, test = "Chisq")
+```
+
+- Thus, health status as defined by BMI is a significant predictor of HbA1c (*p* < 0.001).
+
+## Visualizations
+
+- Let's construct a graph of the resulting model (live!).
+
+- What should be on the *x*-axis?
+
+- What should define the lines?
+
+- What do you think the "line" will look like?
+
+## Conclusions
+
+- Welcome to GzLM - there is a vast world of distributions past the normal distribution! :)
+
+- Moving forward we will also learn how to model:
+
+    - Categorical outcomes (binary, multinomial, and ordinal)
+    
+    - Count data
+    
+- ...but there's still a vast world of modeling beyond what we will formally cover!
+    
+    
