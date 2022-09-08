@@ -2,6 +2,7 @@
 title: "Review of General Linear Models - Week 2"
 format: html
 editor: source
+self-contained: true
 ---
 
 **Recall the [Jackson Heart Study](https://www.jacksonheartstudy.org/) data from lecture. You can find data from clinic visits 1, 2, and 3 on Canvas.**
