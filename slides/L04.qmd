@@ -1,0 +1,347 @@
+---
+title: "Logistic Regression"
+subtitle: "STA6257: Advanced Statistical Modeling"
+author: "Dr. Seals"
+format: 
+  revealjs:
+    theme: dark2
+    self-contained: false
+    slide-number: false
+    footer: "[STA6257 - Advanced Statistical Modeling](https://samanthaseals.github.io/STA6257)"
+    width: 1600
+    height: 900
+    chalkboard: true
+    df-print: paged
+    html-math-method: katex
+---
+
+## Introduction
+
+- We have previously discussed continuous outcomes and the appropriate distributions.
+
+    - Normal distribution
+    
+    - Gamma distribution
+
+- Let's now consider categorical outcomes:
+
+    - Binary
+    
+    - Ordinal
+    
+    - Multinomial
+    
+## Binary Logistic Regression
+
+- We model binary outcomes using logistic regression,
+
+$$\ln \left( \frac{\pi}{1-\pi} \right) = \beta_0 + \beta_1 x_1 + ... + \beta_k x_k,$$
+
+- where $\pi = \text{P}[Y = 1]$ = the probability of the outcome/event.
+
+- How is this different from linear regression?
+$$ y = \beta_0 + \beta_1 x_1 + ... + \beta_k x_k $$
+- or Gamma regression?
+
+$$ \ln(y) = \beta_0 + \beta_1 x_1 + ... + \beta_k x_k $$
+
+## Odds Ratios
+
+- Recall the binary logistic regression model,
+$$\ln \left( \frac{\pi}{1-\pi} \right) = \beta_0 + \beta_1 X_1 + ... + \beta_k X_k, $$
+
+- We are modeling the log odds, which are not intuitive with interpretations.
+
+- To be able to discuss the odds, we will "undo" the natural log by exponentiation. 
+
+    - i.e., if we want to interpret the slope for $X_i$, we will look at $e^{\hat{\beta}_i}$.
+
+- When interpreting $\hat{\beta}_i$, it is an additive effect on the log odds. 
+
+- When interpreting $e^{\hat{\beta}_i}$, it is a multiplicative effect on the odds.
+
+## R Syntax
+
+- Like with Gamma regression, we will use the [`glm()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/glm) function, but now we specify the binomial [`family`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/family).
+
+```{r, echo = TRUE, eval = FALSE}
+m <- glm([outcome] ~ [pred_1] + [pred_2] + ... + [pred_k], 
+         data = [dataset], 
+         family = "binomial")
+```
+
+## Data from the Jackson Heart Study
+
+- Recall the data from the [Jackson Heart Study](https://www.jacksonheartstudy.org/). Let us consider the baseline visit (V1). 
+
+```{r, echo = TRUE}
+library(tidyverse)
+library(haven)
+data <- read_sas("/Volumes/GoogleDrive/My Drive/STA6257/datasets/analysis1.sas7bdat") %>%
+  select(subjid, HTN, age, BMI3cat) %>%
+  na.omit()
+data %>% count(HTN)
+```
+
+## Example: Hypertension in the Jackson Heart Study
+
+- Let's take a basic example and model hypertension.
+
+```{r, echo = TRUE}
+m1 <- glm(HTN ~ age + as.factor(BMI3cat), 
+          data = data, 
+          family = binomial)
+summary(m1)
+```
+
+## Example: Hypertension in the Jackson Heart Study
+
+- The model is as follows,
+$$
+\ln \left( \frac{\hat{\pi}}{1-\hat{\pi}} \right) = -4.10 + 0.08 \text{ age} - 0.59 \text{ BMI}_1 - 1.13 \text{ BMI}_2 
+$$
+
+- We can re-write this in terms of the odds,
+$$\frac{\hat{\pi}}{1-\hat{\pi}} = e^{-4.10}e^{0.08 \text{ age}}e^{- 0.59 \text{ BMI}_1}e^{- 1.13 \text{ BMI}_2}$$
+
+## Example: Hypertension in the Jackson Heart Study
+
+- Let's interpret the odds ratios:
+
+    - For a 1 year increase in age, the odds of a participant having hypertension (as compared to not having hypertension) are multiplied by $e^{0.08 \times 1}$ = 1.08, which is an 8% increase.
+    
+    - For a 10 year increase in age, the odds of a participant having hypertension (as compared to not having hypertension) are multiplied by $e^{0.08 \times 10}$ = 2.23, which is a 123% increase.
+
+    - The odds of hypertension (as compared to not having hypertension) for those in intermediate health, as defined by BMI, are $e^{-0.59}$ = 0.55 times that of those in poor health; this is a 45% decrease.
+    
+    - The odds of hypertension (as compared to not having hypertension) for those in ideal health, as defined by BMI, are $e^{-1.13}$ = 0.32 times that of those in poor health; this is a 68% decrease.
+    
+## Tests for Significant Predictors
+
+- What we've learned so far re: significance of predictors holds true with logistic regression
+
+    - Significance of individual (continuous or binary) predictors $\to$ *z*-test
+    
+    - Significance of categorical (>2 categories) predictors $\to$ ANOVA with full/reduced models
+    
+        - We need to add `test = "Chisq"` to the `anova()` function.
+
+## Example: Hypertension in the Jackson Heart Study
+
+```{r, echo = TRUE}
+summary(m1)
+```
+
+## Example: Hypertension in the Jackson Heart Study
+
+```{r, echo = TRUE}
+full <- glm(HTN ~ age + as.factor(BMI3cat), data = data, family = binomial)
+reduced <- glm(HTN ~ age, data = data, family = binomial)
+anova(reduced, full, test = "Chisq")
+```
+
+## Ordinal Logistic Regression
+
+- Suppose our response variable has *c* ordered categories 
+    
+    - e.g., classification of student: freshman, sophomore, junior, senior
+
+- We will create *c-1* models simultaneously using ordinal logistic regression.
+
+    - The $\hat{\beta}_i$ will be the same across the models.
+    - The $\hat{\beta}_0$ will change for each category.
+    
+- This is a cumulative logit model,
+\begin{align*}
+  \text{logit}\left( P[y \le j] \right) &= \beta_{0j} + \beta_{1} x_1 + ... + \beta_{k} x_k \\
+  \ln \left( \frac{P[y \le j]}{1 - P[Y \le j]} \right)&= \beta_{0j} + \beta_{1} x_1 + ... + \beta_{k} x_k \\
+  \ln \left( \frac{\pi_1 + ... + \pi_j }{\pi_{j+1} + ... + \pi_{c}} \right) &= \beta_{0j} + \beta_{1} x_1 + ... + \beta_{k} x_k
+\end{align*}
+
+## R Syntax
+
+- We will use the [`polr()`](https://www.rdocumentation.org/packages/MASS/versions/7.3-58.1/topics/polr) function from the [MASS package](https://www.rdocumentation.org/packages/MASS/versions/7.3-58.1).
+
+```{r, echo = TRUE, eval = FALSE}
+m <- polr([outcome] ~ [pred_1] + [pred_2] + ... + [pred_k],
+          data = data)
+```
+
+- Note that the outcome must be a factor variable.
+
+    - If it is not, you can use `as.factor()` inside of the `polr()` function.
+
+## Data from the Jackson Heart Study
+
+- Recall the data from the [Jackson Heart Study](https://www.jacksonheartstudy.org/). Let us consider the baseline visit (V1). 
+
+```{r, echo = TRUE}
+data <- read_sas("/Volumes/GoogleDrive/My Drive/STA6257/datasets/analysis1.sas7bdat") %>%
+  select(subjid, BPjnc7, age, BMI3cat) %>%
+  na.omit()
+data %>% count(BPjnc7)
+```
+
+How many models will be created?
+
+## Example: Hypertension in the Jackson Heart Study
+
+```{r, echo = TRUE}
+library(MASS)
+m2 <- polr(as.factor(BPjnc7) ~ age + as.factor(BMI3cat), data = data)
+summary(m2)
+```
+
+## Example: Hypertension in the Jackson Heart Study
+
+- This creates 3 models:
+\begin{align*}
+  \text{logit}\left( P[Y \le \text{Normotensive}] \right) &= 1.70 + 0.05 \text{ age} - 0.27 \text{ BMI}_1 - 0.36 \text{ BMI}_2 \\
+  \text{logit}\left( P[Y \le \text{Pre-HTN}] \right) &= 4.09 + 0.05 \text{ age} - 0.27 \text{ BMI}_1 - 0.36 \text{ BMI}_2 \\
+  \text{logit}\left( P[Y \le \text{Stage I HTN}] \right) &= 5.92 + 0.05 \text{ age} - 0.27 \text{ BMI}_1 - 0.36 \text{ BMI}_2 \\
+\end{align*}
+
+- Note that $P[Y \le \text{Stage II HTN}]=1$, thus, does not need a model.
+
+## Example: Hypertension in the Jackson Heart Study
+
+- Let's interpret the odds ratios:
+
+    - For a 1 year increase in age, the odds of a participant moving towards higher blood pressure (as compared to lower blood pressure) are multiplied by $e^{0.05 \times 1}$ = 1.05, which is a 5% increase.
+    
+    - For a 10 year increase in age, the odds of a participant moving towards higher blood pressure (as compared to lower blood pressure) are multiplied by $e^{0.05 \times 10}$ = 1.65, which is a 65% increase.
+
+    - The odds of a participant moving towards higher blood pressure (as compared to lower blood pressure) for those in intermediate health, as defined by BMI, are $e^{-0.27}$ = 0.76 times that of those in poor health; this is a 24% decrease.
+    
+    - The odds of a participant moving towards higher blood pressure (as compared to lower blood pressure) for those in ideal health, as defined by BMI, are $e^{-0.36}$ = 0.70 times that of those in poor health; this is a 30% decrease.
+
+## Tests for Significant Predictors
+
+- What we've learned so far re: significance of predictors holds true with ordinal logistic regression, but now we will use the [`coeftest()`](https://www.rdocumentation.org/packages/lmtest/versions/0.9-40/topics/coeftest) function from the [lmtest package](https://www.rdocumentation.org/packages/lmtest/versions/0.9-40).
+
+    - Significance of individual (continuous or binary) predictors $\to$ *t*-test
+    
+    - Significance of categorical (>2 categories) predictors $\to$ ANOVA with full/reduced models
+    
+        - We need to add `test = "Chisq"` to the `anova()` function.
+
+## Example: Hypertension in the Jackson Heart Study
+
+```{r, echo = TRUE}
+library(lmtest)
+coeftest(m2)
+
+full <- polr(as.factor(BPjnc7) ~ age + as.factor(BMI3cat), data = data)
+reduced <- polr(as.factor(BPjnc7) ~ age, data = data)
+anova(reduced, full, test = "Chisq")
+```
+
+## Proportional Odds Assumption
+
+- As mentioned previously, we are assuming proportional odds. 
+
+    - This means that the slope is the same, regardless of what response category we're looking at.
+
+- We will check this assumption with [Brant's test](https://www.jstor.org/stable/2532457)
+
+    -  Briefly, this will construct a $\chi^2$ test for every predictor in the model.
+    - If $p<\alpha$, the assumption is broken.
+
+If the assumption is broken, we should step down to multinominal logistic regression.
+
+## Example: Hypertension in the Jackson Heart Study
+
+```{r, echo = TRUE}
+library(brant)
+data <- data %>% mutate(BMI3cat = as.factor(BMI3cat))
+m2 <- polr(as.factor(BPjnc7) ~ age + BMI3cat, data = data)
+brant(m2)
+```
+
+## Mulitnomial Logistic Regression
+
+- Suppose we now have an outcome with more than two possible nominal outcomes.
+
+    - e.g., type of account at bank: mortgage, credit card, personal
+
+- When we have a response variable with *c* categories, we can create multicategory logistic models simultaneously.
+
+    - We will choose a reference category and create *c-1* models.
+
+    - Each model will compare outcome *j* to outcome *c* (reference group).
+    
+- The baseline-category logit model (or the multinomial logit model):
+  $$\ln \left( \frac{\pi_j}{\pi_c} \right) = \beta_0 + \beta_1 x_1 + ... + \beta_k x_k,$$
+- $j=1, ..., c-1$.
+
+## R Syntax
+
+- We now will use the [`multinom()`](https://www.rdocumentation.org/packages/nnet/versions/7.3-17/topics/multinom) function from the [`nnet`](https://www.rdocumentation.org/packages/nnet/versions/7.3-17) package
+
+```{r, echo = TRUE, eval = FALSE}
+m <- multinom([outcome] ~ [pred_1] + [pred_2] + ... + [pred_k], 
+              data = data)
+```
+
+## Example: Hypertension in the Jackson Heart Study
+
+```{r, echo = TRUE, message = FALSE}
+library(nnet)
+m3 <- multinom(as.factor(BPjnc7) ~ age + as.factor(BMI3cat), data = data)
+summary(m3)
+```
+
+## Example: Hypertension in the Jackson Heart Study
+
+- This results in three models:
+
+\begin{align*}
+  \ln \left( \frac{\hat{\pi}_{\text{pre-HTN}}}{\hat{\pi}_{\text{normotensive}}} \right) &= -1.43 + 0.04 \text{ age} - 0.36 \text{ BMI}_1 - 0.56 \text{ BMI}_2 \\
+  \ln \left( \frac{\hat{\pi}_{\text{Stage I HTN}}}{\hat{\pi}_{\text{normotensive}}} \right) &= -4.66 + 0.07 \text{ age} - 0.33 \text{ BMI}_1 - 0.36 \text{ BMI}_2 \\
+  \ln \left( \frac{\hat{\pi}_{\text{Stage II HTN}}}{\hat{\pi}_{\text{normotensive}}} \right) &= -6.55 + 0.08 \text{ age} - 0.50 \text{ BMI}_1 - 0.49 \text{ BMI}_2
+\end{align*}
+
+## Example: Hypertension in the Jackson Heart Study
+
+- Let's interpret the odds ratio for age,
+
+    - For a 1 year increase in age, the odds of being pre-hypertensive as compared to normotensive are multiplied by $e^{0.04} = 1.04$; this is a 4% increase.
+    
+    - For a 1 year increase in age, the odds of having stage I hypertension as compared to being normotensive are multiplied by $e^{0.07} = 1.07$; this is a 7% increase.
+    
+    - For a 1 year increase in age, the odds of being pre-hypertensive as compared to normotensive are multiplied by $e^{0.08} = 1.08$; this is an 8% increase.
+    
+## Tests for Significant Predictors
+
+- What we've learned so far re: significance of predictors holds true with multinomial logistic regression, but now we will use the [`coeftest()`](https://www.rdocumentation.org/packages/lmtest/versions/0.9-40/topics/coeftest) function from the [AER package](https://www.rdocumentation.org/packages/AER/versions/1.2-10).
+
+    - Overall significance (independent of specific model) $\to$ ANOVA with full/reduced models
+    
+        - We need to add `test = "Chisq"` to the `anova()` function.
+
+    - Significance of individual (continuous or binary) predictors $\to$ *t*-test
+
+
+        
+## Example: Hypertension in the Jackson Heart Study
+
+```{r, echo = TRUE}
+library(AER)
+coeftest(m3)
+```
+
+## Example: Hypertension in the Jackson Heart Study
+
+```{r, echo = TRUE}
+full <- multinom(as.factor(BPjnc7) ~ age + as.factor(BMI3cat), data = data)
+reduced <- multinom(as.factor(BPjnc7) ~ as.factor(BMI3cat), data = data)
+anova(reduced, full, test = "Chisq")
+```
+
+## Example: Hypertension in the Jackson Heart Study
+
+```{r, echo = TRUE}
+full <- multinom(as.factor(BPjnc7) ~ age + as.factor(BMI3cat), data = data)
+reduced <- multinom(as.factor(BPjnc7) ~ age, data = data)
+anova(reduced, full, test = "Chisq")
+```
