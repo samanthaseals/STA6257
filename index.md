@@ -19,7 +19,7 @@ show_sidebar: false
 | 4    | M   | 09/12 | Project 1 (no meeting - Dr. Seals traveling) | | | |
 |      | W   | 09/14 | Project 1 (no meeting - Dr. Seals traveling) | | | 09/19 |
 | 5    | M   | 09/19 | Binary, ordinal, and multinomial logistic regressions | [html](https://samanthaseals.github.io/STA6257/slides/L04.html), [qmd](https://github.com/samanthaseals/STA6257/blob/main/slides/L04.qmd) | | |
-|      | W   | 09/21 | Practice (short meeting) | | | 09/26 |
+|      | W   | 09/21 | Practice (short meeting) | | [html](https://samanthaseals.github.io/STA6257/practice/P04.html), [qmd](https://github.com/samanthaseals/STA6257/blob/main/practice/P04.qmd) | 09/26 |
 | 6    | M   | 09/26 | Project 2 (short meeting) | | | |
 |      | W   | 09/28 | Project 2 (no meeting) | | | 10/03 |
 | 7    | M   | 10/03 | Poisson and negative binomial regressions | | | |
