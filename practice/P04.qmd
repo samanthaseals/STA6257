@@ -1,0 +1,116 @@
+---
+title: "Logistic Regression - Week 5"
+format: html
+self-contained: true
+editor: source
+---
+
+**Recall the [Jackson Heart Study](https://www.jacksonheartstudy.org/) data from lecture. You can find data from clinic visits 1, 2, and 3 on Canvas. For any question requiring an $\alpha$, assume $\alpha=0.05$.**
+
+#### 1. Import the data from visit 1. Keep only subjid, HbA1c, age, totchol, HTN, HSgrad, and BMI3cat. Retain only the complete cases. 
+
+```{r, echo = TRUE, message = FALSE}
+
+```
+
+#### 2. Model hypertension status at V1 (*HTN*) as a function of age (*age*; years), total cholesterol (*totchol*; mg/dL), hemoglobin A1c (*HbA1c*), education (*HSgrad*; 1=yes, 0=no; use 0 as the reference group), and health status based on body mass index (*BMI3cat*; 0=poor health, 1=intermediate health, 2=ideal health; use 0 as the reference group), and all possible two-way interactions involving age. 
+
+```{r, echo = TRUE}
+
+```
+
+#### 3. Use the appropriate (single!) hypothesis test to show that we cannot drop all of the interactions **at the same time**.
+
+```{r, echo = TRUE}
+
+```
+
+#### 4. Use the appropriate one-at-a-time hypothesis tests to determine which, if any, interactions can be dropped.
+
+```{r, echo = TRUE}
+
+```
+
+#### 5. Construct a "final model" that does not have the interactions you deemed insignificant in question 4. 
+
+```{r, echo = TRUE}
+
+```
+
+#### 6. Use the appropriate hypothesis tests to determine which main effects are significant predictors of hypertension status. (Reminder: we cannot discuss main effects when they are involved in interaction terms.)
+
+```{r, echo = TRUE}
+
+```
+
+#### 7. Use the model from question 6 to find the individual models for those aged 25, 50, and 75 years old.
+
+#### 8. Provide interpretations of the slopes in the model for those that are 25 years old.
+
+#### 9. Provide interpretations of the slopes in the model for those that are 50 years old.
+
+#### 10. Provide interpretations of the slopes in the model for those that are 75 years old.
+
+#### 11. Reimport the data from visit 1. Keep only subjid, HbA1c, age, totchol, BPjnc7, HSgrad, and BMI3cat. Retain only the complete cases. 
+
+```{r, echo = TRUE, message = FALSE}
+
+```
+
+#### 12. Using ordinal logistic regression, model hypertension status at V1 (*BPjnc7*; 0=normotensive, 1=pre-hypertensive, 2=Stage I hypertension, 3=Stage II hypertension) as a function of age (*age*; years), total cholesterol (*totchol*; mg/dL), hemoglobin A1c (*HbA1c*), education (*HSgrad*; 1=yes, 0=no; use 0 as the reference group), and health status based on body mass index (*BMI3cat*; 0=poor health, 1=intermediate health, 2=ideal health; use 0 as the reference group), and all possible two-way interactions involving education. 
+
+```{r, echo = TRUE}
+
+```
+
+#### 13. Use the appropriate (single!) hypothesis test to show that we cannot drop all of the interactions **at the same time**.
+
+```{r, echo = TRUE}
+
+```
+
+#### 14. Use the appropriate one-at-a-time hypothesis tests to determine which, if any, interactions can be dropped.
+
+```{r, echo = TRUE}
+
+```
+
+#### 15. Construct a "final model" that does not have the interactions you deemed insignificant in question 14. 
+
+```{r, echo = TRUE}
+
+```
+
+#### 16. Use the appropriate hypothesis tests to determine which main effects are significant predictors of hypertension status. (Reminder: we cannot discuss main effects when they are involved in interaction terms.)
+
+```{r, echo = TRUE}
+
+```
+
+#### 17. Use the model from question 16 to find the individual models for those that did and, separately, did not graduate high school.
+
+#### 18. Provide interpretations of the slopes in the model for those that did graduate high school.
+
+#### 19. Provide interpretations of the slopes in the model for those that did not graduate high school.
+
+#### 20. Check the assumption made with ordinal logistic regression
+
+```{r, echo = TRUE}
+
+```
+
+#### 21. Using multinomial logistic regression, model hypertension status at V1 (*BPjnc7*; 0=normotensive, 1=pre-hypertensive, 2=Stage I hypertension, 3=Stage II hypertension) as a function of age (*age*; years), total cholesterol (*totchol*; mg/dL), hemoglobin A1c (*HbA1c*), education (*HSgrad*; 1=yes, 0=no; use 0 as the reference group), and health status based on body mass index (*BMI3cat*; 0=poor health, 1=intermediate health, 2=ideal health; use 0 as the reference group). 
+
+```{r, echo = TRUE}
+
+```
+
+#### 22. Use the appropriate hypothesis tests to determine which, if any, are significant predictors of hypertension status.
+
+```{r, echo = TRUE}
+
+```
+
+#### 23. Write a paragraph summarizing model results (include interpretations of slopes here) that is appropriate for the lead scientist (not a statistician) of the JHS.
+
+
