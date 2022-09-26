@@ -17,10 +17,10 @@ The methodologies to consider:
   - Quantile regression
   - Cubic splines
   - LASSO and ridge regression
-  - Cross validation
+  - ~~Cross validation~~ DB, JH, MTo
   - Bootstrapping and jackknife estimation
   - Kernel regression
-  - K-means clustering
+  - ~~K-means clustering~~ GB, JD, MTa
   - Principal component analysis
   - Generalized additive models
   - Generalized estimating equations
