@@ -11,7 +11,7 @@ You will choose one area to work in. Note that these are likely new-to-you topic
 
 The methodologies to consider:
 
-  - Missing data and imputation
+  - ~~Missing data and imputation~~ AD, GRA, DS
   - Longitudinal analysis
   - Polynomial regression
   - Quantile regression
