@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="L05_files/libs/clipboard/clipboard.min.js"></script>
+<script src="L05_files/libs/quarto-html/tabby.min.js"></script>
+<script src="L05_files/libs/quarto-html/popper.min.js"></script>
+<script src="L05_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="L05_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="L05_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="L05_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.0.38">
+
+  <meta name="author" content="Dr.&nbsp;Seals">
+  <title>Poisson and Negative Binomial Regressions</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="L05_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="L05_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #f8f8f2;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #f8f8f2; } /* Normal */
+    code span.al { color: #f07178; background-color: #2a0f15; font-weight: bold; } /* Alert */
+    code span.an { color: #d4d0ab; } /* Annotation */
+    code span.at { color: #00e0e0; } /* Attribute */
+    code span.bn { color: #d4d0ab; } /* BaseN */
+    code span.bu { color: #abe338; } /* BuiltIn */
+    code span.cf { color: #ffa07a; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #abe338; } /* Char */
+    code span.cn { color: #ffd700; } /* Constant */
+    code span.co { color: #f8f8f2; font-style: italic; } /* Comment */
+    code span.cv { color: #ffd700; } /* CommentVar */
+    code span.do { color: #f8f8f2; } /* Documentation */
+    code span.dt { color: #ffa07a; } /* DataType */
+    code span.dv { color: #d4d0ab; } /* DecVal */
+    code span.er { color: #f07178; text-decoration: underline; } /* Error */
+    code span.ex { color: #00e0e0; font-weight: bold; } /* Extension */
+    code span.fl { color: #d4d0ab; } /* Float */
+    code span.fu { color: #ffa07a; } /* Function */
+    code span.im { color: #abe338; } /* Import */
+    code span.in { color: #d4d0ab; } /* Information */
+    code span.kw { color: #ffa07a; font-weight: bold; } /* Keyword */
+    code span.op { color: #ffa07a; } /* Operator */
+    code span.ot { color: #00e0e0; } /* Other */
+    code span.pp { color: #dcc6e0; } /* Preprocessor */
+    code span.re { color: #00e0e0; background-color: #f8f8f2; } /* RegionMarker */
+    code span.sc { color: #abe338; } /* SpecialChar */
+    code span.ss { color: #abe338; } /* SpecialString */
+    code span.st { color: #abe338; } /* String */
+    code span.va { color: #00e0e0; } /* Variable */
+    code span.vs { color: #abe338; } /* VerbatimString */
+    code span.wa { color: #dcc6e0; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="L05_files/libs/revealjs/dist/theme/quarto.css" id="theme">
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
+  <link href="L05_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="L05_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="L05_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="L05_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="L05_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="L05_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+
+  .callout {
+    margin-top: 1em;
+    margin-bottom: 1em;  
+    border-radius: .25rem;
+  }
+
+  .callout.callout-style-simple { 
+    padding: 0em 0.5em;
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+    display: flex;
+  }
+
+  .callout.callout-style-default {
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+  }
+
+  .callout .callout-body-container {
+    flex-grow: 1;
+  }
+
+  .callout.callout-style-simple .callout-body {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-style-default .callout-body {
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-captioned.callout-style-simple .callout-body {
+    margin-top: 0.2em;
+  }
+
+  .callout:not(.callout-captioned) .callout-body {
+      display: flex;
+  }
+
+  .callout:not(.no-icon).callout-captioned.callout-style-simple .callout-content {
+    padding-left: 1.6em;
+  }
+
+  .callout.callout-captioned .callout-header {
+    padding-top: 0.2em;
+    margin-bottom: -0.2em;
+  }
+
+  .callout.callout-captioned .callout-caption  p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+    
+  .callout.callout-captioned.callout-style-simple .callout-content  p {
+    margin-top: 0;
+  }
+
+  .callout.callout-captioned.callout-style-default .callout-content  p {
+    margin-top: 0.7em;
+  }
+
+  .callout.callout-style-simple div.callout-caption {
+    border-bottom: none;
+    font-size: .9rem;
+    font-weight: 600;
+    opacity: 75%;
+  }
+
+  .callout.callout-style-default  div.callout-caption {
+    border-bottom: none;
+    font-weight: 600;
+    opacity: 85%;
+    font-size: 0.9rem;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-default div.callout-content {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-simple .callout-icon::before {
+    height: 1rem;
+    width: 1rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 1rem 1rem;
+  }
+
+  .callout.callout-style-default .callout-icon::before {
+    height: 0.9rem;
+    width: 0.9rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 0.9rem 0.9rem;
+  }
+
+  .callout-caption {
+    display: flex
+  }
+    
+  .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  .callout.no-icon::before {
+    display: none !important;
+  }
+
+  .callout.callout-captioned .callout-body > .callout-content > :last-child {
+    margin-bottom: 0.5rem;
+  }
+
+  .callout.callout-captioned .callout-icon::before {
+    margin-top: .5rem;
+    padding-right: .5rem;
+  }
+
+  .callout:not(.callout-captioned) .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  /* Callout Types */
+
+  div.callout-note {
+    border-left-color: #4582ec !important;
+  }
+
+  div.callout-note .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEU0lEQVRYCcVXTWhcVRQ+586kSUMMxkyaElstCto2SIhitS5Ek8xUKV2poatCcVHtUlFQk8mbaaziwpWgglJwVaquitBOfhQXFlqlzSJpFSpIYyXNjBNiTCck7x2/8/LeNDOZxDuEkgOXe++553zfefee+/OYLOXFk3+1LLrRdiO81yNqZ6K9cG0P3MeFaMIQjXssE8Z1JzLO9ls20MBZX7oG8w9GxB0goaPrW5aNMp1yOZIa7Wv6o2ykpLtmAPs/vrG14Z+6d4jpbSKuhdcSyq9wGMPXjonwmESXrriLzFGOdDBLB8Y6MNYBu0dRokSygMA/mrun8MGFN3behm6VVAwg4WR3i6FvYK1T7MHo9BK7ydH+1uurECoouk5MPRyVSBrBHMYwVobG2aOXM07sWrn5qgB60rc6mcwIDJtQrnrEr44kmy+UO9r0u9O5/YbkS9juQckLed3DyW2XV/qWBBB3ptvI8EUY3I9p/67OW+g967TNr3Sotn3IuVlfMLVnsBwH4fsnebJvyGm5GeIUA3jljERmrv49SizPYuq+z7c2H/jlGC+Ghhupn/hcapqmcudB9jwJ/3jvnvu6vu5lVzF1fXyZuZZ7U8nRmVzytvT+H3kilYvH09mLWrQdwFSsFEsxFVs5fK7A0g8gMZjbif4ACpKbjv7gNGaD8bUrlk8x+KRflttr22JEMRUbTUwwDQScyzPgedQHZT0xnx7ujw2jfVfExwYHwOsDTjLdJ2ebmeQIlJ7neo41s/DrsL3kl+W2lWvAga0tR3zueGr6GL78M3ifH0rGXrBC2aAR8uYcIA5gwV8zIE8onoh8u0Fca/ciF7j1uOzEnqcIm59sEXoGc0+z6+H45V1CvAvHcD7THztu669cnp+L0okAeIc6zjbM/24LgGM1gZk7jnRu1aQWoU9sfUOuhrmtaPIO3YY1KLLWZaEO5TKUbMY5zx8W9UJ6elpLwKXbsaZ4EFl7B4bMtDv0iRipKoDQT2sNQI9b1utXFdYisi+wzZ/ri/1m7QfDgEuvgUUEIJPq3DhX/5DWNqIXDOweC2wvIR90Oq3lDpdMIgD2r0dXvGdsEW5H6x6HLRJYU7C69VefO1x8Gde1ZFSJLfWS1jbCnhtOPxmpfv2LXOA2Xk2tvnwKKPFuZ/oRmwBwqRQDcKNeVQkYcOjtWVBuM/JuYw5b6isojIkYxyYAFn5K7ZBF10fea52y8QltAg6jnMqNHFBmGkQ1j+U43HMi2xMar1Nv0zGsf1s8nUsmUtPOOrbFIR8bHFDMB5zL13Gmr/kGlCkUzedTzzmzsaJXhYawnA3UmARpiYj5ooJZiUoxFRtK3X6pgNPv+IZVPcnwbOl6f+aBaO1CNvPW9n9LmCp01nuSaTRF2YxHqZ8DYQT6WsXT+RD6eUztwYLZ8rM+rcPxamv1VQzFUkzFXvkiVrySGQgJNvXHJAxiU3/NwiC03rSf05VBaPtu/Z7/B8Yn/w7eguloAAAAAElFTkSuQmCC');
+  }
+
+  div.callout-note.callout-style-default .callout-caption {
+    background-color: #dae6fb
+  }
+
+  div.callout-important {
+    border-left-color: #d9534f !important;
+  }
+
+  div.callout-important .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEKklEQVRYCcVXTWhcVRS+575MJym48A+hSRFr00ySRQhURRfd2HYjk2SSTokuBCkU2o0LoSKKraKIBTcuFCoidGFD08nkBzdREbpQ1EDNIv8qSGMFUboImMSZd4/f9zJv8ibJMC8xJQfO3HPPPef7zrvvvnvviIkpC9nsw0UttFunbUhpFzFtarSd6WJkStVMw5xyVqYTvkwfzuf/5FgtkVoB0729j1rjXwThS7Vio+Mo6DNnvLfahoZ+i/o32lULuJ3NNiz7q6+pyAUkJaFF6JwaM2lUJlV0MlnQn5aTRbEu0SEqHUa0A4AdiGuB1kFXRfVyg5d87+Dg4DL6m2TLAub60ilj7A1Ec4odSAc8X95sHh7+ZRPCFo6Fnp7HfU/fBng/hi10CjCnWnJjsxvDNxWw0NfV6Rv5GgP3I3jGWXumdTD/3cbEOP2ZbOZp69yniG3FQ9z1jD7bnBu9Fc2tKGC2q+uAJOQHBDRiZX1x36o7fWBs7J9ownbtO+n0/qWkvW7UPIfc37WgT6ZGR++EOJyeQDSb9UB+DZ1G6DdLDzyS+b/kBCYGsYgJbSQHuThGKRcw5xdeQf8YdNHsc6ePXrlSYMBuSIAFTGAtQo+VuALo4BX83N190NWZWbynBjhOHsmNfFWLeL6v+ynsA58zDvvAC8j5PkbOcXCMg2PZFk3q8MjI7WAG/Dp9AwP7jdGBOOQkAvlFUB+irtm16I1Zw9YBcpGTGXYmk3kQIC/Cds55l+iMI3jqhjAuaoe+am2Jw5GT3Nbz3CkE12NavmzN5+erJW7046n/CH1RO/RVa8lBLozXk9uqykkGAyRXLWlLv5jyp4RFsG5vGVzpDLnIjTWgnRy2Rr+tDKvRc7Y8AyZq10jj8DqXdnIRNtFZb+t/ZRtXcDiVnzpqx8mPcDWxgARUqx0W1QB9MeUZiNrV4qP+Ehc+BpNgATsTX8ozYKL2NtFYAHc84fG7ndxUPr+AR/iQSns7uSUufAymwDOb2+NjK27lEFocm/EE2WpyIy/Hi66MWuMKJn8RvxIcj87IM5Vh9663ziW36kR0HNenXuxmfaD8JC7tfKbrhFr7LiZCrMjrzTeGx+PmkosrkNzW94ObzwocJ7A1HokLolY+AvkTiD/q1H0cN48c5EL8Crkttsa/AXQVDmutfyku0E7jShx49XqV3MFK8IryDhYVbj7Sj2P2eBxwcXoe8T8idsKKPRcnZw1b+slFTubwUwhktrfnAt7J++jwQtLZcm3sr9LQrjRzz6cfMv9aLvgmnAGvpoaGLxM4mAEaLV7iAzQ3oU0IvD5x9ix3yF2RAAuYAOO2f7PEFWCXZ4C9Pb2UsgDeVnFSpbFK7/IWu7TPTvBqzbGdCHOJQSxiEjt6IyZmxQyEJHv6xyQsYk//moVFsN2zP6fRImjfq7/n/wFDguUQFNEwugAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-important.callout-style-default .callout-caption {
+    background-color: #f7dddc
+  }
+
+  div.callout-warning {
+    border-left-color: #f0ad4e !important;
+  }
+
+  div.callout-warning .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAETklEQVRYCeVWW2gcVRg+58yaTUnizqbipZeX4uWhBEniBaoUX1Ioze52t7sRq6APio9V9MEaoWlVsFasRq0gltaAPuxms8lu0gcviE/FFOstVbSIxgcv6SU7EZqmdc7v9+9mJtNks51NTUH84ed889/PP+cmxP+d5FIbMJmNbpREu4WUkiTtCicKny0l1pIKmBzovF2S+hIJHX8iEu3hZJ5lNZGqyRrGSIQpq15AzF28jgpeY6yk6GVdrfFqdrD6Iw+QlB8g0YS2g7dyQmXM/IDhBhT0UCiRf59lfqmmDvzRt6kByV/m4JjtzuaujMUM2c5Z2d6JdKrRb3K2q6mA+oYVz8JnDdKPmmNthzkAk/lN63sYPgevrguc72aZX/L9C6x09GYyxBgCX4NlvyGUHOKELlm5rXeR1kchuChJt4SSwyddZRXgvwMGvYo4QSlk3/zkHD8UHxwVJA6zjZZqP8v8kK8OWLnIZtLyCAJagYC4rTGW/9Pqj92N/c+LUaAj27movwbi19tk/whRCIE7Q9vyI6yvRpftAKVTdUjOW40X3h5OXsKCdmFcx0xlLJoSuQngnrJe7Kcjm4OMq9FlC7CMmScQANuNvjfP3PjGXDBaUQmbp296S5L4DrpbrHN1T87ZVEZVCzg1FF0Ft+dKrlLukI+/c9ENo+TvlTDbYFvuKPtQ9+l052rXrgKoWkDAFnvh0wTOmYn8R5f4k/jN/fZiCM1tQx9jQQ4ANhqG4hiL0qIFTGViG9DKB7GYzgubnpofgYRwO+DFjh0Zin2m4b/97EDkXkc+f6xYAPX0KK2I/7fUQuwzuwo/L3AkcjugPNixC8cHf0FyPjWlItmLxWw4Ou9YsQCr5fijMGoD/zpdRy95HRysyXA74MWOnscpO4j2y3HAVisw85hX5+AFBRSHt4ShfLFkIMXTqyKFc46xdzQM6XbAi702a7sy04J0+feReMFKp5q9esYLCqAZYw/k14E/xcLLsFElaornTuJB0svMuJINy8xkIYuL+xPAlWRceH6+HX7THJ0djLUom46zREu7tTkxwmf/FdOZ/sh6Q8qvEAiHpm4PJ4a/doJe0gH1t+aHRgCzOvBvJedEK5OFE5jpm4AGP2a8Dxe3gGJ/pAutug9Gp6he92CsSsWBaEcxGx0FHytmIpuqGkOpldqNYQK8cSoXvd+xLxXADw0kf6UkJNFtdo5MOgaLjiQOQHcn+A6h5NuL2s0qsC2LOM75PcF3yr5STuBSAcGG+meA14K/CI21HcS4LBT6tv0QAh8Dr5l93AhZzG5ZJ4VxAqdZUEl9z7WJ4aN+svMvwHHL21UKTd1mqvChH7/Za5xzXBBKrUcB0TQ+Ulgkfbi/H/YT5EptrGzsEK7tR1B7ln9BBwckYfMiuSqklSznIuoIIOM42MQO+QnduCoFCI0bpkzjCjddHPN/F+2Yu+sd9bKNpVwHhbS3LluK/0zgfwD0xYI5dXuzlQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-warning.callout-style-default .callout-caption {
+    background-color: #fcefdc
+  }
+
+  div.callout-tip {
+    border-left-color: #02b875 !important;
+  }
+
+  div.callout-tip .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAADr0lEQVRYCe1XTWgTQRj9ZjZV8a9SPIkKgj8I1bMHsUWrqYLVg4Ue6v9BwZOxSYsIerFao7UiUryIqJcqgtpimhbBXoSCVxUFe9CTiogUrUp2Pt+3aUI2u5vdNh4dmMzOzHvvezuz8xNFM0mjnbXaNu1MvFWRXkXEyE6aYOYJpdW4IXuA4r0fo8qqSMDBU0v1HJUgVieAXxzCsdE/YJTdFcVIZQNMyhruOMJKXYFoLfIfIvVIMWdsrd+Rpd86ZmyzzjJmLStqRn0v8lzkb4rVIXvnpScOJuAn2ACC65FkPzEdEy4TPWRLJ2h7z4cArXzzaOdKlbOvKKX25Wl00jSnrwVxAg3o4dRxhO13RBSdNvH0xSARv3adTXbBdTf64IWO2vH0LT+cv4GR1DJt+DUItaQogeBX/chhbTBxEiZ6gftlDNXTrvT7co4ub5A6gp9HIcHvzTa46OS5fBeP87Qm0fQkr4FsYgVQ7Qg+ZayaDg9jhg1GkWj8RG6lkeSacrrHgDaxdoBiZPg+NXV/KifMuB6//JmYH4CntVEHy/keA6x4h4CU5oFy8GzrBS18cLJMXcljAKB6INjWsRcuZBWVaS3GDrqB7rdapVIeA+isQ57Eev9eCqzqOa81CY05VLd6SamW2wA2H3SiTbnbSxmzfp7WtKZkqy4mdyAlGx7ennghYf8voqp9cLSgKdqNfa6RdRsAAkPwRuJZNbpByn+RrJi1RXTwdi8RQF6ymDwGMAtZ6TVE+4uoKh+MYkcLsT0Hk8eAienbiGdjJHZTpmNjlbFJNKDVAp2fJlYju6IreQxQ08UJDNYdoLSl6AadO+fFuCQqVMB1NJwPm69T04Wv5WhfcWyfXQB+wXRs1pt+nCknRa0LVzSA/2B+a9+zQJadb7IyyV24YAxKp2Jqs3emZTuNnKxsah+uabKbMk7CbTgJx/zIgQYErIeTKRQ9yD9wxVof5YolPHqaWo7TD6tJlh7jQnK5z2n3+fGdggIOx2kaa2YI9QWarc5Ce1ipNWMKeSG4DysFF52KBmTNMmn5HqCFkwy34rDg05gDwgH3bBi+sgFhN/e8QvRn8kbamCOhgrZ9GJhFDgfcMHzFb6BAtjKpFhzTjwv1KCVuxHvCbsSiEz4CANnj84cwHdFXAbAOJ4LTSAawGWFn5tDhLMYz6nWeU2wJfIhmIJBefcd/A5FWQWGgrWzyORZ3Q6HuV+Jf0Bj+BTX69fm1zWgK7By1YTXchFDORywnfQ7GpzOo6S+qECrsx2ifVQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-tip.callout-style-default .callout-caption {
+    background-color: #ccf1e3
+  }
+
+  div.callout-caution {
+    border-left-color: #fd7e14 !important;
+  }
+
+  div.callout-caution .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACV0lEQVRYCdVWzWoUQRCuqp2ICBLJXgITZL1EfQDBW/bkzUMUD7klD+ATSHBEfAIfQO+iXsWDxJsHL96EHAwhgzlkg8nBg25XWb0zIb0zs9muYYWkoKeru+vn664fBqElyZNuyh167NXJ8Ut8McjbmEraKHkd7uAnAFku+VWdb3reSmRV8PKSLfZ0Gjn3a6Xlcq9YGb6tADjn+lUfTXtVmaZ1KwBIvFI11rRXlWlatwIAAv2asaa9mlB9wwygiDX26qaw1yYPzFXg2N1GgG0FMF8Oj+VIx7E/03lHx8UhvYyNZLN7BwSPgekXXLribw7w5/c8EF+DBK5idvDVYtEEwMeYefjjLAdEyQ3M9nfOkgnPTEkYU+sxMq0BxNR6jExrAI31H1rzvLEfRIdgcv1XEdj6QTQAS2wtstEALLG1yEZ3QhH6oDX7ExBSFEkFINXH98NTrme5IOaaA7kIfiu2L8A3qhH9zRbukdCqdsA98TdElyeMe5BI8Rs2xHRIsoTSSVFfCFCWGPn9XHb4cdobRIWABNf0add9jakDjQJpJ1bTXOJXnnRXHRf+dNL1ZV1MBRCXhMbaHqGI1JkKIL7+i8uffuP6wVQAzO7+qVEbF6NbS0LJureYcWXUUhH66nLR5rYmva+2tjRFtojkM2aD76HEGAD3tPtKM309FJg5j/K682ywcWJ3PASCcycH/22u+Bh7Aa0ehM2Fu4z0SAE81HF9RkB21c5bEn4Dzw+/qNOyXr3DCTQDMBOdhi4nAgiFDGCinIa2owCEChUwD8qzd03PG+qdW/4fDzjUMcE1ZpIAAAAASUVORK5CYII=');
+  }
+
+  div.callout-caution.callout-style-default .callout-caption {
+    background-color: #ffe5d0
+  }
+
+  </style>
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  
+  <link href="L05_files/libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+  <script src="L05_files/libs/pagedtable-1.1/js/pagedtable.js"></script>
+</head>
+<body class="quarto-dark">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="center">
+  <h1 class="title">Poisson and Negative Binomial Regressions</h1>
+  <p class="subtitle">STA6257: Advanced Statistical Modeling</p>
+  <p class="author">Dr.&nbsp;Seals</p>
+</section>
+
+<section id="introduction" class="slide level2">
+<h2>Introduction</h2>
+<ul>
+<li><p>We have previously discussed continuous outcomes and the appropriate distributions.</p>
+<ul>
+<li><p>Normal</p></li>
+<li><p>Gamma</p></li>
+</ul></li>
+<li><p>We also discussed logistic regression models for binary, ordinal, and multinomial data.</p></li>
+<li><p>We will now discuss regression models for count data:</p>
+<ul>
+<li><p>Poisson</p></li>
+<li><p>Negative binomial</p></li>
+</ul></li>
+<li><p>We will also discuss the need for zero-inflation models.</p></li>
+</ul>
+</section>
+<section id="example-data-horseshoe-crabs" class="slide level2">
+<h2>Example Data: Horseshoe Crabs</h2>
+<ul>
+<li>Consider the <a href="https://users.stat.ufl.edu/~aa/glm/glm.html">horseshoe crab data from the textbook</a>: there are 173 <a href="https://www.dnr.sc.gov/marine/pub/seascience/horseshoecrab.html">mating female horseshoe crabs</a>. The outcome of interest is the number of satellites, or the number of male crabs that group around the female to fertilize her eggs. Predictors to consider include physical characteristics of the female crab: shell color, spine condition, weight, and shell width.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(gsheet)</span>
+<span id="cb1-3"><a href="#cb1-3"></a>data <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(<span class="fu">gsheet2tbl</span>(<span class="st">"https://docs.google.com/spreadsheets/d/1JoI0AffzZdGkW3FCCWHgRaZeuGrBt1Qa-WMT3_l8XCA/edit?usp=sharing"</span>))</span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="fu">head</span>(data, <span class="at">n =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["color"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["spine_cond"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["width_cm"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["satellites_num"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["weight_g"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["sattelites_yn"],"name":[6],"type":["dbl"],"align":["right"]}],"data":[{"1":"3","2":"3","3":"28.3","4":"8","5":"3050","6":"1"},{"1":"4","2":"3","3":"22.5","4":"0","5":"1550","6":"0"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</section>
+<section id="example-data-horseshoe-crabs-1" class="slide level2">
+<h2>Example Data: Horseshoe Crabs</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>data <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(satellites_num)) <span class="sc">+</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Number of Satellites"</span>,</span>
+<span id="cb2-5"><a href="#cb2-5"></a>       <span class="at">y =</span> <span class="st">"Number of Observations"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="L05_files/figure-revealjs/unnamed-chunk-2-1.png" width="960" class="r-stretch"></section>
+<section id="example-data-horseshoe-crabs-2" class="slide level2 smaller">
+<h2>Example Data: Horseshoe Crabs</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>data <span class="sc">%&gt;%</span> <span class="fu">count</span>(color) <span class="co"># 2 = light medium, 3 = medium, 4 = dark medium, 5 = dark</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["color"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"2","2":"12"},{"1":"3","2":"95"},{"1":"4","2":"44"},{"1":"5","2":"22"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>data <span class="sc">%&gt;%</span> <span class="fu">count</span>(spine_cond) <span class="co"># 1 = both good, 2 = one worn or broken, 3 = both worn or broken</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["spine_cond"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"1","2":"37"},{"1":"2","2":"15"},{"1":"3","2":"121"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</section>
+<section id="poisson-regression-definition-and-r-syntax" class="slide level2">
+<h2>Poisson Regression: Definition and R Syntax</h2>
+<ul>
+<li>We can model count outcomes using <a href="https://stats.oarc.ucla.edu/R/dae/Poisson-regression/">Poisson regression</a>,</li>
+</ul>
+<p><span class="math display">\ln \left( y \right) = \beta_0 + \beta_1 x_1 + ... + \beta_k x_k,</span></p>
+<ul>
+<li>We return to the <code>glm()</code> function and specify <code>family = "Poisson"</code></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>m <span class="ot">&lt;-</span> <span class="fu">glm</span>([outcome] <span class="sc">~</span> [pred <span class="dv">1</span>] <span class="sc">+</span> [pred <span class="dv">2</span>] <span class="sc">+</span> ... <span class="sc">+</span> [pred k], </span>
+<span id="cb5-2"><a href="#cb5-2"></a>         <span class="at">family=</span><span class="st">"poisson"</span>,</span>
+<span id="cb5-3"><a href="#cb5-3"></a>         <span class="at">data=</span>data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="poisson-regression-example" class="slide level2">
+<h2>Poisson Regression: Example</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(satellites_num <span class="sc">~</span> width_cm <span class="sc">+</span> spine_cond <span class="sc">+</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>            width_cm<span class="sc">:</span>spine_cond, <span class="at">family=</span><span class="st">"poisson"</span>,</span>
+<span id="cb6-3"><a href="#cb6-3"></a>          <span class="at">data=</span>data)</span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="fu">summary</span>(m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = satellites_num ~ width_cm + spine_cond + width_cm:spine_cond, 
+    family = "poisson", data = data)
+
+Deviance Residuals: 
+   Min      1Q  Median      3Q     Max  
+-2.864  -2.015  -0.519   1.010   4.492  
+
+Coefficients:
+                    Estimate Std. Error z value Pr(&gt;|z|)   
+(Intercept)          0.26826    1.46792   0.183  0.85499   
+width_cm             0.03838    0.05313   0.722  0.47008   
+spine_cond          -1.58362    0.61417  -2.578  0.00992 **
+width_cm:spine_cond  0.05614    0.02235   2.511  0.01203 * 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for poisson family taken to be 1)
+
+    Null deviance: 632.79  on 172  degrees of freedom
+Residual deviance: 560.83  on 169  degrees of freedom
+AIC: 924.13
+
+Number of Fisher Scoring iterations: 6</code></pre>
+</div>
+</div>
+<p><span class="math display"> \ln(\hat{y}) = 0.27 + 0.038 \text{ width} - 1.58 \text{ spine} + 0.056 \text{ width} \times \text{spine} </span></p>
+</section>
+<section id="poisson-regression-incident-rate-ratio" class="slide level2">
+<h2>Poisson Regression: Incident Rate Ratio</h2>
+<ul>
+<li><p>In Poisson regression, we convert the <span class="math inline">\hat{\beta}_i</span> values to incident rate ratios (IRR). <span class="math display"> \text{IRR}_i = \exp\left\{\hat{\beta}_i\right\} </span></p></li>
+<li><p>This is a multiplicative effect, like an odds ratio in logistic regression or like <span class="math inline">\exp\left\{\hat{\beta}\right\}</span> in Gamma regression.</p>
+<ul>
+<li><p>An IRR <span class="math inline">&gt;</span> 1 indicates an increase in the expected count.</p></li>
+<li><p>An IRR <span class="math inline">&lt;</span> 1 indicates a decrease in the expected count.</p></li>
+<li><p>We can convert these to a percent increase/decrease, too.</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="poisson-regression-example-1" class="slide level2">
+<h2>Poisson Regression: Example</h2>
+<ul>
+<li>Recall that there is an interaction term in the model,</li>
+</ul>
+<p><span class="math display"> \ln(\hat{y}) = 0.27 + 0.038 \text{ width} - 1.58 \text{ spine} + 0.056 \text{ width} \times \text{spine} </span></p>
+<ul>
+<li>Let’s find the model for females with average shell width,</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">mean</span>(data<span class="sc">$</span>width_cm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 26.29884</code></pre>
+</div>
+</div>
+<span class="math display">\begin{align*}
+\ln(\hat{y}) &amp;= 0.27 + 0.038 \text{ width} - 1.58 \text{ spine} + 0.056 \text{ width} \times \text{spine} \\
+&amp;= 0.27 + 0.038 (26) - 1.58 \text{ spine} + 0.056 (26)  \text{spine} \\
+&amp;= 1.258 - 0.124 \text{ spine}
+\end{align*}</span>
+<ul>
+<li>Thus, as spine conditions worsen, we expect the number of satellites to multiply by <span class="math inline">e^{-0.124} = 0.8834</span>, or decrease by approximately 12%.</li>
+</ul>
+</section>
+<section id="poisson-regression-example-2" class="slide level2">
+<h2>Poisson Regression: Example</h2>
+<ul>
+<li>Recall that there is an interaction term in the model,</li>
+</ul>
+<p><span class="math display"> \ln(\hat{y}) = 0.27 + 0.038 \text{ width} - 1.58 \text{ spine} + 0.056 \text{ width} \times \text{spine} </span></p>
+<ul>
+<li>Let’s find the model for females with larger than average shell width,</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">quantile</span>(data<span class="sc">$</span>width_cm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  0%  25%  50%  75% 100% 
+21.0 24.9 26.1 27.7 33.5 </code></pre>
+</div>
+</div>
+<span class="math display">\begin{align*}
+\ln(\hat{y}) &amp;= 0.27 + 0.038 \text{ width} - 1.58 \text{ spine} + 0.056 \text{ width} \times \text{spine} \\
+&amp;= 0.27 + 0.038 (30) - 1.58 \text{ spine} + 0.056 (30)  \text{spine} \\
+&amp;= 1.41 - 0.10 \text{ spine}
+\end{align*}</span>
+<p>exp(-0.10)</p>
+<ul>
+<li>Thus, as spine conditions worsen, we expect the number of satellites to multiply by <span class="math inline">e^{-0.10} = 0.9048</span>, or decrease by approximately 10%.</li>
+</ul>
+</section>
+<section id="poisson-regression-example-3" class="slide level2">
+<h2>Poisson Regression: Example</h2>
+<ul>
+<li>Recall that there is an interaction term in the model,</li>
+</ul>
+<p><span class="math display"> \ln(\hat{y}) = 0.27 + 0.038 \text{ width} - 1.58 \text{ spine} + 0.056 \text{ width} \times \text{spine} </span></p>
+<ul>
+<li>Let’s find the models for females with the three spine conditions (1=both good, 2=one worn or broken, 3=both worn or broken),</li>
+</ul>
+<span class="math display">\begin{align*}
+\ln(\hat{y}_{\text{spine=1}}) &amp;= -1.31 + 0.094 \text{ width} \\
+\ln(\hat{y}_{\text{spine=2}}) &amp;= -2.89 + 0.150 \text{ width} \\
+\ln(\hat{y}_{\text{spine=3}}) &amp;= -4.47 + 0.206 \text{ width} \\
+\end{align*}</span>
+</section>
+<section id="poisson-regression-example-4" class="slide level2">
+<h2>Poisson Regression: Example</h2>
+<ul>
+<li>Looking at all interpretations,</li>
+</ul>
+<span class="math display">\begin{align*}
+\ln(\hat{y}_{\text{spine=1}}) &amp;= -1.31 + 0.094 \text{ width} \\
+\ln(\hat{y}_{\text{spine=2}}) &amp;= -2.89 + 0.150 \text{ width} \\
+\ln(\hat{y}_{\text{spine=3}}) &amp;= -4.47 + 0.206 \text{ width} \\
+\end{align*}</span>
+<ul>
+<li>When both spines are good, for each 1 cm width increase, we expect the satellite count to be multiplied by <span class="math inline">e^{0.094} = 1.0986</span>, an increase of 9.86%.</li>
+<li>When one spines is good, for each 1 cm width increase, we expect the satellite count to be multiplied by <span class="math inline">e^{0.150} = 1.1618</span>, an increase of 16.18%.</li>
+<li>When both spines are good, for each 1 cm width increase, we expect the satellite count to be multiplied by <span class="math inline">e^{0.206} = 1.2288</span>, an increase of 22.88%.</li>
+</ul>
+</section>
+<section id="poisson-regression-assumption" class="slide level2">
+<h2>Poisson Regression: Assumption</h2>
+<ul>
+<li>Consider the <a href="https://en.wikipedia.org/wiki/Poisson_distribution">Poisson distribution</a>’s probability mass function:</li>
+</ul>
+<p><span class="math display"> f(x; \lambda) = \text{P}[X = x] = \frac{\lambda^x e^{-\lambda}}{x!}, </span></p>
+<ul>
+<li>where
+<ul>
+<li><span class="math inline">y</span> is the number of occurrences (<span class="math inline">y</span> = 0, 1, 2 , … ),</li>
+<li><span class="math inline">\lambda</span> is a positive real number, and</li>
+<li><span class="math inline">!</span> is the factorial function.</li>
+</ul></li>
+<li>It can be shown that <span class="math display"> \lambda = \text{E}[X] = \text{Var}[X] </span></li>
+</ul>
+</section>
+<section id="poisson-regression-assumption-1" class="slide level2">
+<h2>Poisson Regression: Assumption</h2>
+<ul>
+<li><p>Thus!!! We assume mean(<span class="math inline">y</span>) = var(<span class="math inline">y</span>) in Poisson regression.</p></li>
+<li><p>But what if we do not meet that assumption?</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>data <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="fu">mean</span>(satellites_num), <span class="fu">var</span>(satellites_num))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["mean(satellites_num)"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["var(satellites_num)"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"2.919075","2":"9.912018"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<ul>
+<li>We have <a href="https://en.wikipedia.org/wiki/Overdispersion">overdispersed data</a> :(</li>
+</ul>
+</section>
+<section id="negative-binomial-regression-definition-and-r-syntax" class="slide level2">
+<h2>Negative Binomial Regression: Definition and R Syntax</h2>
+<ul>
+<li>When we do not meet the Poisson assumption, we can use <a href="https://stats.oarc.ucla.edu/R/dae/negative-binomial-regression/">negative binomial regression</a>,</li>
+</ul>
+<p><span class="math display">\ln \left( y \right) = \beta_0 + \beta_1 x_1 + ... + \beta_k x_k,</span></p>
+<ul>
+<li>Now we use the <code>[glm.nb()](https://www.rdocumentation.org/packages/MASS/versions/7.3-58.1/topics/glm.nb)</code> function from the <a href="https://www.rdocumentation.org/packages/MASS/versions/7.3-58.1">MASS</a> package.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>m <span class="ot">&lt;-</span> <span class="fu">glm.nb</span>([outcome] <span class="sc">~</span> [pred <span class="dv">1</span>] <span class="sc">+</span> [pred <span class="dv">2</span>] <span class="sc">+</span> ... <span class="sc">+</span> [pred k], </span>
+<span id="cb13-2"><a href="#cb13-2"></a>            <span class="at">data=</span>data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>This model includes an overdispersion parameter.
+<ul>
+<li>As the parameter <span class="math inline">\to</span> 1, negative binomial <span class="math inline">\to</span> Poisson.</li>
+</ul></li>
+</ul>
+</section>
+<section id="negative-binomial-regression-example" class="slide level2">
+<h2>Negative Binomial Regression: Example</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">library</span>(MASS)</span>
+<span id="cb14-2"><a href="#cb14-2"></a>m2 <span class="ot">&lt;-</span> <span class="fu">glm.nb</span>(satellites_num <span class="sc">~</span> width_cm <span class="sc">+</span> spine_cond <span class="sc">+</span></span>
+<span id="cb14-3"><a href="#cb14-3"></a>            width_cm<span class="sc">:</span>spine_cond,</span>
+<span id="cb14-4"><a href="#cb14-4"></a>            <span class="at">data=</span>data)</span>
+<span id="cb14-5"><a href="#cb14-5"></a><span class="fu">summary</span>(m2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm.nb(formula = satellites_num ~ width_cm + spine_cond + width_cm:spine_cond, 
+    data = data, init.theta = 0.9200725423, link = log)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-1.7796  -1.4292  -0.2571   0.4491   2.1768  
+
+Coefficients:
+                    Estimate Std. Error z value Pr(&gt;|z|)
+(Intercept)         -0.76886    3.25819  -0.236    0.813
+width_cm             0.07631    0.11993   0.636    0.525
+spine_cond          -1.34216    1.33022  -1.009    0.313
+width_cm:spine_cond  0.04744    0.04926   0.963    0.335
+
+(Dispersion parameter for Negative Binomial(0.9201) family taken to be 1)
+
+    Null deviance: 215.04  on 172  degrees of freedom
+Residual deviance: 196.44  on 169  degrees of freedom
+AIC: 760.16
+
+Number of Fisher Scoring iterations: 1
+
+              Theta:  0.920 
+          Std. Err.:  0.166 
+
+ 2 x log-likelihood:  -750.155 </code></pre>
+</div>
+</div>
+<p><span class="math display"> \ln(\hat{y}) = -0.77 + 0.076 \text{ width} - 1.34 \text{ spine} + 0.047 \text{ width} \times \text{spine} </span></p>
+</section>
+<section id="poisson-vs.-negative-binomial" class="slide level2">
+<h2>Poisson vs.&nbsp;Negative Binomial</h2>
+<ul>
+<li><p>If the data is overdispersed, we know Poisson regression underestimates the SE.</p></li>
+<li><p>Recall,</p></li>
+</ul>
+<p><span class="math display"> \text{test statistic} = \frac{\hat{\beta}_i}{\text{SE}_{\hat{\beta}_i}} </span></p>
+<ul>
+<li><p>… so an underestimated SE <span class="math inline">\to</span> larger test statistic.</p></li>
+<li><p>Recall,</p></li>
+</ul>
+<p><span class="math display"> p = \text{P}[\text{observing something more extreme}] </span></p>
+<ul>
+<li><p>… so a larger test statistic <span class="math inline">\to</span> smaller <em>p</em>-value</p></li>
+<li><p>Thus!!! we are increasing the type I error rate (i.e., rejecting more often than we should).</p></li>
+</ul>
+</section>
+<section id="poisson-vs.-negative-binomial-example" class="slide level2">
+<h2>Poisson vs.&nbsp;Negative Binomial: Example</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">summary</span>(m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = satellites_num ~ width_cm + spine_cond + width_cm:spine_cond, 
+    family = "poisson", data = data)
+
+Deviance Residuals: 
+   Min      1Q  Median      3Q     Max  
+-2.864  -2.015  -0.519   1.010   4.492  
+
+Coefficients:
+                    Estimate Std. Error z value Pr(&gt;|z|)   
+(Intercept)          0.26826    1.46792   0.183  0.85499   
+width_cm             0.03838    0.05313   0.722  0.47008   
+spine_cond          -1.58362    0.61417  -2.578  0.00992 **
+width_cm:spine_cond  0.05614    0.02235   2.511  0.01203 * 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for poisson family taken to be 1)
+
+    Null deviance: 632.79  on 172  degrees of freedom
+Residual deviance: 560.83  on 169  degrees of freedom
+AIC: 924.13
+
+Number of Fisher Scoring iterations: 6</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="fu">summary</span>(m2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm.nb(formula = satellites_num ~ width_cm + spine_cond + width_cm:spine_cond, 
+    data = data, init.theta = 0.9200725423, link = log)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-1.7796  -1.4292  -0.2571   0.4491   2.1768  
+
+Coefficients:
+                    Estimate Std. Error z value Pr(&gt;|z|)
+(Intercept)         -0.76886    3.25819  -0.236    0.813
+width_cm             0.07631    0.11993   0.636    0.525
+spine_cond          -1.34216    1.33022  -1.009    0.313
+width_cm:spine_cond  0.04744    0.04926   0.963    0.335
+
+(Dispersion parameter for Negative Binomial(0.9201) family taken to be 1)
+
+    Null deviance: 215.04  on 172  degrees of freedom
+Residual deviance: 196.44  on 169  degrees of freedom
+AIC: 760.16
+
+Number of Fisher Scoring iterations: 1
+
+              Theta:  0.920 
+          Std. Err.:  0.166 
+
+ 2 x log-likelihood:  -750.155 </code></pre>
+</div>
+</div>
+</section>
+<section id="zero-inflated-poisson-introduction" class="slide level2">
+<h2>Zero-Inflated Poisson: Introduction</h2>
+<ul>
+<li><p>In the case of excess zeros, we can implement <a href="https://en.wikipedia.org/wiki/Zero-inflated_model">zero-inflated models</a>.</p></li>
+<li><p>This jointly models</p>
+<ul>
+<li><ol type="1">
+<li>a logit model for predicting excess zeros,</li>
+</ol></li>
+<li><ol start="2" type="1">
+<li>the Poisson count models.</li>
+</ol></li>
+</ul></li>
+</ul>
+<p>The zero-inflated Poisson model is as follows:</p>
+<p><span class="math display">y_i \sim \left\{
+\begin{array}{ll}
+      0, &amp; \text{with probability }1 - \phi_i \\
+      \text{Poisson}(\lambda_i), &amp; \text{with probability } \phi_i \\
+\end{array}
+\right. </span></p>
+</section>
+<section id="zero-inflated-poisson-r-syntax" class="slide level2">
+<h2>Zero-Inflated Poisson: R Syntax</h2>
+<ul>
+<li>We will use the <a href="https://www.rdocumentation.org/packages/pscl/versions/1.5.5/topics/zeroinfl"><code>zeroinfl()</code></a> function from the <a href="https://www.rdocumentation.org/packages/pscl/versions/1.5.5"><code>pscl</code></a> package.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>m <span class="ot">&lt;-</span> <span class="fu">zeroinfl</span>([count outcome] <span class="sc">~</span> [count pred <span class="dv">1</span>] <span class="sc">+</span> [count pred <span class="dv">2</span>] <span class="sc">+</span> ... <span class="sc">+</span> [count pred k_count] <span class="sc">|</span> </span>
+<span id="cb20-2"><a href="#cb20-2"></a>              [ZI pred <span class="dv">1</span>] <span class="sc">+</span> [ZI pred <span class="dv">2</span>] <span class="sc">+</span> ... [ZI pred k_ZI],</span>
+<span id="cb20-3"><a href="#cb20-3"></a>              <span class="at">data=</span>data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>Note that the predictors of the zero inflation do not have to be the same as the predictors of the count outcome.</li>
+</ul>
+</section>
+<section id="zero-inflation-example" class="slide level2">
+<h2>Zero-Inflation: Example</h2>
+<ul>
+<li>Let’s revisit the bar chart (pseudo-histogram) of the count outcome,</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>data <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(satellites_num)) <span class="sc">+</span></span>
+<span id="cb21-2"><a href="#cb21-2"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
+<span id="cb21-3"><a href="#cb21-3"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb21-4"><a href="#cb21-4"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Number of Satellites"</span>,</span>
+<span id="cb21-5"><a href="#cb21-5"></a>       <span class="at">y =</span> <span class="st">"Number of Observations"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="L05_files/figure-revealjs/unnamed-chunk-13-1.png" width="960" class="r-stretch"></section>
+<section id="zero-inflated-poisson-example" class="slide level2">
+<h2>Zero-Inflated Poisson: Example</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="fu">library</span>(pscl)</span>
+<span id="cb22-2"><a href="#cb22-2"></a>m3 <span class="ot">&lt;-</span> <span class="fu">zeroinfl</span>(satellites_num <span class="sc">~</span> width_cm <span class="sc">+</span> spine_cond <span class="sc">+</span></span>
+<span id="cb22-3"><a href="#cb22-3"></a>            width_cm<span class="sc">:</span>spine_cond <span class="sc">|</span> </span>
+<span id="cb22-4"><a href="#cb22-4"></a>              color <span class="sc">+</span> width_cm <span class="sc">+</span> spine_cond,</span>
+<span id="cb22-5"><a href="#cb22-5"></a>            <span class="at">data=</span>data)</span>
+<span id="cb22-6"><a href="#cb22-6"></a><span class="fu">summary</span>(m3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+zeroinfl(formula = satellites_num ~ width_cm + spine_cond + width_cm:spine_cond | 
+    color + width_cm + spine_cond, data = data)
+
+Pearson residuals:
+    Min      1Q  Median      3Q     Max 
+-1.6997 -0.8195 -0.2900  0.6018  4.3662 
+
+Count model coefficients (poisson with log link):
+                    Estimate Std. Error z value Pr(&gt;|z|)  
+(Intercept)          2.93944    1.57025   1.872   0.0612 .
+width_cm            -0.04481    0.05688  -0.788   0.4308  
+spine_cond          -1.00361    0.65476  -1.533   0.1253  
+width_cm:spine_cond  0.03384    0.02382   1.420   0.1555  
+
+Zero-inflation model coefficients (binomial with logit link):
+            Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)   9.8500     2.9707   3.316 0.000914 ***
+color         0.6216     0.2495   2.492 0.012708 *  
+width_cm     -0.4596     0.1066  -4.313 1.61e-05 ***
+spine_cond   -0.2764     0.2472  -1.118 0.263634    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+
+Number of iterations in BFGS optimization: 11 
+Log-likelihood: -359.5 on 8 Df</code></pre>
+</div>
+</div>
+</section>
+<section id="zero-inflated-negative-binomial-introduction" class="slide level2">
+<h2>Zero-Inflated Negative Binomial: Introduction</h2>
+<ul>
+<li><p>In the case of excess zeros, we can implement <a href="https://en.wikipedia.org/wiki/Zero-inflated_model">zero-inflated models</a>.</p></li>
+<li><p>This jointly models</p>
+<ul>
+<li><ol type="1">
+<li>a logit model for predicting excess zeros,</li>
+</ol></li>
+<li><ol start="2" type="1">
+<li>the negative binomial count models.</li>
+</ol></li>
+</ul></li>
+</ul>
+<p>The zero-inflated negative binomial model is as follows:</p>
+<p>$$y_i {</p>
+<span class="math display">\begin{array}{ll}
+      0, &amp; \text{with probability }1 - \phi_i \\
+      \text{NB}(r, p), &amp; \text{with probability } \phi_i \\
+\end{array}</span>
+<p>. $$</p>
+</section>
+<section id="zero-inflated-negative-binomial-r-syntax" class="slide level2">
+<h2>Zero-Inflated Negative Binomial: R Syntax</h2>
+<ul>
+<li>We will again use the <a href="https://www.rdocumentation.org/packages/pscl/versions/1.5.5/topics/zeroinfl"><code>zeroinfl()</code></a> function from the <a href="https://www.rdocumentation.org/packages/pscl/versions/1.5.5"><code>pscl</code></a> package, but add <code>dist = "negbin"</code>.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>m <span class="ot">&lt;-</span> <span class="fu">zeroinfl</span>([count outcome] <span class="sc">~</span> [count pred <span class="dv">1</span>] <span class="sc">+</span> [count pred <span class="dv">2</span>] <span class="sc">+</span> ... <span class="sc">+</span> [count pred k_count] <span class="sc">|</span> </span>
+<span id="cb24-2"><a href="#cb24-2"></a>              [ZI pred <span class="dv">1</span>] <span class="sc">+</span> [ZI pred <span class="dv">2</span>] <span class="sc">+</span> ... [ZI pred k_ZI],</span>
+<span id="cb24-3"><a href="#cb24-3"></a>              <span class="at">dist =</span> <span class="st">"negbin"</span>,</span>
+<span id="cb24-4"><a href="#cb24-4"></a>              <span class="at">data=</span>data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>Note that the predictors of the zero inflation do not have to be the same as the predictors of the count outcome.</li>
+</ul>
+</section>
+<section id="zero-inflated-negative-binomial-example" class="slide level2">
+<h2>Zero-Inflated Negative Binomial: Example</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>m4 <span class="ot">&lt;-</span> <span class="fu">zeroinfl</span>(satellites_num <span class="sc">~</span> width_cm <span class="sc">+</span> spine_cond <span class="sc">+</span></span>
+<span id="cb25-2"><a href="#cb25-2"></a>            width_cm<span class="sc">:</span>spine_cond <span class="sc">|</span> </span>
+<span id="cb25-3"><a href="#cb25-3"></a>              color <span class="sc">+</span> width_cm <span class="sc">+</span> spine_cond,</span>
+<span id="cb25-4"><a href="#cb25-4"></a>            <span class="at">dist =</span> <span class="st">"negbin"</span>,</span>
+<span id="cb25-5"><a href="#cb25-5"></a>            <span class="at">data=</span>data)</span>
+<span id="cb25-6"><a href="#cb25-6"></a><span class="fu">summary</span>(m4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+zeroinfl(formula = satellites_num ~ width_cm + spine_cond + width_cm:spine_cond | 
+    color + width_cm + spine_cond, data = data, dist = "negbin")
+
+Pearson residuals:
+    Min      1Q  Median      3Q     Max 
+-1.3597 -0.7398 -0.2423  0.5316  3.7967 
+
+Count model coefficients (negbin with log link):
+                    Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)          2.96660    2.29611   1.292    0.196    
+width_cm            -0.04677    0.08313  -0.563    0.574    
+spine_cond          -1.09495    0.94389  -1.160    0.246    
+width_cm:spine_cond  0.03713    0.03436   1.081    0.280    
+Log(theta)           1.61305    0.35740   4.513 6.38e-06 ***
+
+Zero-inflation model coefficients (binomial with logit link):
+            Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)  10.0588     3.1809   3.162  0.00157 ** 
+color         0.6851     0.2755   2.487  0.01289 *  
+width_cm     -0.4777     0.1161  -4.114 3.89e-05 ***
+spine_cond   -0.3124     0.2716  -1.150  0.25006    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+
+Theta = 5.0181 
+Number of iterations in BFGS optimization: 20 
+Log-likelihood: -348.8 on 9 Df</code></pre>
+</div>
+</div>
+</section>
+<section id="other-things-not-discussed" class="slide level2">
+<h2>Other Things Not Discussed</h2>
+<ul>
+<li><p>Interpretations are the same in all of the modeling techniques discussed today – you will find the IRR and interpret that.</p></li>
+<li><p>Confidence intervals are found as they were before (<code>confint()</code>).</p></li>
+<li><p>Visualizations are created in the same fashion as before - pick a predictor to vary on the <em>x</em>-axis, create a scatterplot, and plot lines (with predicted values) on top.</p></li>
+<li><p>Can compare models with different predictor sets using AIC</p></li>
+<li><p>Can still (and should!) check VIF</p></li>
+<li><p>You now have the base building blocks for modeling……….</p></li>
+</ul>
+<div class="footer footer-default">
+<p><a href="https://samanthaseals.github.io/STA6257">STA6257 - Advanced Statistical Modeling</a></p>
+</div>
+</section>
+    </div>
+  </div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="L05_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="L05_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="L05_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="L05_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="L05_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="L05_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="L05_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="L05_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="L05_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="L05_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'smaller': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: false,
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1600,
+
+        height: 900,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        function fireSlideChanged(previousSlide, currentSlide) {
+
+          // dispatch for htmlwidgets
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for reveal
+        if (window.Reveal) {
+          window.Reveal.addEventListener("slidechanged", function(event) {
+            fireSlideChanged(event.previousSlide, event.currentSlide);
+          });
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+    window.document.addEventListener("DOMContentLoaded", function (event) {
+      const toggleBodyColorMode = (bsSheetEl) => {
+        const mode = bsSheetEl.getAttribute("data-mode");
+        const bodyEl = window.document.querySelector("body");
+        if (mode === "dark") {
+          bodyEl.classList.add("quarto-dark");
+          bodyEl.classList.remove("quarto-light");
+        } else {
+          bodyEl.classList.add("quarto-light");
+          bodyEl.classList.remove("quarto-dark");
+        }
+      }
+      const toggleBodyColorPrimary = () => {
+        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+        if (bsSheetEl) {
+          toggleBodyColorMode(bsSheetEl);
+        }
+      }
+      toggleBodyColorPrimary();  
+      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+      tabsets.forEach(function(tabset) {
+        const tabby = new Tabby('#' + tabset.id);
+      });
+      const clipboard = new window.ClipboardJS('.code-copy-button', {
+        target: function(trigger) {
+          return trigger.previousElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        // button target
+        const button = e.trigger;
+        // don't keep focus
+        button.blur();
+        // flash "checked"
+        button.classList.add('code-copy-button-checked');
+        var currentTitle = button.getAttribute("title");
+        button.setAttribute("title", "Copied!");
+        setTimeout(function() {
+          button.setAttribute("title", currentTitle);
+          button.classList.remove('code-copy-button-checked');
+        }, 1000);
+        // clear code selection
+        e.clearSelection();
+      });
+      function tippyHover(el, contentFn) {
+        const config = {
+          allowHTML: true,
+          content: contentFn,
+          maxWidth: 500,
+          delay: 100,
+          arrow: false,
+          appendTo: function(el) {
+              return el.closest('section.slide') || el.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'quarto-reveal',
+          placement: 'bottom-start'
+        };
+          config['offset'] = [0,0];
+          config['maxWidth'] = 700;
+        window.tippy(el, config); 
+      }
+      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+      for (var i=0; i<noterefs.length; i++) {
+        const ref = noterefs[i];
+        tippyHover(ref, function() {
+          let href = ref.getAttribute('href');
+          try { href = new URL(href).hash; } catch {}
+          const id = href.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          return note.innerHTML;
+        });
+      }
+      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+      for (var i=0; i<bibliorefs.length; i++) {
+        const ref = bibliorefs[i];
+        const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+        tippyHover(ref, function() {
+          var popup = window.document.createElement('div');
+          cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    });
+    </script>
+    
+
+</body></html>

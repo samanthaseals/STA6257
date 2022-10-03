@@ -1,0 +1,360 @@
+---
+title: "Poisson and Negative Binomial Regressions"
+subtitle: "STA6257: Advanced Statistical Modeling"
+author: "Dr. Seals"
+format: 
+  revealjs:
+    theme: dark2
+    self-contained: false
+    slide-number: false
+    footer: "[STA6257 - Advanced Statistical Modeling](https://samanthaseals.github.io/STA6257)"
+    width: 1600
+    height: 900
+    chalkboard: true
+    df-print: paged
+    html-math-method: katex
+---
+
+## Introduction
+
+-   We have previously discussed continuous outcomes and the appropriate distributions.
+
+    -   Normal
+
+    -   Gamma
+
+-   We also discussed logistic regression models for binary, ordinal, and multinomial data.
+
+-   We will now discuss regression models for count data:
+
+    -   Poisson
+
+    -   Negative binomial
+
+-   We will also discuss the need for zero-inflation models.
+
+## Example Data: Horseshoe Crabs
+
+-   Consider the [horseshoe crab data from the textbook](https://users.stat.ufl.edu/~aa/glm/glm.html): there are 173 [mating female horseshoe crabs](https://www.dnr.sc.gov/marine/pub/seascience/horseshoecrab.html). The outcome of interest is the number of satellites, or the number of male crabs that group around the female to fertilize her eggs. Predictors to consider include physical characteristics of the female crab: shell color, spine condition, weight, and shell width.
+
+```{r, echo = TRUE}
+library(tidyverse)
+library(gsheet)
+data <- as_tibble(gsheet2tbl("https://docs.google.com/spreadsheets/d/1JoI0AffzZdGkW3FCCWHgRaZeuGrBt1Qa-WMT3_l8XCA/edit?usp=sharing"))
+head(data, n = 2)
+```
+
+## Example Data: Horseshoe Crabs
+
+```{r, echo = TRUE}
+data %>% ggplot(aes(satellites_num)) +
+  geom_bar() +
+  theme_bw() +
+  labs(x = "Number of Satellites",
+       y = "Number of Observations")
+```
+
+## Example Data: Horseshoe Crabs {.smaller}
+
+```{r, echo = TRUE}
+data %>% count(color) # 2 = light medium, 3 = medium, 4 = dark medium, 5 = dark
+data %>% count(spine_cond) # 1 = both good, 2 = one worn or broken, 3 = both worn or broken
+```
+
+## Poisson Regression: Definition and R Syntax
+
+-   We can model count outcomes using [Poisson regression](https://stats.oarc.ucla.edu/R/dae/Poisson-regression/),
+
+$$\ln \left( y \right) = \beta_0 + \beta_1 x_1 + ... + \beta_k x_k,$$
+
+-   We return to the `glm()` function and specify `family = "Poisson"`
+
+```{r, echo = TRUE, eval = FALSE}
+m <- glm([outcome] ~ [pred 1] + [pred 2] + ... + [pred k], 
+         family="poisson",
+         data=data)
+```
+
+## Poisson Regression: Example
+
+```{r, echo = TRUE}
+m1 <- glm(satellites_num ~ width_cm + spine_cond +
+            width_cm:spine_cond, family="poisson",
+          data=data)
+summary(m1)
+```
+
+$$ \ln(\hat{y}) = 0.27 + 0.038 \text{ width} - 1.58 \text{ spine} + 0.056 \text{ width} \times \text{spine} $$
+
+## Poisson Regression: Incident Rate Ratio
+
+-   In Poisson regression, we convert the $\hat{\beta}_i$ values to incident rate ratios (IRR). $$ \text{IRR}_i = \exp\left\{\hat{\beta}_i\right\} $$
+
+-   This is a multiplicative effect, like an odds ratio in logistic regression or like $\exp\left\{\hat{\beta}\right\}$ in Gamma regression.
+
+    -   An IRR $>$ 1 indicates an increase in the expected count.
+
+    -   An IRR $<$ 1 indicates a decrease in the expected count.
+
+    -   We can convert these to a percent increase/decrease, too.
+
+## Poisson Regression: Example
+
+-   Recall that there is an interaction term in the model,
+
+$$ \ln(\hat{y}) = 0.27 + 0.038 \text{ width} - 1.58 \text{ spine} + 0.056 \text{ width} \times \text{spine} $$
+
+-   Let's find the model for females with average shell width,
+
+```{r, echo = TRUE}
+mean(data$width_cm)
+```
+
+```{=tex}
+\begin{align*}
+\ln(\hat{y}) &= 0.27 + 0.038 \text{ width} - 1.58 \text{ spine} + 0.056 \text{ width} \times \text{spine} \\
+&= 0.27 + 0.038 (26) - 1.58 \text{ spine} + 0.056 (26)  \text{spine} \\
+&= 1.258 - 0.124 \text{ spine}
+\end{align*}
+```
+-   Thus, as spine conditions worsen, we expect the number of satellites to multiply by $e^{-0.124} = 0.8834$, or decrease by approximately 12%.
+
+## Poisson Regression: Example
+
+-   Recall that there is an interaction term in the model,
+
+$$ \ln(\hat{y}) = 0.27 + 0.038 \text{ width} - 1.58 \text{ spine} + 0.056 \text{ width} \times \text{spine} $$
+
+-   Let's find the model for females with larger than average shell width,
+
+```{r, echo = TRUE}
+quantile(data$width_cm)
+```
+
+```{=tex}
+\begin{align*}
+\ln(\hat{y}) &= 0.27 + 0.038 \text{ width} - 1.58 \text{ spine} + 0.056 \text{ width} \times \text{spine} \\
+&= 0.27 + 0.038 (30) - 1.58 \text{ spine} + 0.056 (30)  \text{spine} \\
+&= 1.41 - 0.10 \text{ spine}
+\end{align*}
+```
+exp(-0.10)
+
+-   Thus, as spine conditions worsen, we expect the number of satellites to multiply by $e^{-0.10} = 0.9048$, or decrease by approximately 10%.
+
+## Poisson Regression: Example
+
+-   Recall that there is an interaction term in the model,
+
+$$ \ln(\hat{y}) = 0.27 + 0.038 \text{ width} - 1.58 \text{ spine} + 0.056 \text{ width} \times \text{spine} $$
+
+-   Let's find the models for females with the three spine conditions (1=both good, 2=one worn or broken, 3=both worn or broken),
+
+```{=tex}
+\begin{align*}
+\ln(\hat{y}_{\text{spine=1}}) &= -1.31 + 0.094 \text{ width} \\
+\ln(\hat{y}_{\text{spine=2}}) &= -2.89 + 0.150 \text{ width} \\
+\ln(\hat{y}_{\text{spine=3}}) &= -4.47 + 0.206 \text{ width} \\
+\end{align*}
+```
+## Poisson Regression: Example
+
+-   Looking at all interpretations,
+
+```{=tex}
+\begin{align*}
+\ln(\hat{y}_{\text{spine=1}}) &= -1.31 + 0.094 \text{ width} \\
+\ln(\hat{y}_{\text{spine=2}}) &= -2.89 + 0.150 \text{ width} \\
+\ln(\hat{y}_{\text{spine=3}}) &= -4.47 + 0.206 \text{ width} \\
+\end{align*}
+```
+-   When both spines are good, for each 1 cm width increase, we expect the satellite count to be multiplied by $e^{0.094} = 1.0986$, an increase of 9.86%.
+-   When one spines is good, for each 1 cm width increase, we expect the satellite count to be multiplied by $e^{0.150} = 1.1618$, an increase of 16.18%.
+-   When both spines are good, for each 1 cm width increase, we expect the satellite count to be multiplied by $e^{0.206} = 1.2288$, an increase of 22.88%.
+
+## Poisson Regression: Assumption
+
+-   Consider the [Poisson distribution](https://en.wikipedia.org/wiki/Poisson_distribution)'s probability mass function:
+
+$$ f(x; \lambda) = \text{P}[X = x] = \frac{\lambda^x e^{-\lambda}}{x!}, $$
+
+-   where
+    -   $y$ is the number of occurrences ($y$ = 0, 1, 2 , ... ),
+    -   $\lambda$ is a positive real number, and
+    -   $!$ is the factorial function.
+-   It can be shown that $$ \lambda = \text{E}[X] = \text{Var}[X] $$
+
+## Poisson Regression: Assumption
+
+-   Thus!!! We assume mean($y$) = var($y$) in Poisson regression.
+
+-   But what if we do not meet that assumption?
+
+```{r, echo = TRUE}
+data %>% summarize(mean(satellites_num), var(satellites_num))
+```
+
+-   We have [overdispersed data](https://en.wikipedia.org/wiki/Overdispersion) :(
+
+## Negative Binomial Regression: Definition and R Syntax
+
+-   When we do not meet the Poisson assumption, we can use [negative binomial regression](https://stats.oarc.ucla.edu/R/dae/negative-binomial-regression/),
+
+$$\ln \left( y \right) = \beta_0 + \beta_1 x_1 + ... + \beta_k x_k,$$
+
+-   Now we use the `[glm.nb()](https://www.rdocumentation.org/packages/MASS/versions/7.3-58.1/topics/glm.nb)` function from the [MASS](https://www.rdocumentation.org/packages/MASS/versions/7.3-58.1) package.
+
+```{r, echo = TRUE, eval = FALSE}
+m <- glm.nb([outcome] ~ [pred 1] + [pred 2] + ... + [pred k], 
+            data=data)
+```
+
+-   This model includes an overdispersion parameter.
+    -   As the parameter $\to$ 1, negative binomial $\to$ Poisson.
+
+## Negative Binomial Regression: Example
+
+```{r, echo = TRUE}
+library(MASS)
+m2 <- glm.nb(satellites_num ~ width_cm + spine_cond +
+            width_cm:spine_cond,
+            data=data)
+summary(m2)
+```
+
+$$ \ln(\hat{y}) = -0.77 + 0.076 \text{ width} - 1.34 \text{ spine} + 0.047 \text{ width} \times \text{spine} $$
+
+## Poisson vs. Negative Binomial
+
+-   If the data is overdispersed, we know Poisson regression underestimates the SE.
+
+-   Recall,
+
+$$ \text{test statistic} = \frac{\hat{\beta}_i}{\text{SE}_{\hat{\beta}_i}} $$
+
+-   ... so an underestimated SE $\to$ larger test statistic.
+
+-   Recall,
+
+$$ p = \text{P}[\text{observing something more extreme}] $$
+
+-   ... so a larger test statistic $\to$ smaller *p*-value
+
+-   Thus!!! we are increasing the type I error rate (i.e., rejecting more often than we should).
+
+## Poisson vs. Negative Binomial: Example
+
+```{r, echo = TRUE}
+summary(m1)
+summary(m2)
+```
+
+## Zero-Inflated Poisson: Introduction
+
+- In the case of excess zeros, we can implement [zero-inflated models](https://en.wikipedia.org/wiki/Zero-inflated_model).
+
+- This jointly models
+    - (1) a logit model for predicting excess zeros, 
+    - (2) the Poisson count models.
+
+The zero-inflated Poisson model is as follows:
+
+$$y_i \sim \left\{
+\begin{array}{ll}
+      0, & \text{with probability }1 - \phi_i \\
+      \text{Poisson}(\lambda_i), & \text{with probability } \phi_i \\
+\end{array} 
+\right. $$
+
+## Zero-Inflated Poisson: R Syntax
+
+- We will use the [`zeroinfl()`](https://www.rdocumentation.org/packages/pscl/versions/1.5.5/topics/zeroinfl) function from the [`pscl`](https://www.rdocumentation.org/packages/pscl/versions/1.5.5) package.
+
+```{r, echo = TRUE, eval = FALSE}
+m <- zeroinfl([count outcome] ~ [count pred 1] + [count pred 2] + ... + [count pred k_count] | 
+              [ZI pred 1] + [ZI pred 2] + ... [ZI pred k_ZI],
+              data=data)
+```
+
+- Note that the predictors of the zero inflation do not have to be the same as the predictors of the count outcome. 
+
+## Zero-Inflation: Example
+
+- Let's revisit the bar chart (pseudo-histogram) of the count outcome,
+
+```{r, echo = TRUE}
+data %>% ggplot(aes(satellites_num)) +
+  geom_bar() +
+  theme_bw() +
+  labs(x = "Number of Satellites",
+       y = "Number of Observations")
+```
+
+## Zero-Inflated Poisson: Example
+
+```{r, echo = TRUE}
+library(pscl)
+m3 <- zeroinfl(satellites_num ~ width_cm + spine_cond +
+            width_cm:spine_cond | 
+              color + width_cm + spine_cond,
+            data=data)
+summary(m3)
+```
+
+## Zero-Inflated Negative Binomial: Introduction
+
+- In the case of excess zeros, we can implement [zero-inflated models](https://en.wikipedia.org/wiki/Zero-inflated_model).
+
+- This jointly models
+    - (1) a logit model for predicting excess zeros, 
+    - (2) the negative binomial count models.
+    
+The zero-inflated negative binomial model is as follows:
+
+$$y_i \sim \left\{
+\begin{array}{ll}
+      0, & \text{with probability }1 - \phi_i \\
+      \text{NB}(r, p), & \text{with probability } \phi_i \\
+\end{array} 
+\right. $$
+
+## Zero-Inflated Negative Binomial: R Syntax
+
+- We will again use the [`zeroinfl()`](https://www.rdocumentation.org/packages/pscl/versions/1.5.5/topics/zeroinfl) function from the [`pscl`](https://www.rdocumentation.org/packages/pscl/versions/1.5.5) package, but add `dist = "negbin"`.
+
+```{r, echo = TRUE, eval = FALSE}
+m <- zeroinfl([count outcome] ~ [count pred 1] + [count pred 2] + ... + [count pred k_count] | 
+              [ZI pred 1] + [ZI pred 2] + ... [ZI pred k_ZI],
+              dist = "negbin",
+              data=data)
+```
+
+- Note that the predictors of the zero inflation do not have to be the same as the predictors of the count outcome. 
+
+## Zero-Inflated Negative Binomial: Example
+
+```{r, echo = TRUE}
+m4 <- zeroinfl(satellites_num ~ width_cm + spine_cond +
+            width_cm:spine_cond | 
+              color + width_cm + spine_cond,
+            dist = "negbin",
+            data=data)
+summary(m4)
+```
+
+## Other Things Not Discussed
+
+- Interpretations are the same in all of the modeling techniques discussed today -- you will find the IRR and interpret that. 
+
+- Confidence intervals are found as they were before (`confint()`).
+
+- Visualizations are created in the same fashion as before - pick a predictor to vary on the *x*-axis, create a scatterplot, and plot lines (with predicted values) on top.
+
+- Can compare models with different predictor sets using AIC
+
+- Can still (and should!) check VIF 
+
+- You now have the base building blocks for modeling..........
+
+
+
