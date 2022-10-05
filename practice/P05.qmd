@@ -1,0 +1,62 @@
+---
+title: "Poisson and Negative Binomial Regressions - Week 7"
+format: html
+self-contained: true
+editor: source
+---
+
+**Recall the [Jackson Heart Study](https://www.jacksonheartstudy.org/) data from lecture. You can find data from clinic visits 1, 2, and 3 on Canvas. For any question requiring an $\alpha$, assume $\alpha=0.05$.**
+
+#### 1. Create a variable that counts the number of controllable risk factors for stroke: blood pressure (idealHealthBP; 1=ideal health, 0=not ideal health), smoking status (idealHealthSMK; 1=ideal health, 0=not ideal health), diabetes (idealHealthDM; 1=ideal health, 0=not ideal health), diet  (idealHealthNutrition; 1=ideal health, 0=not ideal health), physical activity (idealHealthPA; 1=ideal health, 0=not ideal health), obesity  (idealHealthBMI; 1=ideal health, 0=not ideal health), and high cholesterol  (idealHealthChol; 1=ideal health, 0=not ideal health). **Note:** all of the idealHealth variables indicate ideal health… you are being asked to count the number of not ideal health indicators.
+
+#### 2. Use Poisson regression to model the count variable created in Q2 as a function of age (age; years), health insurance (PrivatePublicIns; 0=uninsured, 1=private insurance only, 2=public insurance only, 3=private and public insurances), education status (HSgrad; 0=did not graduate high school, 1=graduated high school), and the interaction between age and health insurance.
+
+#### 3. Perform the appropriate hypothesis test to determine if the interaction between age and health insurance is significant. 
+
+#### 4. Plug in relevant values to construct the following models (based on the model in Q3):
+
+#### 4a. Construct the model for a 25 year old JHS participant.
+
+#### 4b. Construct the model for a 50 year old JHS participant.
+
+#### 4c. Construct the model for someone who is uninsured.
+
+#### 4d. Construct the model for someone who has private insurance.
+
+#### 5. Using the models in Q4a:
+
+#### 5a. Find and provide an interpretation for the IRR for education status.
+
+#### 5b. Find and provide an interpretation for the IRRs for insurance status.
+
+#### 6. Using the models in Q4b:
+
+#### 6a. Find and provide an interpretation for the IRR for education status.
+
+#### 6b. Find and provide an interpretation for the IRRs for insurance status.
+
+#### 7. Using the models in Q4c:
+
+#### 7a. Find and provide an interpretation for the IRR for age.
+
+#### 7b. Find and provide an interpretation for the IRR for education status.
+
+#### 8. Using the models in Q4d:
+
+#### 8a. Find and provide an interpretation for the IRR for age.
+
+#### 8b. Find and provide an interpretation for the IRR for education status.
+
+#### 9. Consider the assumption for Poisson regression.
+
+#### 9a. Explain this assumption to your supervisor, who is not a statistician.
+
+#### 9b. Show that the data meets the assumption for this model.
+
+#### 10. Reconstruct the model from Q2 using negative binomial regression.
+
+#### 10a. Compare the two models side by side – what do you notice?
+
+#### 10b. Why do you think you’re noticing what you noticed in part (a)?
+
+
