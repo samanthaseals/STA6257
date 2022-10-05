@@ -5,9 +5,9 @@
 <script src="L05_files/libs/quarto-html/popper.min.js"></script>
 <script src="L05_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="L05_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="L05_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="L05_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet">
 <link href="L05_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.0.38">
+  <meta name="generator" content="quarto-0.9.647">
 
   <meta name="author" content="Dr.&nbsp;Seals">
   <title>Poisson and Negative Binomial Regressions</title>
@@ -399,7 +399,7 @@
   <link href="L05_files/libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
   <script src="L05_files/libs/pagedtable-1.1/js/pagedtable.js"></script>
 </head>
-<body class="quarto-dark">
+<body>
   <div class="reveal">
     <div class="slides">
 
@@ -487,7 +487,7 @@
 </ul>
 <p><span class="math display">\ln \left( y \right) = \beta_0 + \beta_1 x_1 + ... + \beta_k x_k,</span></p>
 <ul>
-<li>We return to the <code>glm()</code> function and specify <code>family = "Poisson"</code></li>
+<li>We return to the <code>glm()</code> function and specify <code>family = "poisson"</code></li>
 </ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>m <span class="ot">&lt;-</span> <span class="fu">glm</span>([outcome] <span class="sc">~</span> [pred <span class="dv">1</span>] <span class="sc">+</span> [pred <span class="dv">2</span>] <span class="sc">+</span> ... <span class="sc">+</span> [pred k], </span>
@@ -589,7 +589,6 @@ Number of Fisher Scoring iterations: 6</code></pre>
 &amp;= 0.27 + 0.038 (30) - 1.58 \text{ spine} + 0.056 (30)  \text{spine} \\
 &amp;= 1.41 - 0.10 \text{ spine}
 \end{align*}</span>
-<p>exp(-0.10)</p>
 <ul>
 <li>Thus, as spine conditions worsen, we expect the number of satellites to multiply by <span class="math inline">e^{-0.10} = 0.9048</span>, or decrease by approximately 10%.</li>
 </ul>
@@ -622,7 +621,7 @@ Number of Fisher Scoring iterations: 6</code></pre>
 <ul>
 <li>When both spines are good, for each 1 cm width increase, we expect the satellite count to be multiplied by <span class="math inline">e^{0.094} = 1.0986</span>, an increase of 9.86%.</li>
 <li>When one spines is good, for each 1 cm width increase, we expect the satellite count to be multiplied by <span class="math inline">e^{0.150} = 1.1618</span>, an increase of 16.18%.</li>
-<li>When both spines are good, for each 1 cm width increase, we expect the satellite count to be multiplied by <span class="math inline">e^{0.206} = 1.2288</span>, an increase of 22.88%.</li>
+<li>When both spines are bad, for each 1 cm width increase, we expect the satellite count to be multiplied by <span class="math inline">e^{0.206} = 1.2288</span>, an increase of 22.88%.</li>
 </ul>
 </section>
 <section id="poisson-regression-assumption" class="slide level2">
@@ -634,7 +633,7 @@ Number of Fisher Scoring iterations: 6</code></pre>
 <ul>
 <li>where
 <ul>
-<li><span class="math inline">y</span> is the number of occurrences (<span class="math inline">y</span> = 0, 1, 2 , … ),</li>
+<li><span class="math inline">x</span> is the number of occurrences (<span class="math inline">x</span> = 0, 1, 2 , … ),</li>
 <li><span class="math inline">\lambda</span> is a positive real number, and</li>
 <li><span class="math inline">!</span> is the factorial function.</li>
 </ul></li>
@@ -669,7 +668,7 @@ Number of Fisher Scoring iterations: 6</code></pre>
 </ul>
 <p><span class="math display">\ln \left( y \right) = \beta_0 + \beta_1 x_1 + ... + \beta_k x_k,</span></p>
 <ul>
-<li>Now we use the <code>[glm.nb()](https://www.rdocumentation.org/packages/MASS/versions/7.3-58.1/topics/glm.nb)</code> function from the <a href="https://www.rdocumentation.org/packages/MASS/versions/7.3-58.1">MASS</a> package.</li>
+<li>Now we use the <a href="https://www.rdocumentation.org/packages/MASS/versions/7.3-58.1/topics/glm.nb"><code>glm.nb()</code></a> function from the <a href="https://www.rdocumentation.org/packages/MASS/versions/7.3-58.1">MASS</a> package.</li>
 </ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>m <span class="ot">&lt;-</span> <span class="fu">glm.nb</span>([outcome] <span class="sc">~</span> [pred <span class="dv">1</span>] <span class="sc">+</span> [pred <span class="dv">2</span>] <span class="sc">+</span> ... <span class="sc">+</span> [pred k], </span>
@@ -909,12 +908,14 @@ Log-likelihood: -359.5 on 8 Df</code></pre>
 </ul></li>
 </ul>
 <p>The zero-inflated negative binomial model is as follows:</p>
-<p>$$y_i {</p>
-<span class="math display">\begin{array}{ll}
+<p><span class="math display">\begin{equation*}
+y_i \sim \left\{
+\begin{array}{ll}
       0, &amp; \text{with probability }1 - \phi_i \\
       \text{NB}(r, p), &amp; \text{with probability } \phi_i \\
-\end{array}</span>
-<p>. $$</p>
+\end{array}
+\right.
+\end{equation*}</span></p>
 </section>
 <section id="zero-inflated-negative-binomial-r-syntax" class="slide level2">
 <h2>Zero-Inflated Negative Binomial: R Syntax</h2>
@@ -1225,24 +1226,6 @@ Log-likelihood: -348.8 on 9 Df</code></pre>
 
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
-      const toggleBodyColorMode = (bsSheetEl) => {
-        const mode = bsSheetEl.getAttribute("data-mode");
-        const bodyEl = window.document.querySelector("body");
-        if (mode === "dark") {
-          bodyEl.classList.add("quarto-dark");
-          bodyEl.classList.remove("quarto-light");
-        } else {
-          bodyEl.classList.add("quarto-light");
-          bodyEl.classList.remove("quarto-dark");
-        }
-      }
-      const toggleBodyColorPrimary = () => {
-        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-        if (bsSheetEl) {
-          toggleBodyColorMode(bsSheetEl);
-        }
-      }
-      toggleBodyColorPrimary();  
       const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
       tabsets.forEach(function(tabset) {
         const tabby = new Tabby('#' + tabset.id);

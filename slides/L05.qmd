@@ -67,7 +67,7 @@ data %>% count(spine_cond) # 1 = both good, 2 = one worn or broken, 3 = both wor
 
 $$\ln \left( y \right) = \beta_0 + \beta_1 x_1 + ... + \beta_k x_k,$$
 
--   We return to the `glm()` function and specify `family = "Poisson"`
+-   We return to the `glm()` function and specify `family = "poisson"`
 
 ```{r, echo = TRUE, eval = FALSE}
 m <- glm([outcome] ~ [pred 1] + [pred 2] + ... + [pred k], 
@@ -138,7 +138,6 @@ quantile(data$width_cm)
 &= 1.41 - 0.10 \text{ spine}
 \end{align*}
 ```
-exp(-0.10)
 
 -   Thus, as spine conditions worsen, we expect the number of satellites to multiply by $e^{-0.10} = 0.9048$, or decrease by approximately 10%.
 
@@ -170,7 +169,7 @@ $$ \ln(\hat{y}) = 0.27 + 0.038 \text{ width} - 1.58 \text{ spine} + 0.056 \text{
 ```
 -   When both spines are good, for each 1 cm width increase, we expect the satellite count to be multiplied by $e^{0.094} = 1.0986$, an increase of 9.86%.
 -   When one spines is good, for each 1 cm width increase, we expect the satellite count to be multiplied by $e^{0.150} = 1.1618$, an increase of 16.18%.
--   When both spines are good, for each 1 cm width increase, we expect the satellite count to be multiplied by $e^{0.206} = 1.2288$, an increase of 22.88%.
+-   When both spines are bad, for each 1 cm width increase, we expect the satellite count to be multiplied by $e^{0.206} = 1.2288$, an increase of 22.88%.
 
 ## Poisson Regression: Assumption
 
@@ -179,7 +178,7 @@ $$ \ln(\hat{y}) = 0.27 + 0.038 \text{ width} - 1.58 \text{ spine} + 0.056 \text{
 $$ f(x; \lambda) = \text{P}[X = x] = \frac{\lambda^x e^{-\lambda}}{x!}, $$
 
 -   where
-    -   $y$ is the number of occurrences ($y$ = 0, 1, 2 , ... ),
+    -   $x$ is the number of occurrences ($x$ = 0, 1, 2 , ... ),
     -   $\lambda$ is a positive real number, and
     -   $!$ is the factorial function.
 -   It can be shown that $$ \lambda = \text{E}[X] = \text{Var}[X] $$
@@ -202,7 +201,7 @@ data %>% summarize(mean(satellites_num), var(satellites_num))
 
 $$\ln \left( y \right) = \beta_0 + \beta_1 x_1 + ... + \beta_k x_k,$$
 
--   Now we use the `[glm.nb()](https://www.rdocumentation.org/packages/MASS/versions/7.3-58.1/topics/glm.nb)` function from the [MASS](https://www.rdocumentation.org/packages/MASS/versions/7.3-58.1) package.
+-   Now we use the [`glm.nb()`](https://www.rdocumentation.org/packages/MASS/versions/7.3-58.1/topics/glm.nb) function from the [MASS](https://www.rdocumentation.org/packages/MASS/versions/7.3-58.1) package.
 
 ```{r, echo = TRUE, eval = FALSE}
 m <- glm.nb([outcome] ~ [pred 1] + [pred 2] + ... + [pred k], 
@@ -251,11 +250,17 @@ summary(m2)
 
 ## Zero-Inflated Poisson: Introduction
 
-- In the case of excess zeros, we can implement [zero-inflated models](https://en.wikipedia.org/wiki/Zero-inflated_model).
+-   In the case of excess zeros, we can implement [zero-inflated models](https://en.wikipedia.org/wiki/Zero-inflated_model).
 
-- This jointly models
-    - (1) a logit model for predicting excess zeros, 
-    - (2) the Poisson count models.
+-   This jointly models
+
+    -   
+
+        (1) a logit model for predicting excess zeros,
+
+    -   
+
+        (2) the Poisson count models.
 
 The zero-inflated Poisson model is as follows:
 
@@ -268,7 +273,7 @@ $$y_i \sim \left\{
 
 ## Zero-Inflated Poisson: R Syntax
 
-- We will use the [`zeroinfl()`](https://www.rdocumentation.org/packages/pscl/versions/1.5.5/topics/zeroinfl) function from the [`pscl`](https://www.rdocumentation.org/packages/pscl/versions/1.5.5) package.
+-   We will use the [`zeroinfl()`](https://www.rdocumentation.org/packages/pscl/versions/1.5.5/topics/zeroinfl) function from the [`pscl`](https://www.rdocumentation.org/packages/pscl/versions/1.5.5) package.
 
 ```{r, echo = TRUE, eval = FALSE}
 m <- zeroinfl([count outcome] ~ [count pred 1] + [count pred 2] + ... + [count pred k_count] | 
@@ -276,11 +281,11 @@ m <- zeroinfl([count outcome] ~ [count pred 1] + [count pred 2] + ... + [count p
               data=data)
 ```
 
-- Note that the predictors of the zero inflation do not have to be the same as the predictors of the count outcome. 
+-   Note that the predictors of the zero inflation do not have to be the same as the predictors of the count outcome.
 
 ## Zero-Inflation: Example
 
-- Let's revisit the bar chart (pseudo-histogram) of the count outcome,
+-   Let's revisit the bar chart (pseudo-histogram) of the count outcome,
 
 ```{r, echo = TRUE}
 data %>% ggplot(aes(satellites_num)) +
@@ -303,24 +308,32 @@ summary(m3)
 
 ## Zero-Inflated Negative Binomial: Introduction
 
-- In the case of excess zeros, we can implement [zero-inflated models](https://en.wikipedia.org/wiki/Zero-inflated_model).
+-   In the case of excess zeros, we can implement [zero-inflated models](https://en.wikipedia.org/wiki/Zero-inflated_model).
 
-- This jointly models
-    - (1) a logit model for predicting excess zeros, 
-    - (2) the negative binomial count models.
-    
+-   This jointly models
+
+    -   
+
+        (1) a logit model for predicting excess zeros,
+
+    -   
+
+        (2) the negative binomial count models.
+
 The zero-inflated negative binomial model is as follows:
 
-$$y_i \sim \left\{
+\begin{equation*}
+y_i \sim \left\{
 \begin{array}{ll}
       0, & \text{with probability }1 - \phi_i \\
       \text{NB}(r, p), & \text{with probability } \phi_i \\
 \end{array} 
-\right. $$
+\right.
+\end{equation*}
 
 ## Zero-Inflated Negative Binomial: R Syntax
 
-- We will again use the [`zeroinfl()`](https://www.rdocumentation.org/packages/pscl/versions/1.5.5/topics/zeroinfl) function from the [`pscl`](https://www.rdocumentation.org/packages/pscl/versions/1.5.5) package, but add `dist = "negbin"`.
+-   We will again use the [`zeroinfl()`](https://www.rdocumentation.org/packages/pscl/versions/1.5.5/topics/zeroinfl) function from the [`pscl`](https://www.rdocumentation.org/packages/pscl/versions/1.5.5) package, but add `dist = "negbin"`.
 
 ```{r, echo = TRUE, eval = FALSE}
 m <- zeroinfl([count outcome] ~ [count pred 1] + [count pred 2] + ... + [count pred k_count] | 
@@ -329,7 +342,7 @@ m <- zeroinfl([count outcome] ~ [count pred 1] + [count pred 2] + ... + [count p
               data=data)
 ```
 
-- Note that the predictors of the zero inflation do not have to be the same as the predictors of the count outcome. 
+-   Note that the predictors of the zero inflation do not have to be the same as the predictors of the count outcome.
 
 ## Zero-Inflated Negative Binomial: Example
 
@@ -344,17 +357,14 @@ summary(m4)
 
 ## Other Things Not Discussed
 
-- Interpretations are the same in all of the modeling techniques discussed today -- you will find the IRR and interpret that. 
+-   Interpretations are the same in all of the modeling techniques discussed today -- you will find the IRR and interpret that.
 
-- Confidence intervals are found as they were before (`confint()`).
+-   Confidence intervals are found as they were before (`confint()`).
 
-- Visualizations are created in the same fashion as before - pick a predictor to vary on the *x*-axis, create a scatterplot, and plot lines (with predicted values) on top.
+-   Visualizations are created in the same fashion as before - pick a predictor to vary on the *x*-axis, create a scatterplot, and plot lines (with predicted values) on top.
 
-- Can compare models with different predictor sets using AIC
+-   Can compare models with different predictor sets using AIC
 
-- Can still (and should!) check VIF 
+-   Can still (and should!) check VIF
 
-- You now have the base building blocks for modeling..........
-
-
-
+-   You now have the base building blocks for modeling..........
