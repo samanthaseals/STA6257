@@ -23,7 +23,7 @@ show_sidebar: false
 | 6    | M   | 09/26 | Project 2 (short meeting) | | | |
 |      | W   | 09/28 | Project 2 (no meeting) | | | 10/03 |
 | 7    | M   | 10/03 | Poisson and negative binomial regressions | [html](https://samanthaseals.github.io/STA6257/slides/L05.html), [qmd](https://github.com/samanthaseals/STA6257/blob/main/slides/L05.qmd) | | |
-|      | W   | 10/05 | Practice (no meeting - Dr. Seals traveling) | | | 10/10 |
+|      | W   | 10/05 | Practice (no meeting - Dr. Seals traveling) | | [html](https://samanthaseals.github.io/STA6257/practice/P05.html), [qmd](https://github.com/samanthaseals/STA6257/blob/main/practice/P05.qmd)  | 10/10 |
 | 8    | M   | 10/10 | Project 3 (short meeting) | | | |
 |      | W   | 10/12 | Project 3 (no meeting) | | | 10/17 |
 | 9    | M   | 10/17 | Individual research (short meeting) | | | |
