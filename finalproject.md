@@ -13,7 +13,7 @@ The methodologies to consider:
 
   - ~~Missing data and imputation~~ AD, GRA, DS
   - Longitudinal analysis
-  - Polynomial regression
+  - ~~Polynomial regression~~ AR, ZS
   - Quantile regression
   - Cubic splines
   - LASSO and ridge regression
