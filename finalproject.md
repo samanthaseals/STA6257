@@ -16,7 +16,7 @@ The methodologies to consider:
   - ~~Polynomial regression~~ AR, ZS
   - Quantile regression
   - Cubic splines
-  - LASSO and ridge regression
+  - ~~LASSO and ridge regression~~ KA, MT, AW
   - ~~Cross validation~~ DB, JH, MTo
   - Bootstrapping and jackknife estimation
   - Kernel regression
