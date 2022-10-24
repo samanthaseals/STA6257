@@ -30,8 +30,8 @@ show_sidebar: false
 |      | W   | 10/19 | Individual research (no meeting) | | | 10/23 |
 | 10   | M   | 10/24 | Individual research (short meeting) | | | |
 |      | W   | 10/26 | Individual research (no meeting) | | | 10/30 |
-| 11   | M   | 10/31 | Team research (short meeting) | | | |
-|      | W   | 11/02 | Team research (no meeting) | | | 11/06 |
+| 11   | M   | 10/31 | Team research (no meeting) | | | |
+|      | W   | 11/02 | Team research (short meeting) | | | 11/06 |
 | 12   | M   | 11/07 | Team research (short meeting) | | | |
 |      | W   | 11/09 | Team research (no meeting) | | | 11/13 |
 | 13   | M   | 11/14 | Team research (short meeting) | | | |
