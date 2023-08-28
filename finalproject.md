@@ -11,18 +11,17 @@ You will choose one area to work in. Note that these are likely new-to-you topic
 
 The methodologies to consider:
 
-  - Missing data and imputation
+  - ~~Missing data and imputation~~
   - Longitudinal analysis
   - Polynomial regression
-  - Quantile regression
+  - ~~Quantile regression~~
   - Cubic splines
   - LASSO and ridge regression
   - Beta regression
-  - Cross validation
   - Bootstrapping and jackknife estimation
   - Kernel regression
-  - K-means clustering
-  - Principal component analysis
+  - ~~K-means clustering~~
+  - ~~Principal component analysis~~
   - Generalized additive models
   - Generalized estimating equations
   - Cox proportional hazards model
